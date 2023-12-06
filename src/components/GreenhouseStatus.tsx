@@ -11,7 +11,7 @@ interface ToggleButtonProps {
 const ToggleButton: React.FC<ToggleButtonProps> = ({ isEnabled, onToggle }) => {
   return (
     <Switch
-    size="lg" // You can try "2xl", "3xl", etc. for larger sizes
+      size="lg" // You can try "2xl", "3xl", etc. for larger sizes
       isChecked={isEnabled}
       onToggle={onToggle}
       colorScheme="red"
@@ -46,12 +46,12 @@ export default function GreenhouseStatus({
         textAlign: "center",
       }}
     >
-      {children}  
+      {children}
 
       <Center>
         <ToggleButton isEnabled={isEnabled} onToggle={handleToggle} />
       </Center>
-       <Text mt="-4" fontSize="lg">
+      <Text mt="-4" fontSize="lg">
         Switch: {isEnabled ? "ON" : "OFF"}
       </Text>
     </Box>
