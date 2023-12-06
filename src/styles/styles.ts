@@ -13,10 +13,19 @@ const PasswordInputStyles = StyleSheet.create({
   input: {
     height: 40,
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 3,
     borderColor: "#000",
   }
 });
 
+const ButtonStyle = StyleSheet.create({
+  register: {
+    height: 40,
+    margin: 12,
+    borderWidth: 3,
+    borderColor: '#0000',
+    color: '#0000'
+  }
+})
 
-export { HomeStyles, PasswordInputStyles };
+export { HomeStyles, PasswordInputStyles, ButtonStyle };
