@@ -9,4 +9,14 @@ const HomeStyles = StyleSheet.create({
   },
 });
 
-export { HomeStyles };
+const PasswordInputStyles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    borderColor: "#000",
+  }
+});
+
+
+export { HomeStyles, PasswordInputStyles };

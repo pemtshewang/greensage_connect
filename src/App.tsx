@@ -2,6 +2,7 @@ import CustomStatusBar from './components/Statusbar';
 import { StyleSheet, Text, View } from 'react-native';
 import { HomeStyles } from './styles/styles';
 import PasswordInput from './components/PasswordInput';
+import TextInput from './components/TextInput';
 import { NativeBaseProvider } from 'native-base';
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
         <CustomStatusBar style='auto' />
         <PasswordInput width='50%' />
         <Text>Working or</Text>
+        <TextInput placeholder='Email' width="1" />
       </View>
     </NativeBaseProvider>
   );
