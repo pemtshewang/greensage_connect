@@ -24,7 +24,7 @@ const ButtonStyle = StyleSheet.create({
     margin: 12,
     borderWidth: 3,
     borderColor: '#0000',
-    color: '#0000'
+    color: 'red'
   }
 })
 
