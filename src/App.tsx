@@ -15,7 +15,6 @@ export default function App() {
         <Text>Working or</Text>
         <TextInput placeholder='Email' width="1" />
       </View>
-
     </NativeBaseProvider>
   );
 }
