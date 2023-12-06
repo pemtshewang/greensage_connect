@@ -3,16 +3,15 @@ import PasswordInput from "../../components/PasswordInput";
 import { ButtonStyle } from "../../styles/styles";
 import { Button } from "native-base";
 import { HomeStyles } from "../../styles/styles";
+import { StatusBar} from "native-base";
 
-function login() {
+function Register() {
     return <View style={HomeStyles.container}>
-        <CustomStatusBar style='auto' />
         <PasswordInput width='50%' />
+        <TextInput placeholder='Email'/>
         <Button style = {ButtonStyle.register}> </Button>
-
-
-        <PasswordInput/>   
+   
     </View>
 }
 
-export default login;
+export default Register;
