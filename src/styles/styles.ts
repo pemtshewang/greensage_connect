@@ -20,11 +20,11 @@ const PasswordInputStyles = StyleSheet.create({
 
 const ButtonStyle = StyleSheet.create({
   register: {
-    height: 40,
+    height: "auto",
     margin: 12,
     borderWidth: 3,
-    borderColor: '#0000',
-    color: '#0000'
+    borderColor: '#f00',
+    color: '#f00'
   }
 })
 
