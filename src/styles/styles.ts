@@ -4,8 +4,6 @@ const HomeStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
@@ -28,4 +26,35 @@ const ButtonStyle = StyleSheet.create({
   }
 })
 
-export { HomeStyles, PasswordInputStyles, ButtonStyle };
+const LoginStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  heading: {
+    fontWeight: "bold",
+    textAlign: "center",
+    // gradient
+    color: "#fff"
+  },
+  icon: {
+    borderColor: "#000",
+    borderWidth: 1,
+    padding: 10,
+  },
+  input: {
+    borderColor: "#000",
+    borderWidth: 1,
+  },
+  button: {
+    width: 150, // Set width as needed
+    height: 50, // Set height as needed
+    borderWidth: 1, // Border width
+    backgroundColor: "#10670F",
+    borderColor: '#000', // Border color
+    borderBottomLeftRadius: 20, // Border radius
+    borderBottomRightRadius: 20, // Border radius
+  }
+});
+
+
+export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles };
