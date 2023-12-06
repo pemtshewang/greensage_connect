@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { TextInput, View  } from "react-native";
 import PasswordInput from "../../components/PasswordInput";
 import { ButtonStyle } from "../../styles/styles";
@@ -15,3 +16,5 @@ function Register() {
 }
 
 export default Register;
+=======
+>>>>>>> 1f5f6e8 (added login form)

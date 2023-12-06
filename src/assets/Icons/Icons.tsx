@@ -1,12 +1,29 @@
 // import the needed icons from the lucide-react-native
+<<<<<<< HEAD
 import { Eye, EyeOff} from "lucide-react-native";
 import { View } from "native-base";
+=======
+import {
+  Eye,
+  EyeOff,
+  User,
+  LockKeyhole,
+} from "lucide-react-native"
+>>>>>>> 1f5f6e8 (added login form)
 
 // export the icons by naming yourself
 export const Icons = {
   visible: Eye,
   visibleOff: EyeOff,
+<<<<<<< HEAD
   darkarrow: ({ className }: { className: string }) => {
+=======
+  loginUser: User,
+  loginLock: LockKeyhole,
+  darkarrow: (({ className }: {
+    className: string
+  }) => {
+>>>>>>> 1f5f6e8 (added login form)
     return (
       <svg
         height={30}
