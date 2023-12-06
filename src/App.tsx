@@ -13,7 +13,6 @@ export default function App() {
         <Text>Working or</Text>
         <CustomStatusBar style='auto' />
         <PasswordInput width='50%' />
-        <Button style={ButtonStyle.register}> </Button>
         <Text>Working or</Text>
         <TextInput placeholder='Email' width="1" />
       </View>
