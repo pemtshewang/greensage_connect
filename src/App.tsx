@@ -1,5 +1,5 @@
 import CustomStatusBar from './components/Statusbar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { HomeStyles } from './styles/styles';
 import PasswordInput from './components/PasswordInput';
 import TextInput from './components/TextInput';
