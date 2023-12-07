@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Input } from "native-base";
+import { Box, Input} from "native-base";
 import { ResponsiveValue } from "native-base/lib/typescript/components/types";
 import { SizeType } from "native-base/lib/typescript/components/types";
 import { InputTextStyle } from "../styles/styles";
@@ -12,7 +12,7 @@ export default function CustomTextInput({ placeholder, width, style}: {
   style: any,
 }) {
   const [value, setValue] = React.useState("");
-  const handleChange = text => setValue(text);
+  const handleChange = (text: React.SetStateAction<string>) => setValue(text);
   return (
     
       <Input   value={value} w={width}  placeholder={placeholder} style={style} />

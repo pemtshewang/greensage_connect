@@ -1,51 +1,59 @@
-import React from "react";
-import {
-  Box,
-  Center,
-  NativeBaseProvider,
-  Pressable,
-  HStack,
-  Badge,
-  Spacer,
-  Text,
-  Flex,
-} from "native-base";
-import { Stack } from "native-base/lib/typescript/components/primitives";
+import React, { useState } from "react";
+import { Box, Center, Text, Switch } from "native-base";
 
+// Add type annotations for the props
+interface ToggleButtonProps {
+  isEnabled: boolean;
+  onToggle: () => void;
+}
+
+// Separate ToggleButton component
+const ToggleButton: React.FC<ToggleButtonProps> = ({ isEnabled, onToggle }) => {
+  return (
+    <Switch
+      size="lg" // You can try "2xl", "3xl", etc. for larger sizes
+      isChecked={isEnabled}
+      onToggle={onToggle}
+      colorScheme="red"
+    />
+  );
+};
+
+// GreenhouseStatus component
 export default function GreenhouseStatus({
   children,
   type,
 }: {
   children: React.ReactNode;
-  type: "Valve" | "Exhaust Fan";
+  type: "valve" | "exhaust_fan";
 }) {
-  const handlePress = () => {
-    // Implement your press logic here
-    console.log("Box pressed!");
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const handleToggle = () => {
+    setIsEnabled((prev) => !prev);
   };
 
   return (
-    <Pressable onPress={handlePress}>
-      {({ isHovered, isPressed }) => (
-        <Box
-          bg={isPressed ? "green.900" : isHovered ? "green.500" : "green.700"}
-          p="5"
-          rounded="xl"
-          shadow={20}
-          _text={{
-            fontSize: "md",
-            fontWeight: "medium",
-            color: "warmGray.50",
-            textAlign: "center",
-          }}
-          style={{
-            transform: [{ scale: isPressed ? 0.96 : 1 }],
-          }}
-        >
-          {children}
-          <Text>{type.toString()}</Text>
-        </Box>
-      )}
-    </Pressable>
+    <Box
+      bg="green.700"
+      p="3"
+      rounded="2xl"
+      shadow={20}
+      _text={{
+        fontSize: "md",
+        fontWeight: "medium",
+        color: "warmGray.50",
+        textAlign: "center",
+      }}
+    >
+      {children}
+
+      <Center>
+        <ToggleButton isEnabled={isEnabled} onToggle={handleToggle} />
+      </Center>
+      <Text mt="-4" fontSize="lg">
+        Switch: {isEnabled ? "ON" : "OFF"}
+      </Text>
+    </Box>
   );
 }

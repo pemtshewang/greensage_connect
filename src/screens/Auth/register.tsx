@@ -1,6 +1,6 @@
 import { TextInput, View  } from "react-native";
 import PasswordInput from "../../components/PasswordInput";
-import { ButtonStyle, InputText } from "../../styles/styles";
+import { ButtonStyle } from "../../styles/styles";
 import { Button } from "native-base";
 import { HomeStyles } from "../../styles/styles";
 import { InputTextStyle } from "../../styles/styles";
@@ -15,11 +15,11 @@ function Register() {
 
         <VStack space={4} alignItems="center">
         
-        <CustomTextInput  style={HomeStyles.container} placeholder="Enter ID" width={300}/>
+        <CustomTextInput style={HomeStyles.container} placeholder="Enter ID" width={300}/>
             <CustomTextInput style={HomeStyles.container} placeholder='Enter Users Full Name' width={300}/>
             <CustomTextInput style={HomeStyles.container} placeholder='Enter Phine Number' width={300}/>
-            <PasswordInput   placeholder="Enter Password" width = '284'/>
-            <PasswordInput   placeholder="Confirm Password" width = '284'/>
+            <PasswordInput   placeholder="Enter Password" width = '285'/>
+            <PasswordInput   placeholder="Confirm Password" width = '285'/>
             <Button style = {FinalButonStyle.buttons}> Register</Button>
         </VStack>
     );

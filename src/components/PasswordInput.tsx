@@ -23,8 +23,8 @@ const PasswordInput = ({
       InputRightElement={<Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}
        
       >
-        {show ? <Icons.visibleOff color="black" /> : <Icons.visible color="black" />}
-      </Button>} placeholder={placeholder} />
+        {show ? <Icons.visible color="black" /> : <Icons.visibleOff color="black" />}
+      </Button>} placeholder="Password" />
   </Box>;
 };
 
