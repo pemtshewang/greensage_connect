@@ -96,7 +96,7 @@ const RegisterStyles = StyleSheet.create({
     width: 150, // Set width as needed
     height: 50, // Set height as needed
     borderWidth: 1, // Border width
-    backgroundColor: "#10670F",
+    backgroundColor: "red",
     borderColor: '#000', // Border color
     borderBottomLeftRadius: 20, // Border radius
     borderBottomRightRadius: 20, // Border radius
