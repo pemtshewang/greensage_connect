@@ -43,7 +43,10 @@ function Login() {
         >
             <VStack space={4} alignItems="start">
                 <View>
-                    <Image source={require('../../assets/registerback.png')} alt="image" />
+                    <Image
+                        w="container"
+                        source={require('../../assets/registerback.png')}
+                        alt="image" />
                 </View>
                 <View>
                     <Text fontSize="xl" style={LoginStyles.heading}>GreenSage Connect Login</Text>
