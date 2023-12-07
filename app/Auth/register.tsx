@@ -1,6 +1,11 @@
 import PasswordInput from "../../components/PasswordInput";
+<<<<<<< Updated upstream
 import { Button, View, Text} from "native-base";
 import { HomeStyles, LoginStyles } from "../../styles/styles";
+=======
+import { Button, View } from "native-base";
+import { HomeStyles } from "../../styles/styles";
+>>>>>>> Stashed changes
 import CustomTextInput from "../../components/TextInput";
 import TextInputIcon from "../../components/TextInputIcon";
 import { VStack } from 'native-base';
@@ -13,6 +18,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 function Register() {
     return (
+<<<<<<< Updated upstream
         <LinearGradient
             colors={["#228B29", "#6A9"]}
             style={LoginStyles.container}
@@ -73,16 +79,26 @@ function Register() {
                     <Link href="/Auth/register" style={RegisterStyles.link}>Login</Link>
                 </View>
             {/* <CustomTextInput style={HomeStyles.container} placeholder="Enter ID" width={300} />
+=======
+        
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <VStack space={4} alignItems="center">
+            <CustomTextInput style={HomeStyles.container} placeholder="Enter ID" width={300} />
+>>>>>>> Stashed changes
             <CustomTextInput style={HomeStyles.container} placeholder='Enter Users Full Name' width={300} />
             <CustomTextInput style={HomeStyles.container} placeholder='Enter Phine Number' width={300} />
             <PasswordInput placeholder="Enter Password" width='285' />
             <PasswordInput placeholder="Confirm Password" width='285' />
             <Button>Register</Button> */}
         </VStack>
+<<<<<<< Updated upstream
 
   
         </LinearGradient>
         
+=======
+        </View>
+>>>>>>> Stashed changes
     );
 }
 
