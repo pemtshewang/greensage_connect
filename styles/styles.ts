@@ -67,6 +67,46 @@ const LoginStyles = StyleSheet.create({
     gap: 7,
   }
 });
+const RegisterStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  heading: {
+    fontWeight: "bold",
+    textAlign: "center",
+    // gradient
+    color: "#fff"
+  },
+  icon: {
+    borderColor: "#000",
+    borderWidth: 1,
+    padding: 10,
+  },
+  input: {
+    borderColor: "#000",
+    borderWidth: 1,
+  },
+  button: {
+    width: 150, // Set width as needed
+    height: 50, // Set height as needed
+    borderWidth: 1, // Border width
+    backgroundColor: "#10670F",
+    borderColor: '#000', // Border color
+    borderBottomLeftRadius: 20, // Border radius
+    borderBottomRightRadius: 20, // Border radius
+  },
+  link: {
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  linkView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    gap: 7,
+  }
+});
 
 
-export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles };
+export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles };
