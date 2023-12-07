@@ -50,10 +50,10 @@ const LoginStyles = StyleSheet.create({
     width: 150, // Set width as needed
     height: 50, // Set height as needed
     borderWidth: 1, // Border width
-    backgroundColor: "#10670F",
     borderColor: '#000', // Border color
     borderBottomLeftRadius: 20, // Border radius
     borderBottomRightRadius: 20, // Border radius
+    // not pressed background color to green
   },
   link: {
     fontWeight: "bold",
@@ -65,6 +65,12 @@ const LoginStyles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     gap: 7,
+  },
+  inputField: {
+    paddingTop: 10,
+    paddingBottom: 20,
+    flexDirection: "column",
+    rowGap: 10,
   }
 });
 
