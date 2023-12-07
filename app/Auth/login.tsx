@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import TextInputIcon from '../../components/TextInputIcon';
 import { Icons } from '../../assets/Icons/Icons';
 import { Button } from 'native-base';
+import { Link } from 'expo-router';
 
 function Login() {
     return (
@@ -43,6 +44,10 @@ function Login() {
                     <Button style={LoginStyles.button}>
                         Login
                     </Button>
+                </View>
+                <View style={LoginStyles.linkView}>
+                    <Text>Don't have an account?</Text>
+                    <Link href="/Auth/register" style={LoginStyles.link}>Register</Link>
                 </View>
             </VStack>
         </LinearGradient>

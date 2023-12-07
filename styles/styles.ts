@@ -54,6 +54,17 @@ const LoginStyles = StyleSheet.create({
     borderColor: '#000', // Border color
     borderBottomLeftRadius: 20, // Border radius
     borderBottomRightRadius: 20, // Border radius
+  },
+  link: {
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  linkView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    gap: 7,
   }
 });
 
