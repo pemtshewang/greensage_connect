@@ -6,15 +6,15 @@ import TextInput from './components/TextInput';
 import { NativeBaseProvider } from 'native-base';
 import { Button } from 'native-base';
 import { ButtonStyle } from './styles/styles';
-import Register from './screens/Auth/register';
 import Login from './screens/Auth/login';
-
+import GreenhouseStatus from './components/GreenhouseStatus';
 export default function App() {
   return (
     <NativeBaseProvider>
       <View style={HomeStyles.container}>
-        <Login />
+        <GreenhouseStatus type='valve'>Home</GreenhouseStatus>
       </View>
+      <CustomStatusBar style='inverted' />
     </NativeBaseProvider>
   );
 }
