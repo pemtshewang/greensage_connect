@@ -13,8 +13,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <View style={HomeStyles.container}>
-
-        <Register></Register>
+        <Login />
       </View>
     </NativeBaseProvider>
   );
