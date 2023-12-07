@@ -1,11 +1,12 @@
 // import the needed icons from the lucide-react-native
-import { Eye, EyeOff} from "lucide-react-native";
+import { Eye, EyeOff, Cat} from "lucide-react-native";
 import { View } from "native-base";
 
 // export the icons by naming yourself
 export const Icons = {
   visible: Eye,
   visibleOff: EyeOff,
+  cat: Cat,
   darkarrow: ({ className }: { className: string }) => {
     return (
       <svg

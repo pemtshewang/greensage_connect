@@ -2,19 +2,27 @@ import { StyleSheet } from "react-native";
 
 const HomeStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
+    margin: 5,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 50,
+    borderColor: '#10670F',
+    borderWidth: 2
+    
   },
 });
 
 const PasswordInputStyles = StyleSheet.create({
   input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 3,
-    borderColor: "#000",
+    margin: 5,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    borderColor: '#10670F',
+    borderWidth: 2
   }
 });
 
@@ -28,4 +36,22 @@ const ButtonStyle = StyleSheet.create({
   }
 })
 
-export { HomeStyles, PasswordInputStyles, ButtonStyle };
+const InputTextStyle = StyleSheet.create({
+  input: {
+    margin: 12,
+    borderColor: 'red',
+    borderWidth: 1,
+    width:300,
+    height: 40,
+    color: 'black',
+    textAlign: "left"
+  }
+})
+const FinalButonStyle = StyleSheet.create({
+  buttons:{
+    color: '#10670F',
+    backgroundColor: '#10670F'
+  }
+})
+
+export { HomeStyles, PasswordInputStyles, ButtonStyle, InputTextStyle, FinalButonStyle };

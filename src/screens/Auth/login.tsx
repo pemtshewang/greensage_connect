@@ -1,7 +1,7 @@
 import { TextInput, View  } from "react-native";
 import PasswordInput from "../../components/PasswordInput";
 
-function login() {
+function Login() {
     return <View>
         <PasswordInput/>   
     </View>

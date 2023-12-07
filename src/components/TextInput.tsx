@@ -2,16 +2,20 @@ import React from "react";
 import { Box, Input } from "native-base";
 import { ResponsiveValue } from "native-base/lib/typescript/components/types";
 import { SizeType } from "native-base/lib/typescript/components/types";
-
-export default function TextInput({ placeholder, width }: {
+import { InputTextStyle } from "../styles/styles";
+import { Icon } from "lucide-react-native";
+import { Button } from "native-base";
+import { HomeStyles } from "../styles/styles";
+export default function CustomTextInput({ placeholder, width, style}: {
   placeholder: string,
-  width: SizeType
+  width: SizeType,
+  style: any,
 }) {
   const [value, setValue] = React.useState("");
   const handleChange = text => setValue(text);
   return (
-    <Box alignItems="center">
-      <Input value={value} w={width} onChangeText={handleChange} placeholder={placeholder} />
-    </Box>
+    
+      <Input   value={value} w={width}  placeholder={placeholder} style={style} />
+    
   )
 }
