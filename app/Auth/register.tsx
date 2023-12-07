@@ -19,7 +19,7 @@ function Register() {
             colors={["#228B29", "#6A9"]}
             style={LoginStyles.container}
         >
-            <VStack space={10} alignItems="center" marginTop={120}>
+            <VStack space={10} alignItems="center" marginTop={150}>
             <View>
                     <Text fontSize="xl" style={RegisterStyles.link}>Register</Text>
                 </View>
@@ -61,15 +61,15 @@ function Register() {
                         type='password'
                         placeholder="Password"
                         width={300}
-                        icon={<Icons.loginLock color='black' />}
+                        icon={<Icons.loginLock color='#000' />}
                     />
                 </View>
                 <View>
                     <FormControl w="3/4" maxW="300" isRequired >
-                        <Select minWidth="300" accessibilityLabel="Choose Dzongkhag" placeholder="Choose Dzongkhad" _selectedItem={
+                        <Select minWidth="300"  placeholder="Choose Dzongkhad" _selectedItem={
                             {
                                 bg: "teal.600",
-                                endIcon: <CheckIcon size={5} />
+                                endIcon: <CheckIcon size={10} />
                             }
                         } mt="1">
                         <Select.Item label="UX Research" value="ux" />
@@ -79,7 +79,7 @@ function Register() {
                         <Select.Item label="Backend Development" value="backend" />
                         </Select>
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-                        Please Select Dzongkhag!
+                        Please Select!
                         </FormControl.ErrorMessage>
                     </FormControl>
                     
@@ -90,8 +90,8 @@ function Register() {
                     </Button>
                 </View>
                 <View style={RegisterStyles.linkView}>
-                    <Text>Don't have an account?</Text>
-                    <Link href="/Auth/register" style={RegisterStyles.link}>Login</Link>
+                    <Text>Already have an account?</Text>
+                    <Link href="/Auth/login" style={RegisterStyles.link}>Login</Link>
                 </View>
             {/* <CustomTextInput style={HomeStyles.container} placeholder="Enter ID" width={300} />
             <CustomTextInput style={HomeStyles.container} placeholder='Enter Users Full Name' width={300} />
