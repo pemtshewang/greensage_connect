@@ -4,6 +4,7 @@ const HomeStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 10
   },
 });
 
