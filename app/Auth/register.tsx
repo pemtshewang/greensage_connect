@@ -9,17 +9,28 @@ import { Icons } from "../../assets/Icons/Icons";
 import { Link } from "expo-router";
 import { RegisterStyles } from "../../styles/styles";
 import { LinearGradient } from "expo-linear-gradient";
-
-
+import { Select } from "native-base";
+import { FormControl } from "native-base";
+import { CheckIcon } from "native-base";
+import { WarningOutlineIcon } from "native-base";
 function Register() {
     return (
         <LinearGradient
             colors={["#228B29", "#6A9"]}
             style={LoginStyles.container}
         >
-            <VStack space={4} alignItems="center">
+            <VStack space={10} alignItems="center" marginTop={120}>
             <View>
-                    <Text fontSize="xl" style={RegisterStyles.link}>GreenSage Connect Login</Text>
+                    <Text fontSize="xl" style={RegisterStyles.link}>Register</Text>
+                </View>
+                <View>
+                    <TextInputIcon 
+                        
+                        type='text'
+                        placeholder="Username/Phone Number"
+                        width={300}
+                        icon={<Icons.loginUser color='black' />}
+                    />
                 </View>
                 <View>
                     <TextInputIcon
@@ -29,15 +40,7 @@ function Register() {
                         icon={<Icons.loginUser color='black' />}
                     />
                 </View>
-                                <View>
-                    <TextInputIcon
-                        type='text'
-                        placeholder="Username/Phone Number"
-                        width={300}
-                        icon={<Icons.loginUser color='black' />}
-                    />
-                </View>
-                                <View>
+                <View>
                     <TextInputIcon
                         type='text'
                         placeholder="Username/Phone Number"
@@ -61,10 +64,28 @@ function Register() {
                         icon={<Icons.loginLock color='black' />}
                     />
                 </View>
-                <View style={{
-                    alignItems: "center"
-                }}>
-                    <Button style={RegisterStyles.button}>
+                <View>
+                    <FormControl w="3/4" maxW="300" isRequired >
+                        <Select minWidth="300" accessibilityLabel="Choose Dzongkhag" placeholder="Choose Dzongkhad" _selectedItem={
+                            {
+                                bg: "teal.600",
+                                endIcon: <CheckIcon size={5} />
+                            }
+                        } mt="1">
+                        <Select.Item label="UX Research" value="ux" />
+                        <Select.Item label="Web Development" value="web" />
+                        <Select.Item label="Cross Platform Development" value="cross" />
+                        <Select.Item label="UI Designing" value="ui" />
+                        <Select.Item label="Backend Development" value="backend" />
+                        </Select>
+                        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+                        Please Select Dzongkhag!
+                        </FormControl.ErrorMessage>
+                    </FormControl>
+                    
+                </View>
+                <View style={{ alignItems: "center"}}>
+                    <Button style = {RegisterStyles.button}>
                         Register
                     </Button>
                 </View>

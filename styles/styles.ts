@@ -26,7 +26,11 @@ const ButtonStyle = StyleSheet.create({
     color: '#f00'
   }
 })
-
+const inputText = StyleSheet.create({
+  input: {
+    borderRadius: 15
+  }
+})
 const LoginStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -93,13 +97,12 @@ const RegisterStyles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    width: 150, // Set width as needed
-    height: 50, // Set height as needed
-    borderWidth: 1, // Border width
-    backgroundColor: "red",
-    borderColor: '#000', // Border color
-    borderBottomLeftRadius: 20, // Border radius
-    borderBottomRightRadius: 20, // Border radius
+    borderColor: '#000',
+    borderWidth:1,
+    backgroundColor: '#10670F',
+    width: 100,
+    borderRadius: 15
+  
   },
   link: {
     fontWeight: "bold",
@@ -113,6 +116,7 @@ const RegisterStyles = StyleSheet.create({
     gap: 7,
   }
 });
+
 
 
 export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles };
