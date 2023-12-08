@@ -11,7 +11,7 @@ const LoginSchema = z.object({
 
 const SignUpSchema = z.object({
   username: z.string().min(5, { message: "Username must be between 5 and 20 characters" }).max(15, { message: "Username must be between 5 and 20 characters" }),
-  phoneNumber: z.number(),
+  phoneNumber: z.string().min(8, { message: "Number must be of 8 digits" }).max(8, { message: "Number must be of 8 digits" }),
   idNumber: z.string().min(8, { message: "The ID number should be of min of 8 chars" }),
   password: z
     .string()

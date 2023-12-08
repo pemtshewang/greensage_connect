@@ -23,7 +23,7 @@ function Register() {
     }
     const [data, handleData] = useState<SignUpSchemaType>({
         username: "",
-        phoneNumber: 0,
+        phoneNumber: "",
         idNumber: "",
         password: "",
         confirmPassword: ""
@@ -67,7 +67,7 @@ function Register() {
                         keyboardType="numeric"
                         maxLength={8}
                         value={data.phoneNumber}
-                        onChangeText={(text) => handleData({ ...data, phoneNumber: Number(text) })}
+                        onChangeText={(text) => handleData({ ...data, phoneNumber: text })}
                     />
                     <Text style={{ color: "#f77" }}>
                         {errors.phoneNumber?.message?.toString()}
@@ -134,7 +134,6 @@ function Register() {
                 </View>
             </VStack>
         </LinearGradient>
-
     );
 }
 export default Register;

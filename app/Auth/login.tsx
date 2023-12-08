@@ -44,7 +44,7 @@ function Login() {
             <VStack space={4} alignItems="start">
                 <View>
                     <Image
-                        w="container"
+                        width="container"
                         source={require('../../assets/registerback.png')}
                         alt="image" />
                 </View>
