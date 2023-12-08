@@ -1,7 +1,7 @@
 import { VStack } from 'native-base';
 import { Image } from 'native-base';
 import { View } from 'native-base';
-import { LoginStyles } from '../../styles/styles';
+import { LoginStyles, RegisterStyles } from '../../styles/styles';
 import { Text } from 'native-base';
 import { LinearGradient } from 'expo-linear-gradient';
 import TextInputIcon from '../../components/TextInputIcon';
@@ -44,7 +44,7 @@ function Login() {
             <VStack space={4} alignItems="start">
                 <View>
                     <Image
-                        w="container"
+                        width="container"
                         source={require('../../assets/registerback.png')}
                         alt="image" />
                 </View>
@@ -82,7 +82,7 @@ function Login() {
                     paddingTop: 10
                 }}>
                     <Button
-                        style={LoginStyles.button}
+                        style={RegisterStyles.button}
                         backgroundColor="#228B29"
                         // pressed animation
                         _pressed={{

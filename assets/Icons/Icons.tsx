@@ -7,6 +7,9 @@ import {
   LockKeyhole,
   XCircle,
   Database,
+  Phone,
+  BookUserIcon,
+  KeyRound,
 } from "lucide-react-native"
 
 // export the icons by naming yourself
@@ -17,6 +20,9 @@ export const Icons = {
   loginLock: LockKeyhole,
   xCircle: XCircle,
   database: Database,
+  phone: Phone,
+  bookUser: BookUserIcon,
+  keyRound: KeyRound,
   darkarrow: (({ className }: {
     className: string
   }) => {
