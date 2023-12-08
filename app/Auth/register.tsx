@@ -97,6 +97,7 @@ function Register() {
                                 bg:  "teal.600",
                                 endIcon: < CheckIcon size="5" />
                                 
+                                
                                 }} mt={1} onValueChange={itemValue => setService(itemValue)}>
                                 <Select.Item label="UX Research" value="ux" />
                                 <Select.Item label="Web Development" value="web" />

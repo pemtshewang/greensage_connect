@@ -100,9 +100,9 @@ const RegisterStyles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 1,
     backgroundColor: '#10670F',
-    width: 100,
-    borderRadius: 15
-
+    width: 150,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
   link: {
     fontWeight: "bold",
