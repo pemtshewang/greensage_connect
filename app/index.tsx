@@ -28,6 +28,13 @@ export default function Page() {
           >
             Go to News Feeds Page
           </Link>
+          <Link
+            href="/DataDisplay/Display"
+            style={{ borderColor: "red", borderWidth: 1 }}
+          >
+            Go to Display Page
+          </Link>
+          
         </VStack>
       </View>
     </View>
