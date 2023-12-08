@@ -27,6 +27,7 @@ const SingleNews = () => {
         maxW="80"
         rounded="lg"
         overflow="hidden"
+        background="green.100"
         borderColor="coolGray.200"
         borderWidth="2"
         _dark={{
