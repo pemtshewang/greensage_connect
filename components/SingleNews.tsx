@@ -5,7 +5,7 @@ import { Pressable } from "react-native";
 const SingleNews = () => {
   const [isHovered, setIsHovered] = useState(false);
 
- 
+
   const handleHoverIn = () => {
     setIsHovered(true);
   };

@@ -23,7 +23,7 @@ export default function Page() {
             Go to Register Page
           </Link>
           <Link
-            href="/NewsFeeds/News"
+            href="/NewsFeeds"
             style={{ borderColor: "red", borderWidth: 1 }}
           >
             Go to News Feeds Page
@@ -34,7 +34,7 @@ export default function Page() {
           >
             Go to Display Page
           </Link>
-          
+
         </VStack>
       </View>
     </View>
