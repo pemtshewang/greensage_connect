@@ -29,12 +29,11 @@ export default function Page() {
             Go to News Feeds Page
           </Link>
           <Link
-            href="/DataDisplay/Display"
+            href="/GreenHouse/data"
             style={{ borderColor: "red", borderWidth: 1 }}
           >
-            Go to Display Page
+            Go to Display
           </Link>
-          
         </VStack>
       </View>
     </View>
