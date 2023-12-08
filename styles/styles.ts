@@ -98,11 +98,11 @@ const RegisterStyles = StyleSheet.create({
   },
   button: {
     borderColor: '#000',
-    borderWidth:1,
+    borderWidth: 1,
     backgroundColor: '#10670F',
     width: 100,
     borderRadius: 15
-  
+
   },
   link: {
     fontWeight: "bold",
