@@ -1,18 +1,10 @@
 import React, { useState } from "react";
 import { AspectRatio, Box, Image, Stack, Heading, Text, HStack } from "native-base";
 import { Pressable } from "react-native";
+import type { PostType } from "../types";
 
-const SingleNews = () => {
+const NewsContainer = (props: PostType) => {
   const [isHovered, setIsHovered] = useState(false);
-
-
-  const handleHoverIn = () => {
-    setIsHovered(true);
-  };
-
-  const handleHoverOut = () => {
-    setIsHovered(false);
-  };
 
   return (
     <Pressable
@@ -24,6 +16,7 @@ const SingleNews = () => {
       ]}
     >
       <Box
+        marginTop={3}
         maxW="80"
         rounded="lg"
         overflow="hidden"
@@ -43,7 +36,7 @@ const SingleNews = () => {
           <AspectRatio w="100%" ratio={16 / 8}>
             <Image
               source={{
-                uri: "https://media.istockphoto.com/id/483451251/photo/fungal-attack.jpg?s=1024x1024&w=is&k=20&c=UvMU7lqTJw8AZCpKUJRGQOynHhGoiJgpcMk_HEP90Sw=",
+                uri: props.image
               }}
               alt="image"
             />
@@ -52,7 +45,7 @@ const SingleNews = () => {
         <Stack p="3" space={1}>
           <Stack space={2}>
             <Heading size="md" ml="-1">
-              New Vegetable Diseases
+              {props.title}
             </Heading>
             <Text
               fontSize="xs"
@@ -70,14 +63,14 @@ const SingleNews = () => {
             </Text>
           </Stack>
           <Text fontWeight="400">
-            The new chilli disease is first found in the Bumthang which most of the farmer are concerned about their income.
+            {props.body}
           </Text>
           <HStack alignItems="center" space={4} justifyContent="space-between">
             <Text color="red.700" fontWeight="400">
               6 mins ago
             </Text>
             <Text color="red.700" fontWeight="400">
-              12/12/2023
+              {props.createdAt}
             </Text>
           </HStack>
         </Stack>
@@ -86,4 +79,4 @@ const SingleNews = () => {
   );
 };
 
-export default SingleNews;
+export default NewsContainer;

@@ -34,10 +34,6 @@ export default function Page() {
           >
             Go to Display
           </Link>
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/main
         </VStack>
       </View>
     </View>
