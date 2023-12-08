@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     borderRadius: 400,
     borderWidth: 10,
-    borderColor: '#e0e0e0', // Color of the outer circle
+    borderColor: 'green', // Color of the outer circle
   },
   progressBar: {
     position: 'absolute',
