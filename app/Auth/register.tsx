@@ -1,5 +1,5 @@
 import PasswordInput from "../../components/PasswordInput";
-import { Button, View, Text} from "native-base";
+import { Button, View, Text, Box} from "native-base";
 import { HomeStyles, LoginStyles } from "../../styles/styles";
 import CustomTextInput from "../../components/TextInput";
 import TextInputIcon from "../../components/TextInputIcon";
@@ -14,12 +14,16 @@ import { FormControl } from "native-base";
 import { CheckIcon } from "native-base";
 import { WarningOutlineIcon } from "native-base";
 function Register() {
+    function setService(itemValue: string): void {
+        throw new Error("Function not implemented.");
+    }
+
     return (
         <LinearGradient
             colors={["#228B29", "#6A9"]}
             style={LoginStyles.container}
         >
-            <VStack space={10} alignItems="center" marginTop={150}>
+            <VStack space={10} alignItems="center" marginTop={100}>
             <View>
                     <Text fontSize="xl" style={RegisterStyles.link}>Register</Text>
                 </View>
@@ -64,8 +68,8 @@ function Register() {
                         icon={<Icons.loginLock color='#000' />}
                     />
                 </View>
-                <View>
-                    <FormControl w="3/4" maxW="300" isRequired >
+                <View >
+                    {/* <FormControl w="3/4" maxW="300" isRequired >
                         <Select minWidth="300"  placeholder="Choose Dzongkhad" _selectedItem={
                             {
                                 bg: "teal.600",
@@ -81,7 +85,21 @@ function Register() {
                         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
                         Please Select!
                         </FormControl.ErrorMessage>
-                    </FormControl>
+                    </FormControl> */}
+
+                    <Box  maxW='80%' >
+                        <Select borderWidth={2} borderColor={'#000'} minWidth="90%" accessibilityLabel="Choose Service" placeholder="Choose Dzongkhag" _selectedItem={{
+                            bg:  "teal.600",
+                            endIcon: < CheckIcon size="5" />
+                            
+                            }} mt={1} onValueChange={itemValue => setService(itemValue)}>
+                            <Select.Item label="UX Research" value="ux" />
+                            <Select.Item label="Web Development" value="web" />
+                            <Select.Item label="Cross Platform Development" value="cross" />
+                            <Select.Item label="UI Designing" value="ui" />
+                            <Select.Item label="Backend Development" value="backend" />
+                        </Select> 
+                    </Box>
                     
                 </View>
                 <View style={{ alignItems: "center"}}>
