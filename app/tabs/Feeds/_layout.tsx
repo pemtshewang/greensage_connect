@@ -1,6 +1,6 @@
 import { View } from "native-base";
 import { ScrollView } from "native-base";
-import { Slot, Stack } from "expo-router";
+import { Slot } from "expo-router";
 
 export default function NewsFeedLayout() {
   return (

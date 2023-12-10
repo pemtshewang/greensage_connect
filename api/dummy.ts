@@ -5,7 +5,6 @@ const data = [
     body: "This is so sick",
     image: "https://source.unsplash.com/random",
     createdAt: new Date().toLocaleDateString(),
-    createdAt: new Date().toLocaleDateString(),
     updatedAt: new Date().toLocaleDateString(),
   },
   {
@@ -49,3 +48,4 @@ export const getPosts = async () => {
     }, 1000)
   })
 }
+export { data };

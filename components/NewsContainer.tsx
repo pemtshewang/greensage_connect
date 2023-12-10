@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { AspectRatio, Box, Image, Stack, Heading, Text, HStack } from "native-base";
 import { Pressable } from "react-native";
 import type { PostType } from "../types";
+import { useRouter } from "expo-router";
+import Stack from "expo-router";
 
 const NewsContainer = (props: PostType) => {
   const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
 
   return (
     <Pressable
@@ -75,7 +78,7 @@ const NewsContainer = (props: PostType) => {
           </HStack>
         </Stack>
       </Box>
-    </Pressable>
+    </Pressable >
   );
 };
 

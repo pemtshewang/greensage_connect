@@ -4,7 +4,7 @@ const HomeStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10
+    padding: 10,
   },
 });
 
@@ -117,11 +117,11 @@ const RegisterStyles = StyleSheet.create({
   },
   selecStyle: {
     borderColor: '#000',
-    borderWidth:2,
+    borderWidth: 2,
     height: 54
-    
-   
-    
+
+
+
 
   }
 });

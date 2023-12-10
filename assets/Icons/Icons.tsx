@@ -10,6 +10,11 @@ import {
   Phone,
   BookUserIcon,
   KeyRound,
+  HomeIcon,
+  LineChartIcon,
+  NewspaperIcon,
+  BellIcon,
+  BellDotIcon,
 } from "lucide-react-native"
 
 // export the icons by naming yourself
@@ -23,6 +28,11 @@ export const Icons = {
   phone: Phone,
   bookUser: BookUserIcon,
   keyRound: KeyRound,
+  home: HomeIcon,
+  dashboard: LineChartIcon,
+  post: NewspaperIcon,
+  notification: BellIcon,
+  newNotification: BellDotIcon,
   darkarrow: (({ className }: {
     className: string
   }) => {

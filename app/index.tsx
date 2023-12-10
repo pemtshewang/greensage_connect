@@ -23,16 +23,10 @@ export default function Page() {
             Go to Register Page
           </Link>
           <Link
-            href="/NewsFeeds"
+            href="/tabs"
             style={{ borderColor: "red", borderWidth: 1 }}
           >
-            Go to News Feeds Page
-          </Link>
-          <Link
-            href="/GreenHouse/data"
-            style={{ borderColor: "red", borderWidth: 1 }}
-          >
-            Go to Display
+            Go To Tabs
           </Link>
         </VStack>
       </View>
