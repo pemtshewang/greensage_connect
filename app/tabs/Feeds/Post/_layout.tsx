@@ -1,10 +1,14 @@
-import { Stack } from "expo-router";
-const PostDetailLayout = () => {
-  return (
-    <Stack screenOptions={{
-      presentation: "modal",
-    }} />
-  )
-}
-export default PostDetailLayout;
+import { View } from "native-base"
+import { Slot } from "expo-router"
+import { Text } from "native-base"
 
+const PostLayout = () => {
+  return (
+    <View>
+      <Text>
+        Hi dafdf adfadfa fasdfadsf
+      </Text>
+      <Slot />
+    </View>
+  )
+} 

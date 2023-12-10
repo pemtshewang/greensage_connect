@@ -3,7 +3,6 @@ import { AspectRatio, Box, Image, Stack, Heading, Text, HStack } from "native-ba
 import { Pressable } from "react-native";
 import type { PostType } from "../types";
 import { useRouter } from "expo-router";
-import Stack from "expo-router";
 
 const NewsContainer = (props: PostType) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -17,6 +16,9 @@ const NewsContainer = (props: PostType) => {
           transform: [{ scale: pressed ? 0.96 : 1 }],
         },
       ]}
+      onPress={() => {
+        router.push(`/tabs/Feeds/Post/${props.id}`);
+      }}
     >
       <Box
         marginTop={3}

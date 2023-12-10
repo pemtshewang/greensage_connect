@@ -15,7 +15,7 @@ export default function SingleNewsPage() {
     });
   }, []);
   return (
-    <View>
+    <View paddingX="0" >
       {
         loading ? <Spinner color="black" /> : (
           posts.map((post) => {

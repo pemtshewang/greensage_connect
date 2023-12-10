@@ -1,14 +1,18 @@
 import { View } from "native-base";
-import { useLocalSearchParams } from "expo-router";
-import { data } from "../../../../api/dummy";
 import NewsContainer from "../../../../components/NewsContainer";
+import { data } from "../../../../api/dummy";
+import { useLocalSearchParams } from "expo-router";
+import { Text } from "native-base";
 
-export default function Post() {
-  const { postId } = useLocalSearchParams<{ postId: string }>();
+const PostDetail = () => {
+  const { postId } = useLocalSearchParams();
   const post = data.find((post) => post.id === postId);
   return (
-    <View>
-      <NewsContainer {...post} />
+    <View paddingX="0">
+      <Text>
+        You are viewing {postId?.toString()}
+      </Text>
     </View>
   );
 }
+export default PostDetail; 
