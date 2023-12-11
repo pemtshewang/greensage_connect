@@ -23,11 +23,18 @@ export default function Page() {
             Go to Register Page
           </Link>
           <Link
+            href="/GreenHouse/data"
+            style={{ borderColor: "red", borderWidth: 1 }}
+          >
+            Go to Display
+          </Link>
+          <Link
             href="/tabs"
             style={{ borderColor: "red", borderWidth: 1 }}
           >
             Go To Tabs
           </Link>
+          
         </VStack>
       </View>
     </View>
