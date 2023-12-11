@@ -41,11 +41,14 @@ function Login() {
             colors={["#228B29", "#6A9"]}
             style={LoginStyles.container}
         >
-            <VStack space={4} alignItems="start">
+            <VStack space={3} alignItems="start">
                 <View>
                     <Image
+                        backgroundColor="#fff"
+                        borderBottomRadius={100}
                         width="container"
-                        source={require('../../assets/registerback.png')}
+                        height="290"
+                        source={require('../../assets/logo.png')}
                         alt="image" />
                 </View>
                 <View>

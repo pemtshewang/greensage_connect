@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { Heading } from "native-base";
 import { Link } from "expo-router";
 import { HomeStyles, notification } from "../styles/styles";
@@ -37,6 +37,12 @@ export default function Page() {
 
 
           <Link
+            href="/GreenHouse/data"
+            style={{ borderColor: "red", borderWidth: 1 }}
+          >
+            Go to Display
+          </Link>
+          <Link
             href="/tabs"
             style={{ borderColor: "red", borderWidth: 1 }}
           >
@@ -47,3 +53,4 @@ export default function Page() {
     </View>
   );
 }
+
