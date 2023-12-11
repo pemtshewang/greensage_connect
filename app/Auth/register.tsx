@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema } from "../../validations/Auth/schema";
 import { SignUpSchemaType } from "../../types";
 import { Spinner } from "native-base";
+import { ChevronDownIcon } from "native-base";
 
 function Register() {
 
@@ -95,7 +96,7 @@ function Register() {
                         <Box  maxW='100%' >
                             <Select borderWidth={2} borderColor={'#000'} minWidth="100%" accessibilityLabel="Choose Service" placeholder="Choose Dzongkhag" _selectedItem={{
                                 bg:  "teal.600",
-                                endIcon: < CheckIcon size="5" />
+                                endIcon: < ChevronDownIcon size="5"  />
                                 
                                 
                                 }} mt={1} onValueChange={itemValue => setService(itemValue)}>
