@@ -34,18 +34,15 @@ export default function Page() {
           >
             Go To Tabs
           </Link>
-<<<<<<< HEAD
           <Link
             href="/Auth/splashscreen"
             style={{ borderColor: "red", borderWidth: 1 }}
           >
             Go To SplashScreen
           </Link>
-=======
-          
->>>>>>> refs/remotes/origin/main
         </VStack>
       </View>
     </View>
   );
 }
+
