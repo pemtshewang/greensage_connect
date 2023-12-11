@@ -6,6 +6,9 @@ export default function CustomStatusBar({
   style: "auto" | "light" | "dark" | "inverted" | undefined
 }) {
   return (
-    <StatusBar style={style} />
+    <StatusBar
+      style={style}
+      translucent={true}
+    />
   )
 }

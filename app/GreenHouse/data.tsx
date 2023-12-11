@@ -1,19 +1,15 @@
 import React from "react";
 import { ScrollView, View } from "native-base";
-import SingleNews from "../../components/SingleNews";
+import Display from "../../components/Display";
 
-const News = () => {
+const GreenHouse = () => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
       <View paddingX = "0" paddingTop="90" >
-        <SingleNews></SingleNews>
-        <View marginTop="4" />
-        <SingleNews></SingleNews>
-        <View marginTop="4" />
-        <SingleNews></SingleNews>
+        <Display/>
       </View>
     </ScrollView>
   );
 };
 
-export default News;
+export default GreenHouse;
