@@ -1,10 +1,8 @@
-import PasswordInput from "../../components/PasswordInput";
-import React from "react";
+
 import { FlatList } from "native-base";
-import NotificationSpacer from "../../components/Spacer";
 import { notification } from "../../styles/styles";
-import { View } from "react-native";
 import { Image } from "native-base";
+import { View } from "native-base";
 const Notification=() => {
     const data = [
         {
@@ -50,7 +48,7 @@ const Notification=() => {
         <View>
             <FlatList 
             data={data} 
-            keyExtractor={(item, index) => {
+            keyExtractor={(_item, index) => {
                 return index.toString();
             }}
             renderItem={({item})=>{
@@ -66,13 +64,9 @@ const Notification=() => {
                     </View>
                 </View>
                 );
-
-                
-
             } }
             />
-                
-           
+                 
         </View>
 
     );
