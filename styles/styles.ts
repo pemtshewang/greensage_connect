@@ -16,7 +16,26 @@ const PasswordInputStyles = StyleSheet.create({
     borderColor: "#000",
   }
 });
-
+const notification = StyleSheet.create({
+  itemstyle: {
+    flex:1,
+    width: '100%',
+    height: '100%',
+    padding: 15,
+    backgroundColor: 'white'
+  },
+  imagestyle: {
+    width: '100%',
+    height:'100%',
+    borderRadius:50
+  },
+  imageView: {
+    width:40,
+    height: 40,
+    borderRadius:40 / 2,
+    marginLeft: 15
+  }
+})
 const ButtonStyle = StyleSheet.create({
   register: {
     height: "auto",
@@ -128,4 +147,4 @@ const RegisterStyles = StyleSheet.create({
 
 
 
-export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles };
+export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles, notification };
