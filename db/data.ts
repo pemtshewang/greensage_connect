@@ -16,7 +16,7 @@ class User {
 async function localLogin(username: string, password: string) {
   try {
     const realm = await Realm.open({
-      schema: [User],
+      schema: [User.schema],
     });
 
     const user = realm.objects<User>('User').filtered(`username = "${username}" AND password = "${password}"`);
