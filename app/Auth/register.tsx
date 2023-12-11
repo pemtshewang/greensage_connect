@@ -1,7 +1,5 @@
-import PasswordInput from "../../components/PasswordInput";
-import { Button, View, Text, Box, Select, CheckIcon} from "native-base";
-import { HomeStyles, LoginStyles } from "../../styles/styles";
-import CustomTextInput from "../../components/TextInput";
+import { Button, View, Text, Box, Select, CheckIcon } from "native-base";
+import { LoginStyles } from "../../styles/styles";
 import TextInputIcon from "../../components/TextInputIcon";
 import { VStack } from 'native-base';
 import { Icons } from "../../assets/Icons/Icons";
@@ -92,13 +90,13 @@ function Register() {
                 </View>
                 <View>
                     <VStack paddingBottom={5}>
-                        <Box  maxW='100%' >
+                        <Box maxW='100%' >
                             <Select borderWidth={2} borderColor={'#000'} minWidth="100%" accessibilityLabel="Choose Service" placeholder="Choose Dzongkhag" _selectedItem={{
-                                bg:  "teal.600",
+                                bg: "teal.600",
                                 endIcon: < CheckIcon size="5" />
-                                
-                                
-                                }} mt={1} onValueChange={itemValue => setService(itemValue)}>
+
+
+                            }} mt={1} onValueChange={itemValue => setService(itemValue)}>
                                 <Select.Item label="UX Research" value="ux" />
                                 <Select.Item label="Web Development" value="web" />
                                 <Select.Item label="Cross Platform Development" value="cross" />

@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { Heading } from "native-base";
 import { Link } from "expo-router";
 import { HomeStyles } from "../styles/styles";
@@ -27,6 +27,12 @@ export default function Page() {
             style={{ borderColor: "red", borderWidth: 1 }}
           >
             Go To Tabs
+          </Link>
+          <Link
+            href="/Auth/splashscreen"
+            style={{ borderColor: "red", borderWidth: 1 }}
+          >
+            Go To SplashScreen
           </Link>
         </VStack>
       </View>
