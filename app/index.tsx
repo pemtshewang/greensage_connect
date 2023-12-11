@@ -34,12 +34,6 @@ export default function Page() {
           >
             Go To Tabs
           </Link>
-          <Link
-            href="/Auth/splashscreen"
-            style={{ borderColor: "red", borderWidth: 1 }}
-          >
-            Go To SplashScreen
-          </Link>
         </VStack>
       </View>
     </View>
