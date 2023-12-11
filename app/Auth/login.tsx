@@ -20,18 +20,19 @@ import { useRouter } from 'expo-router';
 
 function Login() {
     const [credentials, setCredentials] = useState<LoginSchemaType>({
-        username: 'root',
-        password: 'root'
+        username: 'rootuser',
+        password: 'rootpassword'
     });
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const handleSubmitButton = (data: LoginSchemaType) => {
-        setLoading(true);
         if (data.username == credentials.username && data.password == credentials.password) {
             setTimeout(() => {
+                setLoading(true);
+                router.replace("/tabs")
             }, 2000);
-
         }
+        setLoading(false);
     }
     // Form Validation
     const [data, handleData] = useState<LoginSchemaType>({
