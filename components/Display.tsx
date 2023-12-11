@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { Svg, Circle } from 'react-native-svg';
 
 const Display = () => {
-  const radius = 90;
-  const outerCircleWidth = 10;
+  const radius = 95;
+  const outerCircleWidth = 25; // Increased width
+  const circumference = 2 * Math.PI * radius;
 
   const [progressPercentage, setProgressPercentage] = useState(75);
 
   const outerCircleWidthPercentage = (progressPercentage / 100) * outerCircleWidth;
+  const strokeDasharray = `${circumference} ${circumference}`;
+  const strokeDashoffset = (progressPercentage / 100) * circumference;
 
   const handleIncrease = () => {
     setProgressPercentage((prevPercentage) =>
@@ -23,16 +27,28 @@ const Display = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.circularProgressBar}>
-        <View
-          style={[
-            styles.outerCircle,
-            { borderWidth: outerCircleWidth, borderRightWidth: outerCircleWidthPercentage },
-          ]}
+      <Svg height={2 * (radius + outerCircleWidth)} width={2 * (radius + outerCircleWidth)}>
+        <Circle
+          cx={radius + outerCircleWidth}
+          cy={radius + outerCircleWidth}
+          r={radius}
+          fill="transparent"
+          strokeWidth={outerCircleWidth}
+          stroke="green"
         />
-        <View style={styles.overlay}>
-          <Text style={styles.overlayText}>{`${progressPercentage}%`}</Text>
-        </View>
+        <Circle
+          cx={radius + outerCircleWidth}
+          cy={radius + outerCircleWidth}
+          r={radius}
+          fill="transparent"
+          strokeWidth={outerCircleWidth}
+          strokeDasharray={strokeDasharray}
+          strokeDashoffset={strokeDashoffset}
+          stroke="white"
+        />
+      </Svg>
+      <View style={styles.overlay}>
+        <Text style={styles.overlayText}>{`${progressPercentage}%`}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Increase" onPress={handleIncrease} />
@@ -49,18 +65,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  circularProgressBar: {
-    width: 2 * (90 + 10), // Twice the radius + outer circle width
-    height: 2 * (90 + 10),
-    borderRadius: 400,
-    overflow: 'hidden', // Clip the progress bar within the circle
-    position: 'relative',
-  },
-  outerCircle: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: 400,
-    borderColor: 'green', // Color of the outer circle
-  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '80%',
+    width: '75%',
   },
 });
 
