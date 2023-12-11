@@ -16,17 +16,28 @@ import { LoginSchemaType } from '../../types';
 import { LoginSchema } from '../../validations/Auth/schema';
 import zodResolver from "@hookform/resolvers/zod"
 import { Box } from 'native-base';
+import { useRouter } from 'expo-router';
 
 function Login() {
+    const [credentials, setCredentials] = useState<LoginSchemaType>({
+        username: 'root',
+        password: 'root'
+    });
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const handleSubmitButton = (data: LoginSchemaType) => {
         setLoading(true);
+        if (data.username == credentials.username && data.password == credentials.password) {
+            setTimeout(() => {
+            }, 2000);
+
+        }
     }
+    // Form Validation
     const [data, handleData] = useState<LoginSchemaType>({
         username: "",
         password: ""
     });
-    // Form Validation
     const {
         handleSubmit,
         formState: { errors },

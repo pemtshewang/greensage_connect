@@ -47,7 +47,7 @@ function Register() {
             colors={["#228B29", "#6A9"]}
             style={LoginStyles.container}
         >
-            <VStack space={3} alignItems="center" padding={10}>
+            <VStack space={2} alignItems="center" paddingX={10}>
                 <View mb="5">
                     <Text fontSize="xl" style={LoginStyles.heading} >Register to GreenSage Connect</Text>
                 </View>
