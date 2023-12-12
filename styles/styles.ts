@@ -1,3 +1,5 @@
+import { AlignCenter } from "lucide-react-native";
+import { Center } from "native-base";
 import { StyleSheet } from "react-native";
 
 const HomeStyles = StyleSheet.create({
@@ -17,12 +19,21 @@ const PasswordInputStyles = StyleSheet.create({
   }
 });
 const notification = StyleSheet.create({
+  testStyle: {
+    padding:20,
+    width:'100%',
+      color:'#000',
+      fontSize: 30,
+      textAlign:'center'
+  },
   itemstyle: {
     flex:1,
     width: '100%',
     height: '100%',
     padding: 15,
-    backgroundColor: 'white'
+    backgroundColor: '#AA9B9B',
+    paddingBottom: 2,
+    marginBottom:2
   },
   imagestyle: {
     width: '100%',
@@ -32,8 +43,8 @@ const notification = StyleSheet.create({
   imageView: {
     width:40,
     height: 40,
-    borderRadius:40 / 2,
-    marginLeft: 15
+    borderRadius: 20,
+    marginLeft: 15,
   }
 })
 const ButtonStyle = StyleSheet.create({

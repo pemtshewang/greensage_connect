@@ -53,6 +53,7 @@ const Notification=() => {
             }}
             renderItem={({item})=>{
                 return (
+                
                 <View style = {notification.itemstyle}>
                     <View style={notification.imageView}>
                         <Image 
