@@ -19,20 +19,9 @@ import { Box } from 'native-base';
 import { useRouter } from 'expo-router';
 
 function Login() {
-    const [credentials, setCredentials] = useState<LoginSchemaType>({
-        username: 'rootuser',
-        password: 'rootpassword'
-    });
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const handleSubmitButton = (data: LoginSchemaType) => {
-        if (data.username == credentials.username && data.password == credentials.password) {
-            setTimeout(() => {
-                setLoading(true);
-                router.replace("/tabs")
-                setLoading(false);
-            }, 2000);
-        }
         setLoading(false);
     }
     // Form Validation
