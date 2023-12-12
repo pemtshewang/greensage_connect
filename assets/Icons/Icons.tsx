@@ -15,6 +15,7 @@ import {
   NewspaperIcon,
   BellIcon,
   BellDotIcon,
+  BellRing 
 } from "lucide-react-native"
 
 // export the icons by naming yourself
@@ -33,6 +34,7 @@ export const Icons = {
   post: NewspaperIcon,
   notification: BellIcon,
   newNotification: BellDotIcon,
+  contentNotification: BellRing,
   darkarrow: (({ className }: {
     className: string
   }) => {

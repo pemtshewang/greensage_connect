@@ -1,48 +1,88 @@
 
 import { FlatList } from "native-base";
 import { notification } from "../../styles/styles";
-import { Image } from "native-base";
-import { View, Text } from "native-base";
+import { View, Text, Image, ScrollView } from "react-native";
+import { Icons } from "../../assets/Icons/Icons";
+
 const Notification=() => {
     const data = [
         {
             id:'50',
+            greenhousename: 'Greenhouse 1',
             post_title: 'Low Temperature',
-            Postimage: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fwp-content%2Fuploads%2F2023%2F03%2Fhow-to-lower-humidity-in-your-house.jpg&tbnid=cUXmmDRQb4vNBM&vet=12ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ..i&imgrefurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fblog%2Fhow-to-lower-humidity-in-your-house%2F&docid=p3DJd-hCV9zQmM&w=2000&h=1400&q=Humidity%20pic&ved=2ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ',            
+            postimage: require('../../assets/temperature.jpg'),            
             Time: '9:00',
         },
         {
             id:'50',
-            post_title: 'Low Temperature',
-            Postimage: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fwp-content%2Fuploads%2F2023%2F03%2Fhow-to-lower-humidity-in-your-house.jpg&tbnid=cUXmmDRQb4vNBM&vet=12ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ..i&imgrefurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fblog%2Fhow-to-lower-humidity-in-your-house%2F&docid=p3DJd-hCV9zQmM&w=2000&h=1400&q=Humidity%20pic&ved=2ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ',            
+            greenhousename: 'Greenhouse 1',
+            post_title: 'Low Humidity',
+            postimage: require('../../assets/Humidity.jpg'),            
             Time: '9:00',
         },
         {
             id:'50',
+            greenhousename: 'Greenhouse 2',
             post_title: 'Low Temperature',
-            Postimage: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fwp-content%2Fuploads%2F2023%2F03%2Fhow-to-lower-humidity-in-your-house.jpg&tbnid=cUXmmDRQb4vNBM&vet=12ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ..i&imgrefurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fblog%2Fhow-to-lower-humidity-in-your-house%2F&docid=p3DJd-hCV9zQmM&w=2000&h=1400&q=Humidity%20pic&ved=2ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ',            
+            postimage: require('../../assets/temperature.jpg'),            
             Time: '9:00',
         },
         {
             id:'50',
-            post_title: 'Low Temperature',
-            Postimage: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fwp-content%2Fuploads%2F2023%2F03%2Fhow-to-lower-humidity-in-your-house.jpg&tbnid=cUXmmDRQb4vNBM&vet=12ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ..i&imgrefurl=https%3A%2F%2Fedcprofessionalhomeinspections.com%2Fblog%2Fhow-to-lower-humidity-in-your-house%2F&docid=p3DJd-hCV9zQmM&w=2000&h=1400&q=Humidity%20pic&ved=2ahUKEwjIgrHMzoaDAxVNmmMGHZiOBxQQMygwegUIARDZAQ',            
+            greenhousename: 'Greenhouse 2',
+            post_title: 'Low Huniduty',
+            postimage: require('../../assets/Humidity.jpg'),            
             Time: '9:00',
         },
         {
             id:'50',
+            greenhousename: 'Greenhouse 3',
             post_title: 'Low Temperature',
-            Postimage: '../../assets/temperature.jpg',            
+            postimage: require('../../assets/temperature.jpg'),            
             Time: '9:00',
         },
+        {
+            id:'50',
+            greenhousename: 'Greenhouse 3',
+            post_title: 'Low Humidity',
+            postimage: require('../../assets/Humidity.jpg'),            
+            Time: '9:00',
+        },
+        {
+            id:'50',
+            greenhousename: 'Greenhouse 3',
+            post_title: 'Low Temperature',
+            postimage: require('../../assets/temperature.jpg'),            
+            Time: '9:00',
+        },
+        {
+            id:'50',
+            greenhousename: 'Greenhouse 3',
+            post_title: 'Low Humidity',
+            postimage: require('../../assets/Humidity.jpg'),            
+            Time: '9:00',
+        }
+    
        
  
     ]
     return (
-        <View>
-          <Text   style = { notification.testStyle}>
-              Notification
-          </Text>
+        <View >
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems:'center', alignSelf:'center'}}>
+                <View>
+                    <Text   style = { notification.testStyle}>
+                        Notifications
+                    </Text> 
+                </View>
+                <View>
+                    <Icons.contentNotification
+                    color={"black"}
+                    style={{paddingTop:75}}
+                />
+                </View>
+                
+                
+            </View>
             <FlatList 
             data={data} 
             keyExtractor={(_item, index) => {
@@ -51,17 +91,39 @@ const Notification=() => {
             
             renderItem={({item})=>{
                 return (
+                    <ScrollView>
+                        <View  style = {notification.itemstyle} >
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                <View style={notification.imageView}>
+                                <Image 
+                                    accessibilityLabel="image"
+                                    style={notification.imagestyle} 
+                                    // source={require('../../assets/temperature.jpg')}
+
+                                    source={item.postimage}
+                                />
+                            </View>
+                            <View style={{ flexDirection:'row',marginLeft:10 }}>
+                                <View>
+                                    <Text style={{color:'#000',fontWeight:'bold', fontSize:23}}>
+                                        {item.greenhousename}
+                                    </Text>
+                                    <Text style={{color:'#000', fontSize:17}}>
+                                        {item.post_title}
+                                    </Text>
+                                    <Text style={{fontSize:15, color:'red'}} >
+                                        {item.Time}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            </View>
+                    
+                        
+                        </View>
+                    </ScrollView>
                 
-                <View style = {notification.itemstyle}>
-                  
-                    <View style={notification.imageView}>
-                        <Image 
-                            alt="image"
-                            style={notification.imagestyle} 
-                            source={require(item.Postimage)}
-                        />
-                    </View>
-                </View>
+               
                 );
             } }
             />

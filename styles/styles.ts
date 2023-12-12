@@ -20,11 +20,12 @@ const PasswordInputStyles = StyleSheet.create({
 });
 const notification = StyleSheet.create({
   testStyle: {
-    padding:20,
+    padding:15,
     width:'100%',
       color:'#000',
       fontSize: 30,
-      textAlign:'center'
+      textAlign:'center',
+      fontWeight:'bold'
   },
   itemstyle: {
     flex:1,
@@ -32,19 +33,28 @@ const notification = StyleSheet.create({
     height: '100%',
     padding: 15,
     backgroundColor: '#AA9B9B',
-    paddingBottom: 2,
-    marginBottom:2
+    marginBottom:2,
+    marginLeft: 5,
+    marginEnd: 5,
+    borderWidth: 2,
+    borderColor:'black',
+    borderRadius:20
+    
   },
   imagestyle: {
     width: '100%',
     height:'100%',
-    borderRadius:50
+    borderRadius:50,
+    
+  
+    
   },
   imageView: {
-    width:40,
-    height: 40,
-    borderRadius: 20,
-    marginLeft: 15,
+    width:60,
+    height: 60,
+    borderRadius: 20 / 2,
+
+    
   }
 })
 const ButtonStyle = StyleSheet.create({
