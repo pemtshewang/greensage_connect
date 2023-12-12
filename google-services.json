@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "574063918818",
+    "project_id": "greensage-connect",
+    "storage_bucket": "greensage-connect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574063918818:android:d949a5cc5806753a0768bb",
+        "android_client_info": {
+          "package_name": "com.amtc.greensage_connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApb5sXiU1QI9XMVlDh5vFo-kTsAj5_4y0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
