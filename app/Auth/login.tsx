@@ -30,6 +30,7 @@ function Login() {
             setTimeout(() => {
                 setLoading(true);
                 router.replace("/tabs")
+                setLoading(false);
             }, 2000);
         }
         setLoading(false);
@@ -109,7 +110,7 @@ function Login() {
                         disabled={loading}
                         onPress={handleSubmit(handleSubmitButton)}
                     >
-                        {loading && <Spinner accessibilityLabel="Loading posts" color="emerald.500" />}
+                        {loading && <Spinner color="white" />}
                         {loading ? 'Signing in' : 'Login'}
                     </Button>
                 </View>
