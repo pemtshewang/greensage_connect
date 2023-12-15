@@ -3,6 +3,9 @@ import { FlatList } from "native-base";
 import { notification } from "../../styles/styles";
 import { View, Text, Image, ScrollView } from "react-native";
 import { Icons } from "../../assets/Icons/Icons";
+import { router } from "expo-router";
+import { Pressable } from "react-native";
+import { Link } from "native-base";
 
 const Notification=() => {
     const data = [
@@ -68,6 +71,7 @@ const Notification=() => {
     ]
     return (
         <View >
+             
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems:'center', alignSelf:'center'}}>
                 <View>
                     <Text   style = { notification.testStyle}>
@@ -77,12 +81,24 @@ const Notification=() => {
                 <View>
                     <Icons.contentNotification
                     color={"black"}
-                    style={{paddingTop:75}}
+                    style={{paddingTop:75, marginRight:60}}
                 />
+                </View>
+                <View >
+                    <Link href="../Profile">
+                        <Icons.profile
+                        color={"black"}
+
+                    />
+                    </Link>
+                    
                 </View>
                 
                 
+
             </View>
+           
+            
             <FlatList 
             data={data} 
             keyExtractor={(_item, index) => {

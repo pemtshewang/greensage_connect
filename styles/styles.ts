@@ -25,7 +25,8 @@ const notification = StyleSheet.create({
       color:'#000',
       fontSize: 30,
       textAlign:'center',
-      fontWeight:'bold'
+      fontWeight:'bold',
+      paddingLeft:100
   },
   itemstyle: {
     flex:1,
