@@ -15,6 +15,7 @@ import {
   NewspaperIcon,
   BellIcon,
   BellDotIcon,
+<<<<<<< HEAD
   CloudRainIcon,
   SunIcon,
   CloudSnowIcon,
@@ -23,6 +24,10 @@ import {
   CloudHailIcon,
   CloudIcon,
   CircleUserIcon,
+=======
+  BellRing,
+  Users
+>>>>>>> refs/remotes/origin/main
 } from "lucide-react-native"
 
 // export the icons by naming yourself
@@ -41,6 +46,7 @@ export const Icons = {
   post: NewspaperIcon,
   notification: BellIcon,
   newNotification: BellDotIcon,
+<<<<<<< HEAD
   cloudRainIcon: CloudRainIcon,
   sunIcon: SunIcon,
   cloudSnowIcon: CloudSnowIcon,
@@ -49,6 +55,10 @@ export const Icons = {
   cloudHailIcon: CloudHailIcon,
   cloudIcon: CloudIcon,
   circleUser: CircleUserIcon,
+=======
+  contentNotification: BellRing,
+  profile: Users,
+>>>>>>> refs/remotes/origin/main
   darkarrow: (({ className }: {
     className: string
   }) => {

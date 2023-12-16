@@ -108,6 +108,8 @@ function Login() {
                 <View style={LoginStyles.linkView}>
                     <Text>Don't have an account?</Text>
                     <Link href="/Auth/register" style={LoginStyles.link}>Register</Link>
+
+                    
                 </View>
             </VStack>
         </LinearGradient >
