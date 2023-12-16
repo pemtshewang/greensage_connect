@@ -28,14 +28,6 @@ const NewsContainer = (props: PostType) => {
         background="green.100"
         borderColor="coolGray.200"
         borderWidth="2"
-        _dark={{
-          borderColor: "coolGray.600",
-          backgroundColor: "gray.700",
-        }}
-        _web={{
-          shadow: 2,
-          borderWidth: 0,
-        }}
       >
         <Box>
           <AspectRatio w="100%" ratio={16 / 8}>

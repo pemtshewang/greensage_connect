@@ -23,6 +23,7 @@ function Login() {
     const router = useRouter();
     const handleSubmitButton = (data: LoginSchemaType) => {
         setLoading(false);
+        router.push("/tabs");
     }
     // Form Validation
     const [data, handleData] = useState<LoginSchemaType>({
