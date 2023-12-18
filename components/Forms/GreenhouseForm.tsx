@@ -80,7 +80,7 @@ const GreenHouseAddForm = () => {
       <View>
         <TextInputIcon
           type="text"
-          placeholder="Enter IP address of the micro-controller"
+          placeholder="Enter IP address of the controller"
           value={data.ipAddress}
           onChangeText={(text) => {
             setData({ ...data, ipAddress: text });
