@@ -1,6 +1,7 @@
 import { AlignCenter } from "lucide-react-native";
 import { Center } from "native-base";
 import { StyleSheet } from "react-native";
+import GreenHouse from '../app/GreenHouse/data';
 
 const HomeStyles = StyleSheet.create({
   container: {
@@ -18,6 +19,7 @@ const PasswordInputStyles = StyleSheet.create({
     borderColor: "#000",
   }
 });
+
 const notification = StyleSheet.create({
   testStyle: {
     padding:15,
@@ -46,9 +48,6 @@ const notification = StyleSheet.create({
     width: '100%',
     height:'100%',
     borderRadius:50,
-    
-  
-    
   },
   imageView: {
     width:60,
@@ -160,13 +159,13 @@ const RegisterStyles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 2,
     height: 54
-
-
-
-
   }
 });
 
+const GreenHouseContainerStyles = StyleSheet.create({
+  addButton:{
+    paddingEnd:10
+  }
+});
 
-
-export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles, notification };
+export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles, notification, GreenHouseContainerStyles };

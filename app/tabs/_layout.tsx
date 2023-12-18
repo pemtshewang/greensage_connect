@@ -30,9 +30,9 @@ const TabLayout = () => {
         name="Home"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons.home color={focused ? "#033500" : "#6b7280"} size={size} />
+            <Icons.home color={focused ? "green" : "#6b7280"} size={size} />
           ),
-          tabBarActiveTintColor: "#033500",
+          tabBarActiveTintColor: "green",
         }}
       />
       <Tabs.Screen
@@ -40,11 +40,11 @@ const TabLayout = () => {
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.dashboard
-              color={focused ? "#033500" : "#6b7280"}
+              color={focused ? "green" : "#6b7280"}
               size={size}
             />
           ),
-          tabBarActiveTintColor: "#033500",
+          tabBarActiveTintColor: "green",
           // underlined when focused
         }}
       />
@@ -53,12 +53,12 @@ const TabLayout = () => {
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.notification
-              color={focused ? "#033500" : "#6b7280"}
+              color={focused ? "green" : "#6b7280"}
               size={size}
-              fill={focused ? "#033500" : "transparent"}
+              fill={focused ? "green" : "transparent"}
             />
           ),
-          tabBarActiveTintColor: "#033500",
+          tabBarActiveTintColor: "green",
           tabBarBadge: 3,
         }}
       />
@@ -66,9 +66,9 @@ const TabLayout = () => {
         name="Feeds"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons.post color={focused ? "#033500" : "#6b7280"} size={size} />
+            <Icons.post color={focused ? "green" : "#6b7280"} size={size} />
           ),
-          tabBarActiveTintColor: "#033500",
+          tabBarActiveTintColor: "green",
           tabBarBadge: 3,
         }}
       />
