@@ -1,20 +1,27 @@
-import { Pressable } from "react-native"
-import { View, Image } from "native-base"
+import { Pressable } from "react-native";
+import { View, Image, Text } from "native-base";
+import { useRouter } from "expo-router";
 
-const GreenhouseNavContainer = ({ id, imageUrl }: {
-    id: number,
-    imageUrl: string
+const GreenhouseNavContainer = ({
+  id,
+  imageUrl,
+}: {
+  id: string;
+  imageUrl: string;
 }) => {
-    return (
-        <Pressable key={id}>
-            <View>
-                <Image
-                    source={{ uri: "../assets/logo.png" }}
-                    width="container"
-                    alt="image"
-                />
-            </View>
-        </Pressable>
-    )
-}
+  const router = useRouter();
+  return (
+    <Pressable
+      key={id}
+      onPress={() => {
+        router.push(`/tabs/Home/Greenhouse/${id}`);
+      }}
+    >
+      <View>
+        <Text>Image</Text>
+        <Image source={{ uri: imageUrl }} width="container" alt="image" />
+      </View>
+    </Pressable>
+  );
+};
 export default GreenhouseNavContainer;

@@ -2,33 +2,16 @@ import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { View } from "native-base";
 import { Link } from "expo-router";
+import WeatherContainer from "../../components/WeatherContainer";
+import { SafeAreaView } from "react-native";
 
 const TabLayout = () => {
   return (
-    <Tabs
-      screenOptions={{
-        header: (props) => {
-          return (
-            <View
-              style={{
-                position: "absolute",
-                right: 0,
-                padding: 10,
-              }}
-            >
-              <Link href="/Auth/login">
-                <Icons.circleUser size={30} color="black" />
-              </Link>
-            </View>
-          );
-        },
-        // if focused, the icon will be underlined
-        tabBarActiveBackgroundColor: "#f3f4f6",
-      }}
-    >
+    <Tabs>
       <Tabs.Screen
         name="Home"
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.home color={focused ? "green" : "#6b7280"} size={size} />
           ),
@@ -38,6 +21,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="Dashboard"
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.dashboard
               color={focused ? "green" : "#6b7280"}
@@ -51,6 +35,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="Notifications"
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.notification
               color={focused ? "green" : "#6b7280"}
@@ -65,6 +50,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="Feeds"
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.post color={focused ? "green" : "#6b7280"} size={size} />
           ),

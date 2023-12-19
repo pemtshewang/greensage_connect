@@ -1,19 +1,35 @@
-import { View, Heading } from "native-base";
-import { ScrollView } from "native-base";
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
+import { SafeAreaView } from "react-native";
+import { View } from "native-base";
 import WeatherContainer from "../../../components/WeatherContainer";
 
-export default function NewsFeedLayout() {
+const Layout = () => {
   return (
-    <View>
-      <View style={{
-        padding: 10,
-        alignItems: 'left',
+    <Stack
+      screenOptions={{
+        header: (props) => {
+          return (
+            <SafeAreaView
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignContent: "center",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignContent: "center",
+                }}
+              >
+                <WeatherContainer />
+              </View>
+            </SafeAreaView>
+          );
+        },
       }}
-      >
-        <WeatherContainer />
-      </View>
-        <Slot />
-    </View >
-  )
-}
+    />
+  );
+};
+
+export default Layout;

@@ -1,38 +1,50 @@
-import { z } from "zod";
 import { VStack, Image } from "native-base";
-import { LinearGradient } from "expo-linear-gradient";
 import TextInputIcon from "../../components/TextInputIcon";
 import { Icons } from "../../assets/Icons/Icons";
-import { Link } from "expo-router";
 import { useState } from "react";
 import { Spinner } from "native-base";
-import { Divider } from "native-base";
 import { useForm } from "react-hook-form";
-import { LoginSchemaType } from "../../types";
-import { LoginSchema } from "../../validations/Auth/schema";
 import zodResolver from "@hookform/resolvers/zod";
 import { View, Text, Box } from "native-base";
-import { useRouter } from "expo-router";
 import { LoginStyles } from "../../styles/styles";
 import * as ImagePicker from "expo-image-picker";
 import { Pressable } from "react-native";
 import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
+import { useGreenhouseStore } from "../../zustand/store";
+import * as Crypto from "expo-crypto";
+import { Toast } from "native-base";
+import { Button } from "native-base";
+import { set } from "date-fns";
 
-const GreenHouseAddForm = () => {
+const GreenHouseAddForm = ({
+  modalState,
+  setModalState,
+}: {
+  modalState: boolean;
+  setModalState: (state: boolean) => void;
+}) => {
   const [loading, setLoading] = useState(false);
-  const [imagePath, setImage] = useState(null);
+  const [imagePath, setImage] = useState<string>("");
+  const store = useGreenhouseStore();
   const [data, setData] = useState({
+    id: Crypto.randomUUID(),
     name: "",
     ipAddress: "",
     image: imagePath,
   });
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
-    setLoading(true)
-    setTimeout(() => {
-        setLoading(false)
-    },2000);
-  }
+    store.addGreenhouse({
+      id: data.id,
+      name: data.name,
+      ipAddress: data.ipAddress,
+      isConnected: false,
+      backgroundImage: imagePath,
+      temperature: 0,
+      humidity: 0,
+    });
+    setModalState(false);
+  };
   const {
     handleSubmit,
     formState: { errors },
@@ -53,7 +65,7 @@ const GreenHouseAddForm = () => {
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.uri);
+      setImage(result.assets[0].uri);
     }
   };
 
@@ -64,7 +76,7 @@ const GreenHouseAddForm = () => {
           type="text"
           placeholder="Keep a name for your greenhouse"
           value={data.name}
-          onChangeText={(text) => {
+          onChangeText={(text: string) => {
             setData({ ...data, name: text });
           }}
           InputLeftElement={
@@ -73,18 +85,16 @@ const GreenHouseAddForm = () => {
             </Box>
           }
         />
-        <Text color="#f00">
-            {errors.name && errors.name.message}
-        </Text>
+        <Text color="#f00">{errors.name && String(errors.name.message)}</Text>
       </View>
       <View>
         <TextInputIcon
           type="text"
           placeholder="Enter IP address of the controller"
           value={data.ipAddress}
-          onChangeText={(text) => {
+          onChangeText={(text: string): void => {
             setData({ ...data, ipAddress: text });
-          }}    
+          }}
           InputLeftElement={
             <Box style={LoginStyles.icon}>
               <Icons.internet color="black" />
@@ -92,7 +102,7 @@ const GreenHouseAddForm = () => {
           }
         />
         <Text color="#f00">
-            {errors.ipAddress && errors.ipAddress.message}
+          {errors.ipAddress && String(errors.ipAddress.message)}
         </Text>
       </View>
       <Pressable
@@ -116,24 +126,26 @@ const GreenHouseAddForm = () => {
         }}
       >
         {imagePath && (
-          <Image alt="Selected Image" source={{ uri: imagePath }} style={{ width: 200, height: 200 }} />
+          <Image
+            alt="Selected Image"
+            source={{ uri: imagePath }}
+            style={{ width: 200, height: 200 }}
+          />
         )}
       </View>
-      <Pressable 
-       onPress={handleSubmit(handleSubmitData)}
-       style={{
-        width: "100%",
-        borderWidth: 2,
-        borderRadius: 5,
-        padding: 11,
-        flexDirection: "row",
-        justifyContent: "center",
-        backgroundColor: "#228B29",
-       }}
+      <Pressable
+        onPress={handleSubmit(handleSubmitData)}
+        style={{
+          width: "100%",
+          borderWidth: 2,
+          borderRadius: 5,
+          padding: 11,
+          flexDirection: "row",
+          justifyContent: "center",
+          backgroundColor: "#228B29",
+        }}
       >
-        <Text>
-            Add Greenhouse
-        </Text>
+        <Text>Add Greenhouse</Text>
       </Pressable>
     </VStack>
   );

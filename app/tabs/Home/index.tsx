@@ -1,15 +1,18 @@
 import React, { useState, useRef } from "react";
 import { View, Animated, Easing, Pressable } from "react-native";
 import { Icons } from "../../../assets/Icons/Icons";
-import { Heading } from "native-base";
+import { Text, Heading } from "native-base";
 import { GreenHouseContainerStyles } from "../../../styles/styles";
 import CustomModal from "../../../components/Modal";
 import GreenHouseAddForm from "../../../components/Forms/GreenhouseForm";
+import { useGreenhouseStore } from "../../../zustand/store";
+import { Link } from "expo-router";
+import GreenhouseNavContainer from "../../../components/GreehouseNavContainer";
 
 const IndexPage = () => {
+  const store = useGreenhouseStore();
   const [showAddGreenhouseForm, setShowAddGreenhouseForm] = useState(false);
   const scaleValue = useRef(new Animated.Value(1)).current;
-
   const startAnimation = () => {
     Animated.timing(scaleValue, {
       toValue: 1.2,
@@ -51,21 +54,36 @@ const IndexPage = () => {
             { transform: [{ scale }] },
           ]}
         >
-          <Pressable 
-          onPress={()=>{
-            setShowAddGreenhouseForm(true);
-            startAnimation();
-          }}
+          <Pressable
+            onPress={() => {
+              setShowAddGreenhouseForm(true);
+              startAnimation();
+            }}
           >
-            <Icons.plusCircle color="green" size={32} />
+            <Icons.greenhouseAddIcon width={32} height={32} color={"black"} />
           </Pressable>
         </Animated.View>
       </View>
-      <CustomModal modalVisible={showAddGreenhouseForm} setModalVisible={setShowAddGreenhouseForm}
-      modalTitle={"Add Greenhouse"}
+      <CustomModal
+        modalVisible={showAddGreenhouseForm}
+        setModalVisible={setShowAddGreenhouseForm}
+        modalTitle={"Add Greenhouse"}
       >
-        <GreenHouseAddForm />
+        <GreenHouseAddForm
+          modalState={showAddGreenhouseForm}
+          setModalState={setShowAddGreenhouseForm}
+        />
       </CustomModal>
+      {store.greenhouses.length > 0 &&
+        store.greenhouses.map((greenhouse) => {
+          return (
+            <GreenhouseNavContainer
+              id={greenhouse.id}
+              key={greenhouse.id}
+              imageUrl={greenhouse.backgroundImage}
+            />
+          );
+        })}
     </View>
   );
 };

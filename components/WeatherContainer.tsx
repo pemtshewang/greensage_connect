@@ -71,7 +71,11 @@ const WeatherContainer = () => {
     }}
     >
       {weatherIcon}
-      <View>
+      <View style={{
+        flexDirection: "column",
+        justifyContent: "center",
+        marginLeft: 4
+      }}>
         <Text style={{
           fontWeight: 'bold',
           fontSize: 15,
