@@ -62,10 +62,10 @@ const GreenHouseAddForm = ({
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const newImagePath = result.assets[0].uri;
+      setImage(newImagePath);
+      setData((prevData) => ({ ...prevData, image: newImagePath }));
     }
   };
 

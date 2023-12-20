@@ -27,6 +27,10 @@ import {
   WarehouseIcon,
   CameraIcon,
   ArrowLeftCircleIcon,
+  Trash2Icon,
+  FileEditIcon,
+  LogInIcon,
+  HelpCircleIcon,
 } from "lucide-react-native";
 import { Svg, Path, G } from "react-native-svg";
 
@@ -61,6 +65,10 @@ export const Icons = {
   internet: ArrowUpDownIcon,
   camera: CameraIcon,
   navigateBack: ArrowLeftCircleIcon,
+  trash: Trash2Icon,
+  edit: FileEditIcon,
+  enter: LogInIcon,
+  help: HelpCircleIcon,
   greenhouseAddIcon: ({
     width,
     height,

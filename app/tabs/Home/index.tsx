@@ -1,13 +1,14 @@
 import React, { useState, useRef } from "react";
 import { View, Animated, Easing, Pressable } from "react-native";
 import { Icons } from "../../../assets/Icons/Icons";
-import { Text, Heading } from "native-base";
+import { Text, Heading, Button } from "native-base";
 import { GreenHouseContainerStyles } from "../../../styles/styles";
 import CustomModal from "../../../components/Modal";
 import GreenHouseAddForm from "../../../components/Forms/GreenhouseForm";
 import { useGreenhouseStore } from "../../../zustand/store";
 import { Link } from "expo-router";
 import GreenhouseNavContainer from "../../../components/GreehouseNavContainer";
+import { ScrollView } from "react-native";
 
 const IndexPage = () => {
   const store = useGreenhouseStore();
@@ -74,16 +75,38 @@ const IndexPage = () => {
           setModalState={setShowAddGreenhouseForm}
         />
       </CustomModal>
-      {store.greenhouses.length > 0 &&
-        store.greenhouses.map((greenhouse) => {
-          return (
-            <GreenhouseNavContainer
-              id={greenhouse.id}
-              key={greenhouse.id}
-              imageUrl={greenhouse.backgroundImage}
-            />
-          );
-        })}
+      {store.greenhouses.length > 0 ? (
+        <ScrollView>
+          {store.greenhouses.map((greenhouse) => {
+            return (
+              <GreenhouseNavContainer
+                key={greenhouse.id}
+                name={greenhouse.name}
+                id={greenhouse.id}
+                imageUrl={greenhouse.backgroundImage}
+              />
+            );
+          })}
+          <Button
+            onPress={() => {
+              store.removeAllGreenhouses();
+            }}
+          >
+            Clear
+          </Button>
+        </ScrollView>
+      ) : (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+          }}
+        >
+          <Text>No Greenhouses Found</Text>
+        </View>
+      )}
     </View>
   );
 };
