@@ -3,10 +3,9 @@ import { View, Animated, Easing, Pressable } from "react-native";
 import { Icons } from "../../../assets/Icons/Icons";
 import { Text, Heading, Button } from "native-base";
 import { GreenHouseContainerStyles } from "../../../styles/styles";
-import CustomModal from "../../../components/Modal";
+import CustomModal from "../../../components/ui/Modal";
 import GreenHouseAddForm from "../../../components/Forms/GreenhouseForm";
 import { useGreenhouseStore } from "../../../zustand/store";
-import { Link } from "expo-router";
 import GreenhouseNavContainer from "../../../components/GreehouseNavContainer";
 import { ScrollView } from "react-native";
 
@@ -60,6 +59,12 @@ const IndexPage = () => {
               setShowAddGreenhouseForm(true);
               startAnimation();
             }}
+            style={{
+              backgroundColor: "green",
+              borderRadius: 99,
+              borderCurve: "circular",
+              padding: 7,
+            }}
           >
             <Icons.greenhouseAddIcon width={32} height={32} color={"black"} />
           </Pressable>
@@ -76,7 +81,12 @@ const IndexPage = () => {
         />
       </CustomModal>
       {store.greenhouses.length > 0 ? (
-        <ScrollView>
+        <ScrollView
+          style={{
+            marginTop: 10,
+            padding: 10,
+          }}
+        >
           {store.greenhouses.map((greenhouse) => {
             return (
               <GreenhouseNavContainer
@@ -84,16 +94,10 @@ const IndexPage = () => {
                 name={greenhouse.name}
                 id={greenhouse.id}
                 imageUrl={greenhouse.backgroundImage}
+                removeGreenhouse={store.removeGreenhouse}
               />
             );
           })}
-          <Button
-            onPress={() => {
-              store.removeAllGreenhouses();
-            }}
-          >
-            Clear
-          </Button>
         </ScrollView>
       ) : (
         <View

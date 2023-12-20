@@ -1,3 +1,4 @@
+import { DropletIcon, MoreHorizontalIcon, ThermometerIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -31,6 +32,7 @@ import {
   FileEditIcon,
   LogInIcon,
   HelpCircleIcon,
+  MenuIcon,
 } from "lucide-react-native";
 import { Svg, Path, G } from "react-native-svg";
 
@@ -69,6 +71,11 @@ export const Icons = {
   edit: FileEditIcon,
   enter: LogInIcon,
   help: HelpCircleIcon,
+  action: MenuIcon,
+  thermometer: ThermometerIcon,
+  droplets: DropletIcon,
+  humid: CloudIcon,
+  options: MoreHorizontalIcon,
   greenhouseAddIcon: ({
     width,
     height,
@@ -78,8 +85,7 @@ export const Icons = {
     height: number;
     fill: string;
   }) => {
-    return (
-      <Svg height={height} width={width} viewBox="0 0 512.005 512.005">
+    return ( <Svg height={height} width={width} viewBox="0 0 512.005 512.005">
         <G id="SVGRepo_bgCarrier" strokeWidth="0" />
         <G
           id="SVGRepo_tracerCarrier"

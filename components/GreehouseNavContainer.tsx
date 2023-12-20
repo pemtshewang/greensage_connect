@@ -1,19 +1,32 @@
 import { Pressable } from "react-native";
 import { View, Image, Text } from "native-base";
-import { useRouter } from "expo-router";
 import { Divider } from "native-base";
 import Icons from "../assets/Icons/Icons";
+import { useDisclose } from "native-base";
+import CustomActionSheet from "./ui/ActionSheet";
+import { Actionsheet } from "native-base";
+import { useEffect, useState } from "react";
+import CustomAlertDialog from "./ui/AlertDialog";
 
 const GreenhouseNavContainer = ({
   id,
   name,
   imageUrl,
+  removeGreenhouse,
 }: {
   id: string;
   name: string;
   imageUrl: string;
+  removeGreenhouse: (id: string) => void;
 }) => {
-  const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclose();
+  const [alertDialog, setAlertDialogOpen] = useState(false);
+  const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState(false);
+  useEffect(() => {
+    if (removeGreenhouseConfirm) {
+      removeGreenhouse(id);
+    }
+  }, [removeGreenhouseConfirm]);
   return (
     <>
       <View
@@ -23,16 +36,6 @@ const GreenhouseNavContainer = ({
           borderRadius: 9,
         }}
       >
-        <View style={{
-            width: 64,
-            height: 64,
-            borderRadius: 999,
-            padding: 5,
-            backgroundColor: "white",
-            position: "absolute",
-        }}>
-            <Icons.help  size={32} color="black"/>
-        </View>
         <Image
           alt="Selected Image"
           source={{ uri: imageUrl }}
@@ -44,11 +47,24 @@ const GreenhouseNavContainer = ({
           }}
         />
       </View>
+      <Pressable
+        style={{
+          position: "absolute",
+          right: 0,
+          backgroundColor: "green",
+          padding: 3,
+          borderRadius: 50,
+          marginTop: 3,
+          marginRight: 3,
+        }}
+        onPress={onOpen}
+      >
+        <Icons.action size={32} color="black" />
+      </Pressable>
       <Divider height="px" backgroundColor={"black"} />
       <View
         style={{
           alignContent: "center",
-          paddingTop: 10,
           backgroundColor: "green",
         }}
       >
@@ -56,15 +72,58 @@ const GreenhouseNavContainer = ({
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
+            padding: 5,
           }}
         >
-          <Text color="white" marginLeft={5}>
-            {name}
-          </Text>
-          <Pressable>
+          <View
+            style={{
+              backgroundColor: "darkgreen",
+              flexDirection: "column",
+              justifyContent: "center",
+              padding: 5,
+              borderRadius: 99,
+            }}
+          >
+            <Text color="white" backgroundColor="white">
+              {name}
+            </Text>
+          </View>
+          <Pressable
+            style={{
+              borderWidth: 2,
+              padding: 5,
+              borderRadius: 99,
+            }}
+          >
             <Icons.enter color="black" />
           </Pressable>
         </View>
+        <CustomActionSheet
+          onClose={onClose}
+          onOpen={onOpen}
+          isOpen={isOpen}
+          title={name}
+        >
+          <Actionsheet.Item startIcon={<Icons.edit color="black" size={32} />}>
+            Edit
+          </Actionsheet.Item>
+          <Actionsheet.Item
+            onPress={() => {
+              setAlertDialogOpen(true);
+              onClose();
+            }}
+            startIcon={<Icons.trash color="black" size={32} />}
+          >
+            Remove
+          </Actionsheet.Item>
+        </CustomActionSheet>
+        <CustomAlertDialog
+          title={"Remove Greenhouse"}
+          isOpen={alertDialog}
+          message={`Are you sure you want to remove ${name}?`}
+          setIsOpen={setAlertDialogOpen}
+          setDeleteGreenhouse={setRemoveGreenhouseConfirm}
+        />
       </View>
     </>
   );

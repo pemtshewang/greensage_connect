@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { View } from "native-base";
+import { Text, Heading } from "native-base";
 import { Link } from "expo-router";
 import WeatherContainer from "../../components/WeatherContainer";
 import { SafeAreaView } from "react-native";
@@ -35,7 +36,26 @@ const TabLayout = () => {
       <Tabs.Screen
         name="Notifications"
         options={{
-          headerShown: false,
+          headerShown: true,
+          header: () => {
+            return (
+              <View
+                style={{
+                  backgroundColor: "green",
+                  padding: 10,
+                  alignItems: "left",
+                }}
+              >
+                <Heading
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  Notifications
+                </Heading>
+              </View>
+            );
+          },
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.notification
               color={focused ? "green" : "#6b7280"}
@@ -44,18 +64,35 @@ const TabLayout = () => {
             />
           ),
           tabBarActiveTintColor: "green",
-          tabBarBadge: 3,
         }}
       />
       <Tabs.Screen
         name="Feeds"
         options={{
-          headerShown: false,
+          headerShown: true,
+          header: () => {
+            return (
+              <View
+                style={{
+                  backgroundColor: "green",
+                  padding: 10,
+                  alignItems: "left",
+                }}
+              >
+                <Heading
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  News Feed
+                </Heading>
+              </View>
+            );
+          },
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.post color={focused ? "green" : "#6b7280"} size={size} />
           ),
           tabBarActiveTintColor: "green",
-          tabBarBadge: 3,
         }}
       />
     </Tabs>
