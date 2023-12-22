@@ -1,8 +1,12 @@
-import { Redirect } from "expo-router";
+import { Redirect, Link } from "expo-router";
+import { View } from "native-base";
 
 export default function Page() {
   return (
-    <Redirect href="/tabs" />
+    <View>
+      <Link href="/tabs">Home</Link>
+      <Link href="/Auth/login">Login Page</Link>
+    </View>
   );
 }
 
