@@ -1,4 +1,4 @@
-import { DropletIcon, MoreHorizontalIcon, ThermometerIcon } from "lucide-react-native";
+import { DropletIcon, MapPinned, MoreHorizontalIcon, ThermometerIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -33,6 +33,8 @@ import {
   LogInIcon,
   HelpCircleIcon,
   MenuIcon,
+  MapPin,
+
 } from "lucide-react-native";
 import { Svg, Path, G } from "react-native-svg";
 

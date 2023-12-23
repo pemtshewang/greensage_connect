@@ -157,9 +157,11 @@ const RegisterStyles = StyleSheet.create({
   },
   selecStyle: {
     borderColor: '#000',
-    borderWidth: 2,
-    height: 54
+    borderWidth: 1.7,
+    borderRadius:5,
+    
   }
+
 });
 
 const GreenHouseContainerStyles = StyleSheet.create({

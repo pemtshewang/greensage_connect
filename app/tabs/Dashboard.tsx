@@ -8,6 +8,7 @@ const DashboardPage = () => {
         Dashboard
       </Text>
       <TemperatureDashboard/>
+      
     </View>
   )
 }
