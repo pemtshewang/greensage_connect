@@ -22,39 +22,39 @@ const PasswordInputStyles = StyleSheet.create({
 
 const notification = StyleSheet.create({
   testStyle: {
-    padding:15,
-    width:'100%',
-      color:'#000',
-      fontSize: 30,
-      textAlign:'center',
-      fontWeight:'bold',
-      paddingLeft:100
+    padding: 15,
+    width: '100%',
+    color: '#000',
+    fontSize: 30,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    paddingLeft: 100
   },
   itemstyle: {
-    flex:1,
+    flex: 1,
     width: '100%',
     height: '100%',
     padding: 15,
     backgroundColor: '#AA9B9B',
-    marginBottom:2,
+    marginBottom: 2,
     marginLeft: 5,
     marginEnd: 5,
     borderWidth: 2,
-    borderColor:'black',
-    borderRadius:20
-    
+    borderColor: 'black',
+    borderRadius: 20
+
   },
   imagestyle: {
     width: '100%',
-    height:'100%',
-    borderRadius:50,
+    height: '100%',
+    borderRadius: 50,
   },
   imageView: {
-    width:60,
+    width: 60,
     height: 60,
     borderRadius: 20 / 2,
 
-    
+
   }
 })
 const ButtonStyle = StyleSheet.create({
@@ -158,15 +158,13 @@ const RegisterStyles = StyleSheet.create({
   selecStyle: {
     borderColor: '#000',
     borderWidth: 1.7,
-    borderRadius:5,
-    
+    borderRadius: 5,
   }
-
 });
 
 const GreenHouseContainerStyles = StyleSheet.create({
-  addButton:{
-    paddingEnd:10
+  addButton: {
+    paddingEnd: 10
   }
 });
 
