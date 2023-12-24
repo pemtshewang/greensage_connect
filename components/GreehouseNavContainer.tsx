@@ -7,6 +7,7 @@ import CustomActionSheet from "./ui/ActionSheet";
 import { Actionsheet } from "native-base";
 import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
+import { useRouter } from "expo-router";
 
 const GreenhouseNavContainer = ({
   id,
@@ -22,6 +23,7 @@ const GreenhouseNavContainer = ({
   const { isOpen, onOpen, onClose } = useDisclose();
   const [alertDialog, setAlertDialogOpen] = useState(false);
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     if (removeGreenhouseConfirm) {
       removeGreenhouse(id);
@@ -93,6 +95,9 @@ const GreenhouseNavContainer = ({
               borderWidth: 2,
               padding: 5,
               borderRadius: 99,
+            }}
+            onPress={() => {
+              router.push(`/tabs/Home/Greenhouse/${id}`)
             }}
           >
             <Icons.enter color="black" />
