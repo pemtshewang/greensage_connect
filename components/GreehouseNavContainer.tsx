@@ -8,6 +8,7 @@ import { Actionsheet } from "native-base";
 import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
 import { useRouter } from "expo-router";
+import WSTestConnectionForm from "./Forms/WebSocketConnectionForm";
 
 const GreenhouseNavContainer = ({
   id,
@@ -21,8 +22,9 @@ const GreenhouseNavContainer = ({
   removeGreenhouse: (id: string) => void;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclose();
-  const [alertDialog, setAlertDialogOpen] = useState(false);
-  const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState(false);
+  const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
+  const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
+  const [showWSForm, setShowWSForm] = useState<boolean>(false);
   const router = useRouter();
   useEffect(() => {
     if (removeGreenhouseConfirm) {
@@ -97,12 +99,17 @@ const GreenhouseNavContainer = ({
               borderRadius: 99,
             }}
             onPress={() => {
-              router.push(`/tabs/Home/Greenhouse/${id}`)
+              setShowWSForm(true);
             }}
           >
             <Icons.enter color="black" />
           </Pressable>
         </View>
+        <WSTestConnectionForm
+          id="test"
+          showForm={showWSForm}
+          setShowForm={setShowWSForm}
+        />
         <CustomActionSheet
           onClose={onClose}
           onOpen={onOpen}
