@@ -4,12 +4,17 @@ import { useNavigation } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
+import TemperatureControllerContainer from "../../../../../components/TemperatureController";
+import { useState } from "react";
 
 export default function ParamsContainer() {
   const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const [state, setState] = useState<boolean>(false);
   return (
-    <View>
+    <View style={{
+      padding: 20
+    }}>
       <Stack.Screen
         options={{
           header: () => {
@@ -45,9 +50,10 @@ export default function ParamsContainer() {
           },
         }}
       />
-      <Text>
-        This is the {id}
-      </Text>
+      <TemperatureControllerContainer
+        state={state}
+        setState={setState}
+      />
     </View>
   )
 }

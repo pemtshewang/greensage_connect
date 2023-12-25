@@ -1,4 +1,4 @@
-import { DropletIcon, MapPinned, MoreHorizontalIcon, ThermometerIcon, WavesIcon } from "lucide-react-native";
+import { DropletIcon, MapPinned, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, WavesIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -33,8 +33,6 @@ import {
   LogInIcon,
   HelpCircleIcon,
   MenuIcon,
-  MapPin,
-
 } from "lucide-react-native";
 import Svg, { Rect, Path, G } from "react-native-svg"
 
@@ -79,6 +77,7 @@ export const Icons = {
   humid: CloudIcon,
   options: MoreHorizontalIcon,
   soilMoisture: WavesIcon,
+  powerState: PowerCircleIcon,
   greenhouseAddIcon: ({
     width,
     height,
@@ -156,6 +155,20 @@ export const Icons = {
       </Svg>
     )
   },
+  animatedFan: (props) => {
+    return (
+      <Svg
+        width="800px"
+        height="800px"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+      >
+        <Path fill="none" d="M0 0H24V24H0z" />
+        <Path d="M12 11a1 1 0 101 1 1 1 0 00-1-1m.5-9c4.5 0 4.6 3.57 2.23 4.75a3.36 3.36 0 00-1.62 2.47 3.17 3.17 0 011.23.91C18 8.13 22 8.92 22 12.5c0 4.5-3.58 4.6-4.75 2.23a3.44 3.44 0 00-2.5-1.62 3.24 3.24 0 01-.91 1.23c2 3.69 1.2 7.66-2.38 7.66-4.46 0-4.57-3.58-2.2-4.76a3.46 3.46 0 001.62-2.45 3 3 0 01-1.25-.92C5.94 15.85 2 15.07 2 11.5 2 7 5.54 6.89 6.72 9.26a3.39 3.39 0 002.48 1.61 2.91 2.91 0 01.92-1.22C8.13 6 8.92 2 12.48 2z" />
+      </Svg>
+    )
+  },
   valve: (props) => {
     return (
       <Svg
@@ -167,6 +180,29 @@ export const Icons = {
         {...props}
       >
         <Path d="M-40.5 84.8h1.4c.4 0 15-3.7 18.6-4.5.7 2.5 2.2 4.6 4.4 5.9v7.2H-6v-7.5c1.9-1.3 3.3-3.1 4-5.4 4.5 1.1 17.3 4.3 17.7 4.3.5.1 1.4 0 1.4 0 4 0 7.3-3.3 7.3-7.3s-3.3-7.3-7.3-7.3c-.5 0-1.2.1-1.2.1l-18.1 4c-1.4-3.6-4.9-6.2-9-6.2-4.2 0-7.7 2.7-9.1 6.4l-19-4.3s-.7-.1-1.2-.1c-4 0-7.3 3.3-7.3 7.3 0 4.1 3.3 7.4 7.3 7.4m77.9 67.3v.2S26.8 174 26.6 174.7c-.3 1.1-.7 2.6-.7 4.1 0 6.3 5.1 11.4 11.4 11.4s11.4-5.1 11.4-11.4c-.1-2.4-1-4.3-1-4.3l-10.3-22.4zm11.1-12.2v-12.1c0-18.1-17.4-17.4-17.4-17.4H9.2V104l-11.6-6.2h-17.1l-11.5 6.3v6.4h-19.7v21.8h77.1v7.6H24v8.2h26.5v-8.2h-2z" />
+      </Svg>
+    )
+  },
+  waterTap: (props) => {
+    return (
+      <Svg
+        fill="#000"
+        width="800px"
+        height="800px"
+        viewBox="0 0 24 24"
+        data-name="Flat Color"
+        xmlns="http://www.w3.org/2000/svg"
+        className="icon flat-color"
+        {...props}
+      >
+        <Path
+          d="M13 9.84a1 1 0 01-1-1V6h-2a1 1 0 010-2h6a1 1 0 010 2h-2v2.84a1 1 0 01-1 1z"
+          fill="#2ca9bc"
+        />
+        <Path
+          d="M21 8a1 1 0 00-1 1v1h-3.38l-.45-.89A2 2 0 0014.38 8h-2.76a2 2 0 00-1.79 1.11l-.45.89H7a5 5 0 00-5 5v3a2 2 0 002 2h2a2 2 0 002-2v-2h12v1a1 1 0 002 0V9a1 1 0 00-1-1z"
+          fill="#000"
+        />
       </Svg>
     )
   }
