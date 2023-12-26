@@ -7,8 +7,8 @@ import CustomActionSheet from "./ui/ActionSheet";
 import { Actionsheet } from "native-base";
 import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
-import { useRouter } from "expo-router";
-import WSTestConnectionForm from "./Forms/WebSocketConnectionForm";
+import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
+import { useGreenhouseStore } from "../zustand/store";
 
 const GreenhouseNavContainer = ({
   id,
@@ -25,7 +25,10 @@ const GreenhouseNavContainer = ({
   const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
-  const router = useRouter();
+  const greenhouseStore = useGreenhouseStore();
+  const greenhouse = greenhouseStore.greenhouses.find(res => res.id === id);
+  const ipAddress = greenhouse?.ipAddress;
+
   useEffect(() => {
     if (removeGreenhouseConfirm) {
       removeGreenhouse(id);
@@ -106,7 +109,8 @@ const GreenhouseNavContainer = ({
           </Pressable>
         </View>
         <WSTestConnectionForm
-          id="test"
+          id={id}
+          ipAddress={ipAddress as string}
           showForm={showWSForm}
           setShowForm={setShowWSForm}
         />

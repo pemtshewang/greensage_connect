@@ -13,9 +13,7 @@ import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
-import { Toast } from "native-base";
-import { Button } from "native-base";
-import { set } from "date-fns";
+import WebSocketService from "../../config/websocket/websocket";
 
 const GreenHouseAddForm = ({
   modalState,
@@ -42,6 +40,9 @@ const GreenHouseAddForm = ({
       backgroundImage: imagePath,
       temperature: 0,
       humidity: 0,
+      ventilationFanState: false,
+      ws: new WebSocketService(data.ipAddress, "81"),
+      lightState: false,
     });
     setModalState(false);
   };

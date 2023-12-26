@@ -3,12 +3,12 @@ import { View, ScrollView, Text } from "native-base";
 import { useGreenhouseStore } from "../../../../zustand/store";
 import { GreenhouseAddFormSchemaType } from "../../../../types";
 import { Stack } from "expo-router";
-import { Heading } from "native-base";
 import { Icons } from "../../../../assets/Icons/Icons";
 import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
+import { Text as RText } from "react-native";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -39,13 +39,18 @@ const Page = () => {
                 >
                   <Icons.navigateBack color="black" size={32} />
                 </Pressable>
-                <Heading color="#fff">{greenhouse.name}</Heading>
-              </View>
+                <RText style={{
+                  color: "#fff",
+                  fontSize: 20,
+                  fontWeight: "bold"
+                }}>
+                  {greenhouse.name}</RText>
+              </View >
             );
           },
         }}
       />
-      <ScrollView
+      < ScrollView
         scrollEnabled={true}
         style={{
           paddingTop: 10
@@ -66,16 +71,16 @@ const Page = () => {
             label={"Manage Temperature"}
             id={id as string}
             icon={<Icons.exhaustFan width={32} height={32} color="black" />}
-            navigatePath={`/tabs/Home/Greenhouse/ParamsNav/mgTemperature`}
+            navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
           />
           <ShadowContainer
             label={"Manage Waterflow"}
             id={id as string}
             icon={<Icons.valve width={32} height={32} color="black" />}
-            navigatePath={`/tabs/Home/Greenhouse/ParamsNav/mgWaterLevel`}
+            navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
           />
         </View>
-      </ScrollView>
+      </ScrollView >
     </>
   );
 };

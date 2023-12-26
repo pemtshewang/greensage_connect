@@ -1,20 +1,22 @@
 import { Stack } from "expo-router";
 import { View, Text } from "native-base";
 import { useNavigation } from "expo-router";
-import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
-import TemperatureControllerContainer from "../../../../../components/TemperatureController";
+import WaterValveControllerContainer from "../../../../../components/WaterValveController";
 import { useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 
 export default function ParamsContainer() {
-  const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [state, setState] = useState<boolean>(false);
+  const navigation = useNavigation();
   return (
-    <View style={{
-      padding: 20
-    }}>
+    <View
+      style={{
+        padding: 20
+      }}
+    >
       <Stack.Screen
         options={{
           header: () => {
@@ -43,17 +45,16 @@ export default function ParamsContainer() {
                     color="#fff"
                     w="container"
                     fontSize="xl"
-                  >Manage Temperature</Text>
+                  >Manage Waterflow</Text>
                 </View>
               </View>
             );
           },
         }}
       />
-      <TemperatureControllerContainer
+      <WaterValveControllerContainer
         state={state}
-        setState={setState}
-      />
+        setState={setState} />
     </View>
   )
 }

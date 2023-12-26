@@ -2,14 +2,14 @@ import { View, Text } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export default function TemperatureControllerContainer({
   state,
-  setState
+  setState,
 }: {
-  state: boolean,
-  setState: (state: boolean) => void
+  state: boolean | undefined,
+  setState: (state: boolean) => void,
 }) {
   const rotation = new Animated.Value(0);
 
@@ -125,5 +125,6 @@ export default function TemperatureControllerContainer({
         </View>
       </View>
     </View>
+
   )
 }

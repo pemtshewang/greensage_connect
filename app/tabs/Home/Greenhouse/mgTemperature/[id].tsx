@@ -1,20 +1,35 @@
 import { Stack } from "expo-router";
 import { View, Text } from "native-base";
 import { useNavigation } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
-import WaterValveControllerContainer from "../../../../../components/WaterValveController";
-import { useState } from "react";
+import TemperatureControllerContainer from "../../../../../components/TemperatureController";
+import { useState, useEffect } from "react";
+import { useGreenhouseStore } from "../../../../../zustand/store";
 
 export default function ParamsContainer() {
-  const [state, setState] = useState<boolean>(false);
   const navigation = useNavigation();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const store = useGreenhouseStore();
+  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
+  // if stat changes, ws.send("light)
+  const toggleState = () => {
+    opState(!state);
+    if (state == true) {
+      greenhouse?.ws.sendMessage("light/off");
+      store.updateGreenhouse(id as string, { ventilationFanState: false })
+    } else {
+      greenhouse?.ws.sendMessage("light/on");
+      store.updateGreenhouse(id as string, { ventilationFanState: true })
+    }
+  }
+
   return (
-    <View
-      style={{
-        padding: 20
-      }}
-    >
+    <View style={{
+      padding: 20
+    }}>
       <Stack.Screen
         options={{
           header: () => {
@@ -43,16 +58,16 @@ export default function ParamsContainer() {
                     color="#fff"
                     w="container"
                     fontSize="xl"
-                  >Manage Waterflow</Text>
+                  >Manage Temperature</Text>
                 </View>
               </View>
             );
           },
         }}
       />
-      <WaterValveControllerContainer
+      <TemperatureControllerContainer
         state={state}
-        setState={setState} />
+        setState={toggleState} />
     </View>
   )
 }
