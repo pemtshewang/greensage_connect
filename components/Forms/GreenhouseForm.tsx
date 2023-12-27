@@ -2,7 +2,6 @@ import { VStack, Image } from "native-base";
 import TextInputIcon from "../../components/TextInputIcon";
 import { Icons } from "../../assets/Icons/Icons";
 import { useState } from "react";
-import { Spinner } from "native-base";
 import { useForm } from "react-hook-form";
 import zodResolver from "@hookform/resolvers/zod";
 import { View, Text, Box } from "native-base";
@@ -13,7 +12,7 @@ import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
-import WebSocketService from "../../config/websocket/websocket";
+import useWebSocket from "../../hooks/websocket";
 
 const GreenHouseAddForm = ({
   modalState,
@@ -31,6 +30,7 @@ const GreenHouseAddForm = ({
     ipAddress: "",
     image: imagePath,
   });
+  const ws = useWebSocket(data.ipAddress, "81", data.id);
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     store.addGreenhouse({
       id: data.id,
@@ -40,8 +40,8 @@ const GreenHouseAddForm = ({
       backgroundImage: imagePath,
       temperature: 0,
       humidity: 0,
+      ws: ws,
       ventilationFanState: false,
-      ws: new WebSocketService(data.ipAddress, "81", data.id),
       soil_moisture: 0,
       lightState: false,
     });

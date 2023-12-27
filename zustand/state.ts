@@ -1,8 +1,11 @@
-import WebSocketService from "../config/websocket/websocket";
-
 interface totalGreenhouseState {
     count: number;
     greenhouses: GreenhouseState[];
+}
+interface ws {
+    sendMessage: (message: string) => void;
+    connect: () => Promise<void>;
+    disconnect: () => void;
 }
 
 interface GreenhouseState {
@@ -18,7 +21,7 @@ interface GreenhouseState {
     //end parameters 
     ventilationFanState: boolean;
     lightState: boolean;
-    ws: WebSocketService;
+    ws: ws;
 }
 
 export { GreenhouseState, totalGreenhouseState };

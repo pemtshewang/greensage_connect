@@ -18,13 +18,13 @@ export default function ParamsContainer() {
     const updatedState = !state; // Calculate the updated state value
     // Perform actions based on the updatedState
     if (!updatedState) {
-      greenhouse?.ws.sendMessage("light/off");
+      greenhouse?.ws.sendMessage("light:off");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: false
       });
     } else {
-      greenhouse?.ws.sendMessage("light/on");
+      greenhouse?.ws.sendMessage("light:on");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: true
