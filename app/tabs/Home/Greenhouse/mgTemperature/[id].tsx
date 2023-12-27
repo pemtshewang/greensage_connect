@@ -14,18 +14,24 @@ export default function ParamsContainer() {
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
   const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
-  // if stat changes, ws.send("light)
   const toggleState = () => {
-    opState(!state);
-    if (state == true) {
+    const updatedState = !state; // Calculate the updated state value
+    // Perform actions based on the updatedState
+    if (!updatedState) {
       greenhouse?.ws.sendMessage("light/off");
-      store.updateGreenhouse(id as string, { ventilationFanState: false })
+      store.updateGreenhouse(id as string, {
+        ...greenhouse,
+        ventilationFanState: false
+      });
     } else {
       greenhouse?.ws.sendMessage("light/on");
-      store.updateGreenhouse(id as string, { ventilationFanState: true })
+      store.updateGreenhouse(id as string, {
+        ...greenhouse,
+        ventilationFanState: true
+      });
     }
-  }
-
+    opState(updatedState); // Update the state after performing actions
+  };
   return (
     <View style={{
       padding: 20
@@ -71,4 +77,3 @@ export default function ParamsContainer() {
     </View>
   )
 }
-

@@ -1,5 +1,5 @@
 export default class WebSocketService {
-  private socket: WebSocket;
+  private socket?: WebSocket;
   private portNumber: string;
 
   constructor(private ipAddress: string, portNumber: string) {
