@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { GreenhouseState, totalGreenhouseState } from "./state";
-import zustandStorage from "./mmkvWrapper";
+// import zustandStorage from "./mmkvWrapper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Define your store state
-interface StoreState extends totalGreenhouseState {
+export interface StoreState extends totalGreenhouseState {
   addGreenhouse: (greenhouse: GreenhouseState) => void;
   updateGreenhouse: (id: string, data: Partial<GreenhouseState>) => void;
   removeGreenhouse: (id: string) => void;
@@ -42,7 +43,7 @@ export const useGreenhouseStore = create<StoreState>(
     }),
     {
       name: "greenhouseStore",
-      storage: createJSONStorage(() => zustandStorage),
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );

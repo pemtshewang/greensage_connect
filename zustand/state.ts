@@ -11,8 +11,11 @@ interface GreenhouseState {
     backgroundImage: string;
     ipAddress: string;
     isConnected: boolean;
+    //parameters
     temperature: number;
     humidity: number;
+    soil_moisture: number;
+    //end parameters 
     ventilationFanState: boolean;
     lightState: boolean;
     ws: WebSocketService;

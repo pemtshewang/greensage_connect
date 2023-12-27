@@ -8,7 +8,6 @@ import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
-import { Text as RText } from "react-native";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -17,6 +16,7 @@ const Page = () => {
   const greenhouse: GreenhouseAddFormSchemaType = store.greenhouses.find(
     (g) => g.id === id
   );
+  const greenhousename = greenhouse?.name;
   return (
     <>
       <Stack.Screen
@@ -39,12 +39,17 @@ const Page = () => {
                 >
                   <Icons.navigateBack color="black" size={32} />
                 </Pressable>
-                <RText style={{
-                  color: "#fff",
-                  fontSize: 20,
-                  fontWeight: "bold"
-                }}>
-                  {greenhouse.name}</RText>
+
+                <View
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Text
+                    color="#fff"
+                    w="container"
+                    fontSize="xl"
+                  >{greenhousename}</Text>
+                </View>
               </View >
             );
           },

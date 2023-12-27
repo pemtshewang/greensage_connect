@@ -41,7 +41,8 @@ const GreenHouseAddForm = ({
       temperature: 0,
       humidity: 0,
       ventilationFanState: false,
-      ws: new WebSocketService(data.ipAddress, "81"),
+      ws: new WebSocketService(data.ipAddress, "81", data.id),
+      soil_moisture: 0,
       lightState: false,
     });
     setModalState(false);
