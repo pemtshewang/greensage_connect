@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { View, ScrollView, Text } from "native-base";
 import { useGreenhouseStore } from "../../../../zustand/store";
 import { Stack } from "expo-router";
@@ -22,7 +22,6 @@ const Page = () => {
     soil_moisture: 0,
     ldr: 0,
   });
-  const navigation = useNavigation();
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find(
     (g) => g.id === id
@@ -35,45 +34,8 @@ const Page = () => {
       ldr: greenhouse?.soil_moisture as number,
     });
   }, [greenhouse]);
-  const greenhousename = greenhouse?.name;
   return (
     <>
-      <Stack.Screen
-        options={{
-          header: () => {
-            return (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignContent: "center",
-                  padding: 10,
-                  gap: 10,
-                  backgroundColor: "green"
-                }}
-              >
-                <Pressable
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icons.navigateBack color="black" size={32} />
-                </Pressable>
-
-                <View
-                  flexDirection="column"
-                  justifyContent="center"
-                >
-                  <Text
-                    color="#fff"
-                    w="container"
-                    fontSize="xl"
-                  >{greenhousename}</Text>
-                </View>
-              </View >
-            );
-          },
-        }}
-      />
       < ScrollView
         scrollEnabled={true}
         style={{

@@ -15,8 +15,6 @@ export default function ReadingsContainer({
   soilMoistureReading: number;
   ldrReading: number;
 }) {
-  useEffect(() => {
-  }, [temperatureReading, humidityReading, soilMoistureReading, ldrReading]);
   return (
     <View
       style={{

@@ -95,7 +95,7 @@ export default function WaterValveControllerContainer({
         <View style={{
           flexDirection: "row",
           alignItems: "center",
-          gap: 20
+          gap: 10
         }}>
           <Switch
             style={{

@@ -21,6 +21,7 @@ interface GreenhouseState {
     //end parameters 
     ventilationFanState: boolean;
     lightState: boolean;
+    waterValveState: boolean;
     ws: any;
 }
 

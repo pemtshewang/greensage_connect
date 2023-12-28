@@ -4,13 +4,37 @@ import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
 import WaterValveControllerContainer from "../../../../../components/WaterValveController";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
+import { useGreenhouseStore } from "../../../../../zustand/store";
+import { useRouter } from "expo-router";
 
 export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [state, setState] = useState<boolean>(false);
   const navigation = useNavigation();
+  const store = useGreenhouseStore();
+  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
+  const router = useRouter();
+  // session ends 
+  const toggleState = () => {
+    const updatedState = !state; // Calculate the updated state value
+    // Perform actions based on the updatedState
+    if (!updatedState) {
+      greenhouse?.ws.sendMessage("waterValve:off");
+      store.updateGreenhouse(id as string, {
+        ...greenhouse,
+        waterValveState: false
+      });
+    } else {
+      greenhouse?.ws.sendMessage("waterValve:on");
+      store.updateGreenhouse(id as string, {
+        ...greenhouse,
+        waterValveState: true
+      });
+    }
+    opState(updatedState); // Update the state after performing actions
+  };
   return (
     <View
       style={{
@@ -54,7 +78,7 @@ export default function ParamsContainer() {
       />
       <WaterValveControllerContainer
         state={state}
-        setState={setState} />
+        setState={toggleState} />
     </View>
   )
 }

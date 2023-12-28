@@ -2,7 +2,7 @@ import { View, Text } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function TemperatureControllerContainer({
   state,
@@ -11,7 +11,7 @@ export default function TemperatureControllerContainer({
   state: boolean | undefined,
   setState: (state: boolean) => void,
 }) {
-  const rotation = new Animated.Value(0);
+  const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (state) {
@@ -19,21 +19,27 @@ export default function TemperatureControllerContainer({
     } else {
       stopRotationAnimation();
     }
+    return () => {
+      stopRotationAnimation(); // Clean up animation on component unmount or state change
+    };
   }, [state]);
 
   const startRotationAnimation = () => {
+    rotation.setValue(0); // Reset the animation value before starting
     Animated.loop(
       Animated.timing(rotation, {
-        toValue: 2,
+        toValue: 1,
         duration: 1000,
         easing: Easing.linear,
         useNativeDriver: true,
       })
-    ).start()
+    ).start();
   };
 
   const stopRotationAnimation = () => {
-    rotation.stopAnimation(); // Stop the animation when the state changes to false
+    rotation.stopAnimation((value) => {
+      rotation.setValue(value); // Set the current animation value when stopping
+    });
   };
 
   const spin = rotation.interpolate({
