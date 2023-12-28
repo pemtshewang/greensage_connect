@@ -2,6 +2,7 @@ import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { View, Text } from "native-base";
 import { Circle } from "react-native-svg";
 import Icons from "../../assets/Icons/Icons";
+import { useEffect } from "react";
 
 export default function ReadingsContainer({
   temperatureReading,
@@ -14,6 +15,8 @@ export default function ReadingsContainer({
   soilMoistureReading: number;
   ldrReading: number;
 }) {
+  useEffect(() => {
+  }, [temperatureReading, humidityReading, soilMoistureReading, ldrReading]);
   return (
     <View
       style={{

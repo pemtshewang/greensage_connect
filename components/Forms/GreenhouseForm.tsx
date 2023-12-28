@@ -12,7 +12,7 @@ import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
-import useWebSocket from "../../hooks/websocket";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 const GreenHouseAddForm = ({
   modalState,
@@ -30,7 +30,6 @@ const GreenHouseAddForm = ({
     ipAddress: "",
     image: imagePath,
   });
-  const ws = useWebSocket(data.ipAddress, "81", data.id);
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     store.addGreenhouse({
       id: data.id,
@@ -40,7 +39,7 @@ const GreenHouseAddForm = ({
       backgroundImage: imagePath,
       temperature: 0,
       humidity: 0,
-      ws: ws,
+      ws: null,
       ventilationFanState: false,
       soil_moisture: 0,
       lightState: false,

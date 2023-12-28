@@ -5,6 +5,7 @@ import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useGreenhouseStore } from "../../zustand/store";
+import useWebSocket from "../../config/hooks/wsservice";
 
 type ConnectionMsgTypes =
   | "Connected"
@@ -30,9 +31,14 @@ export default function WSTestConnectionForm({
   const greenhouse = store.greenhouses.find((res) => res.id === id);
   const router = useRouter();
 
+  const websocket = useWebSocket({ id: greenhouse?.id as string });
+
   const testConnection = async () => {
     setConnecting(true);
     try {
+      store.updateGreenhouse(id, {
+        ws: websocket,
+      });
       await greenhouse?.ws.connect();
       setConnected(true);
       setConMsg("Connected");

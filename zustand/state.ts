@@ -21,7 +21,7 @@ interface GreenhouseState {
     //end parameters 
     ventilationFanState: boolean;
     lightState: boolean;
-    ws: ws;
+    ws: any;
 }
 
 export { GreenhouseState, totalGreenhouseState };

@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
 import TemperatureControllerContainer from "../../../../../components/TemperatureController";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 
 export default function ParamsContainer() {
@@ -21,13 +21,13 @@ export default function ParamsContainer() {
       greenhouse?.ws.sendMessage("light:off");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
-        ventilationFanState: false
+        lightState: false
       });
     } else {
       greenhouse?.ws.sendMessage("light:on");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
-        ventilationFanState: true
+        lightState: true
       });
     }
     opState(updatedState); // Update the state after performing actions
