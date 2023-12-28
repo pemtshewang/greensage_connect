@@ -5,8 +5,10 @@ import { useGreenhouseStore } from "../../../../zustand/store";
 import Icons from "../../../../assets/Icons/Icons";
 import { Pressable } from "react-native";
 import { useNavigation } from "expo-router";
-import { useEffect, useState } from "react";
 import WSDisconnectDialogBox from "../../../../components/WSDisconnectDialog";
+import { useEffect, useState } from "react";
+import KillSessionDialog from "../../../../components/LogoutSession";
+import WSSessionButton from "../../../../components/WSSessionButton";
 
 export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -14,10 +16,14 @@ export default function Layout() {
   const greenhouse = store.greenhouses.find((res) => res.id === id);
   const navigation = useNavigation();
   const name = greenhouse?.name;
-  const [isConnected, setIsConnected] = useState<boolean>(greenhouse?.isConnected || true);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
+
   useEffect(() => {
-    setIsConnected(greenhouse?.isConnected || true);
-  }, [greenhouse?.isConnected]);
+    if (greenhouse?.isConnected === false) {
+      setShowDialog(true);
+    }
+  }, [greenhouse]);
   return (
     <>
       <Stack.Screen
@@ -26,10 +32,17 @@ export default function Layout() {
         }}
       />
       <WSDisconnectDialogBox
-        isOpen={!isConnected}
-        setIsOpen={setIsConnected}
+        title="Session Closed"
+        dialogVisible={showDialog}
+        message="The session has ended. Please try to connect again"
+        setDialogVisible={setShowDialog}
       />
-
+      <KillSessionDialog
+        dialogVisible={showKillSessionDialog}
+        message="Are you sure you want to disconnect this session?"
+        setDialogVisible={setShowKillSessionDialog}
+        ws={greenhouse?.ws}
+      />
       <Stack
         screenOptions={{
           header: () => {
@@ -59,6 +72,18 @@ export default function Layout() {
                     w="container"
                     fontSize="xl"
                   >{name}</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    flex: 1,
+                  }}
+                >
+                  <WSSessionButton showDialog={showKillSessionDialog}
+                    setShowDialog={setShowKillSessionDialog}
+                    ws={greenhouse?.ws}
+                  />
                 </View>
               </View>
             );

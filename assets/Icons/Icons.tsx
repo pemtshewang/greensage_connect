@@ -1,4 +1,4 @@
-import { DropletIcon, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, WavesIcon } from "lucide-react-native";
+import { DropletIcon, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, UnplugIcon, WavesIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -78,6 +78,7 @@ export const Icons = {
   options: MoreHorizontalIcon,
   soilMoisture: WavesIcon,
   powerState: PowerCircleIcon,
+  disconnectSession: UnplugIcon,
   greenhouseAddIcon: ({
     width,
     height,

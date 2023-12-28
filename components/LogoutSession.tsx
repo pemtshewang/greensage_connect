@@ -4,12 +4,13 @@ import { useRouter } from "expo-router";
 import { View, Text } from "native-base";
 import Icons from "../assets/Icons/Icons";
 
-const WSDisconnectDialogBox = ({
-  title,
+const KillSessionDialog = ({
+  ws,
   message,
   dialogVisible,
   setDialogVisible,
 }: {
+  ws: any;
   title: string;
   message: string;
   dialogVisible: boolean;
@@ -36,7 +37,7 @@ const WSDisconnectDialogBox = ({
             justifyContent: "space-between",
           }}>
             <Text>
-              {title}
+              Disconnect Session
             </Text>
             <Icons.disconnectSession color="black" />
           </View>
@@ -50,13 +51,24 @@ const WSDisconnectDialogBox = ({
         >
           <Button
             style={{
+              backgroundColor: "red",
+            }}
+            onPress={() => {
+              setDialogVisible(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{
               backgroundColor: "green",
             }}
             onPress={() => {
+              ws.disconnect();
               router.replace("/tabs/Home"); setDialogVisible(false);
             }}
           >
-            OK
+            Disconnect
           </Button>
         </AlertDialog.Footer>
       </AlertDialog.Content>
@@ -64,4 +76,4 @@ const WSDisconnectDialogBox = ({
   );
 };
 
-export default WSDisconnectDialogBox;
+export default KillSessionDialog;

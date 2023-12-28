@@ -23,6 +23,7 @@ interface GreenhouseState {
     lightState: boolean;
     waterValveState: boolean;
     ws: any;
+    sessionDialog: boolean;
 }
 
 export { GreenhouseState, totalGreenhouseState };

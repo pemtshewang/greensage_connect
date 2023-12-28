@@ -10,10 +10,10 @@ const useWebSocket = ({ id }: { id: string }) => {
   const connect = () => {
     return new Promise<WebSocket>((res, rej) => {
       const ws = new WebSocket(`ws://${greenhouse?.ipAddress}:81`);
-      socket.current = ws;
 
       ws.onopen = () => {
         console.log("WebSocket connected");
+        socket.current = ws;
         store.updateGreenhouse(id, { isConnected: true });
         setupHeartbeat();
         res(ws);

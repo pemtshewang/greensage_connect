@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Pressable, View, ActivityIndicator, Text } from "react-native";
+import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useGreenhouseStore } from "../../zustand/store";
 import useWebSocket from "../../config/hooks/wsservice";
+import { Text } from "native-base";
 
 type ConnectionMsgTypes =
   | "Connected"
@@ -15,12 +16,10 @@ type ConnectionMsgTypes =
 
 export default function WSTestConnectionForm({
   id,
-  ipAddress,
   showForm,
   setShowForm,
 }: {
   id: string;
-  ipAddress: string;
   showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -35,6 +34,7 @@ export default function WSTestConnectionForm({
 
   const testConnection = async () => {
     setConnecting(true);
+    setConMsg("Connecting");
     try {
       store.updateGreenhouse(id, {
         ws: websocket,
@@ -47,7 +47,6 @@ export default function WSTestConnectionForm({
     } catch (error) {
       setConnected(false);
       setConMsg("Connection Failed");
-      store.updateGreenhouse(id, { isConnected: false });
     } finally {
       setConnecting(false);
     }
@@ -70,14 +69,12 @@ export default function WSTestConnectionForm({
       >
         <Text
           style={{
-            fontWeight: "bold",
+            width: "100%",
+            textAlign: "center"
           }}
         >
-          Testing connection with {ipAddress}
+          Testing connection with {greenhouse?.ipAddress as string}
         </Text>
-        {/* Circular border */}
-
-        {/* Button */}
         <Pressable
           disabled={connecting}
           onPress={testConnection}
