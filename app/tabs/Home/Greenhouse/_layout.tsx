@@ -69,7 +69,6 @@ export default function Layout() {
                 >
                   <Text
                     color="#fff"
-                    w="container"
                     fontSize="xl"
                   >{name}</Text>
                 </View>

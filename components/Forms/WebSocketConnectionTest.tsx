@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
@@ -32,17 +32,21 @@ export default function WSTestConnectionForm({
 
   const websocket = useWebSocket({ id: greenhouse?.id as string });
 
+  useEffect(() => {
+    store.updateGreenhouse(id, {
+      ws: websocket,
+    });
+  }, []);
+
   const testConnection = async () => {
     setConnecting(true);
     setConMsg("Connecting");
     try {
-      store.updateGreenhouse(id, {
-        ws: websocket,
-      });
       await greenhouse?.ws.connect();
       setConnected(true);
       setConMsg("Connected");
       store.updateGreenhouse(id, { isConnected: true });
+      setShowForm(false);
       router.push(`/tabs/Home/Greenhouse/${id}`);
     } catch (error) {
       setConnected(false);
@@ -76,7 +80,7 @@ export default function WSTestConnectionForm({
           Testing connection with {greenhouse?.ipAddress as string}
         </Text>
         <Pressable
-          disabled={connecting}
+          disabled={connecting || connected}
           onPress={testConnection}
           style={({ pressed }) => [
             {

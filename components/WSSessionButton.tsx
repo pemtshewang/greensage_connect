@@ -1,9 +1,7 @@
 import Icons from "../assets/Icons/Icons";
 import { Pressable } from "react-native";
 export default function WSSessionButton({
-  showDialog,
   setShowDialog,
-  ws,
 }: {
   showDialog: boolean;
   setShowDialog: (val: boolean) => void;
@@ -28,5 +26,5 @@ export default function WSSessionButton({
         color="black"
       />
     </Pressable>
-  )
+  );
 }

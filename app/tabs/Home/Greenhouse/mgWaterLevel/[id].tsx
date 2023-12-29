@@ -67,7 +67,6 @@ export default function ParamsContainer() {
                 >
                   <Text
                     color="#fff"
-                    w="container"
                     fontSize="xl"
                   >Manage Waterflow</Text>
                 </View>

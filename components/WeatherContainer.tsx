@@ -5,8 +5,10 @@ import getWeather from "../api/weather/api";
 import { Icons } from "../assets/Icons/Icons";
 import { exportReadings as wData } from "../api/weather/api";
 import { format } from "date-fns";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const WeatherContainer = () => {
+  const { isInternetReachable } = useNetInfo();
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [weatherIcon, setWeatherIcon] = useState(
@@ -16,19 +18,23 @@ const WeatherContainer = () => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
+      if (isInternetReachable) {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setErrorMsg("Permission to access location was denied");
+          return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+        getWeather().then((data) => {
+          setWeatherData(data);
+          setWeatherIcon(getWeatherIcon()); // Set the weather icon based on weather data
+        });
+      } else {
+        setErrorMsg("No internet connection");
       }
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
     })();
-    getWeather().then((data) => {
-      setWeatherData(data);
-      setWeatherIcon(getWeatherIcon()); // Set the weather icon based on weather data
-    });
-  }, []);
+  }, [isInternetReachable]);
 
   const getWeatherIcon = () => {
     if (wData) {
@@ -80,7 +86,7 @@ const WeatherContainer = () => {
           fontWeight: 'bold',
           fontSize: 15,
           width: 150,
-        }}>{format(new Date(),"EEEE")}, {format(new Date(), "dd")} {format(new Date(), "MMMM")}</Text>
+        }}>{format(new Date(), "EEEE")}, {format(new Date(), "dd")} {format(new Date(), "MMMM")}</Text>
       </View>
     </View>
   );

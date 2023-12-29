@@ -5,7 +5,7 @@ import { GreenhouseState, totalGreenhouseState } from "./state";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Define your store state
-export interface StoreState extends totalGreenhouseState {
+interface StoreState extends totalGreenhouseState {
   addGreenhouse: (greenhouse: GreenhouseState) => void;
   updateGreenhouse: (id: string, data: Partial<GreenhouseState>) => void;
   removeGreenhouse: (id: string) => void;

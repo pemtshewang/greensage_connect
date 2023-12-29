@@ -13,21 +13,20 @@ export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
-  const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
+  const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState as boolean);
   const toggleState = () => {
-    const updatedState = !state; // Calculate the updated state value
-    // Perform actions based on the updatedState
+    const updatedState = !state;
     if (!updatedState) {
       greenhouse?.ws.sendMessage("light:off");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
-        lightState: false
+        ventilationFanState: false
       });
     } else {
       greenhouse?.ws.sendMessage("light:on");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
-        lightState: true
+        ventilationFanState: true
       });
     }
     opState(updatedState); // Update the state after performing actions
@@ -62,7 +61,6 @@ export default function ParamsContainer() {
                 >
                   <Text
                     color="#fff"
-                    w="container"
                     fontSize="xl"
                   >Manage Temperature</Text>
                 </View>

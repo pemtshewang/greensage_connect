@@ -2,7 +2,7 @@ import { View, Text } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function WaterValveControllerContainer({
   state,
@@ -11,7 +11,7 @@ export default function WaterValveControllerContainer({
   state: boolean,
   setState: (state: boolean) => void
 }) {
-  const translation = new Animated.Value(0);
+  const translation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (state) {
@@ -22,6 +22,7 @@ export default function WaterValveControllerContainer({
   }, [state]);
 
   const startDropletAnimation = () => {
+    translation.setValue(0); // Reset the animation value before startingset
     Animated.loop(
       Animated.timing(translation, {
         toValue: 20,
@@ -33,7 +34,9 @@ export default function WaterValveControllerContainer({
   };
 
   const stopDropletAnimation = () => {
-    translation.stopAnimation(); // Stop the animation when the state changes to false
+    translation.stopAnimation((value) => {
+      translation.setValue(value); // Set the current animation value when stopping
+    });
   };
 
   return (

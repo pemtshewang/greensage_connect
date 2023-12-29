@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Animated, Easing, Pressable } from "react-native";
 import { Icons } from "../../../assets/Icons/Icons";
 import { Text, Heading, Button } from "native-base";
@@ -47,7 +47,7 @@ const IndexPage = () => {
           justifyContent: "space-between",
         }}
       >
-        <Heading>Available Greenhouses</Heading>
+        <Heading>Available greenhouses</Heading>
         <Animated.View
           style={[
             GreenHouseContainerStyles.addButton,

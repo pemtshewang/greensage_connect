@@ -11,7 +11,6 @@ const KillSessionDialog = ({
   setDialogVisible,
 }: {
   ws: any;
-  title: string;
   message: string;
   dialogVisible: boolean;
   setDialogVisible: (val: boolean) => void;

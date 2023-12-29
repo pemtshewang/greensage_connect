@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useGreenhouseStore } from "../zustand/store";
+import { useRouter } from "expo-router";
 
 const GreenhouseNavContainer = ({
   id,
@@ -27,7 +28,7 @@ const GreenhouseNavContainer = ({
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
   const greenhouseStore = useGreenhouseStore();
   const greenhouse = greenhouseStore.greenhouses.find(res => res.id === id);
-  const ipAddress = greenhouse?.ipAddress;
+  const router = useRouter();
 
   useEffect(() => {
     if (removeGreenhouseConfirm) {
@@ -35,7 +36,22 @@ const GreenhouseNavContainer = ({
     }
   }, [removeGreenhouseConfirm]);
   return (
-    <>
+    <View
+      style={{
+        width: "100%",
+        borderRadius: 9,
+        backgroundColor: "white", // Card background color
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 6,
+        marginVertical: 10,
+      }}
+    >
       <View
         style={{
           width: "100%",
@@ -79,7 +95,7 @@ const GreenhouseNavContainer = ({
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            padding: 5,
+            padding: 10,
           }}
         >
           <View
@@ -89,6 +105,7 @@ const GreenhouseNavContainer = ({
               justifyContent: "center",
               padding: 5,
               borderRadius: 99,
+              borderEndEndRadius: 999,
             }}
           >
             <Text color="white" backgroundColor="white">
@@ -102,7 +119,11 @@ const GreenhouseNavContainer = ({
               borderRadius: 99,
             }}
             onPress={() => {
-              setShowWSForm(true);
+              if (greenhouse?.isConnected) {
+                router.replace(`/tabs/Home/Greenhouse/${id}`);
+              } else {
+                setShowWSForm(true);
+              }
             }}
           >
             <Icons.enter color="black" />
@@ -110,7 +131,6 @@ const GreenhouseNavContainer = ({
         </View>
         <WSTestConnectionForm
           id={id}
-          ipAddress={ipAddress as string}
           showForm={showWSForm}
           setShowForm={setShowWSForm}
         />
@@ -141,7 +161,7 @@ const GreenhouseNavContainer = ({
           setDeleteGreenhouse={setRemoveGreenhouseConfirm}
         />
       </View>
-    </>
+    </View>
   );
 };
 export default GreenhouseNavContainer;

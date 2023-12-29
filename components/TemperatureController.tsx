@@ -19,9 +19,6 @@ export default function TemperatureControllerContainer({
     } else {
       stopRotationAnimation();
     }
-    return () => {
-      stopRotationAnimation(); // Clean up animation on component unmount or state change
-    };
   }, [state]);
 
   const startRotationAnimation = () => {
