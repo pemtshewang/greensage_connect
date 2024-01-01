@@ -8,10 +8,12 @@ import GreenHouseAddForm from "../../../components/Forms/GreenhouseForm";
 import { useGreenhouseStore } from "../../../zustand/store";
 import GreenhouseNavContainer from "../../../components/GreehouseNavContainer";
 import { ScrollView } from "react-native";
+import MqttConnectionTestForm from "../../../components/Forms/MqttConnectionTest";
 
 const IndexPage = () => {
   const store = useGreenhouseStore();
   const [showAddGreenhouseForm, setShowAddGreenhouseForm] = useState(false);
+  const [showMqtt, setShowMqtt] = useState(false);
   const scaleValue = useRef(new Animated.Value(1)).current;
   const startAnimation = () => {
     Animated.timing(scaleValue, {
@@ -70,6 +72,13 @@ const IndexPage = () => {
           </Pressable>
         </Animated.View>
       </View>
+      <Button onPress={
+        () => {
+          setShowMqtt(true);
+        }
+      }>
+        show Mqtt form
+      </Button>
       <CustomModal
         modalVisible={showAddGreenhouseForm}
         setModalVisible={setShowAddGreenhouseForm}
@@ -111,6 +120,7 @@ const IndexPage = () => {
           <Text>No Greenhouses Found</Text>
         </View>
       )}
+      <MqttConnectionTestForm showForm={showMqtt} setShowForm={setShowMqtt} id={"2"} />
     </View>
   );
 };

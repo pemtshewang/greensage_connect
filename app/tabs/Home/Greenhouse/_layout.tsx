@@ -18,7 +18,6 @@ export default function Layout() {
   const name = greenhouse?.name;
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
-
   useEffect(() => {
     if (greenhouse?.isConnected === false) {
       setShowDialog(true);

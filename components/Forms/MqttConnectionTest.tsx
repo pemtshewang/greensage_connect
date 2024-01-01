@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
-import { useRouter } from "expo-router";
 import { useGreenhouseStore } from "../../zustand/store";
-import { Text } from "native-base";
-import useWebSocket from "../../hooks/wsservice";
+import { Button, Text } from "native-base";
+import useMqtt from "../../hooks/mqtt";
 
 type ConnectionMsgTypes =
   | "Connected"
@@ -14,7 +13,7 @@ type ConnectionMsgTypes =
   | "Connection Failed"
   | "Connecting";
 
-export default function WSTestConnectionForm({
+export default function MqttConnectionTestForm({
   id,
   showForm,
   setShowForm,
@@ -29,35 +28,7 @@ export default function WSTestConnectionForm({
   const [err, setErr] = useState<string>("");
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
-  const router = useRouter();
-
-  const websocket = useWebSocket({ id: greenhouse?.id as string });
-
-  useEffect(() => {
-    store.updateGreenhouse(id, {
-      ws: websocket,
-    });
-  }, []);
-
-  const testConnection = async () => {
-    setConnecting(true);
-    setConMsg("Connecting");
-    try {
-      await greenhouse?.ws.connect();
-      setConnected(true);
-      setConMsg("Connected");
-      store.updateGreenhouse(id, { isConnected: true });
-      setShowForm(false);
-      router.push(`/tabs/Home/Greenhouse/${id}`);
-    } catch (error) {
-      setConnected(false);
-      setErr(error as string);
-      setConMsg("Connection Failed");
-    } finally {
-      setConnecting(false);
-    }
-  };
-
+  const client = useMqtt();
   return (
     <CustomModal
       modalTitle="Local Connection Test"
@@ -83,7 +54,11 @@ export default function WSTestConnectionForm({
         </Text>
         <Pressable
           disabled={connecting || connected}
-          onPress={testConnection}
+          onPress={
+            () => {
+              client.connectToBroker();
+            }
+          }
           style={({ pressed }) => [
             {
               flexDirection: "row",
@@ -146,10 +121,16 @@ export default function WSTestConnectionForm({
               color: "#A0A0A0",
             }}
           >
-            {err && JSON.stringify(err)}
+            {err && err.toString()}
             Press the button for connection
           </Text>
+          <Button onPress={() => client.disconnectFromBroker()}>
+            Disconnect from broker
+          </Button>
         </View>
+        <Button onPress={() => client.sendMessage("temperature", "32%c")}>
+          Send Message
+        </Button>
       </View>
     </CustomModal>
   );

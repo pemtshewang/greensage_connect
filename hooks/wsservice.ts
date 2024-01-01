@@ -1,5 +1,5 @@
-import { useGreenhouseStore } from "../../zustand/store";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
+import { useGreenhouseStore } from "../zustand/store";
 
 const useWebSocket = ({ id }: { id: string }) => {
   const store = useGreenhouseStore();

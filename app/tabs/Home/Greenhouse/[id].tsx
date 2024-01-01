@@ -1,10 +1,7 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { View, ScrollView, Text } from "native-base";
+import { useLocalSearchParams } from "expo-router";
+import { View, ScrollView } from "native-base";
 import { useGreenhouseStore } from "../../../../zustand/store";
-import { Stack } from "expo-router";
 import { Icons } from "../../../../assets/Icons/Icons";
-import { useNavigation } from "expo-router";
-import { Pressable } from "react-native";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
 import { useState, useEffect } from "react";

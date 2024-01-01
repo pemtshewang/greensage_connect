@@ -26,7 +26,11 @@
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE"
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.CHANGE_WIFI_STATE"
       ],
       "package": "com.pemtshewang.greensage_connect"
     },
@@ -40,7 +44,17 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
-      ]
+      ],
+      [
+        "expo-build-properties", 
+        {
+        "android": {
+          "usesCleartextTraffic": true
+        },
+        "ios": {
+          "usesCleartextTraffic": true
+        }
+      }]
     ],
     "extra": {
       "router": {

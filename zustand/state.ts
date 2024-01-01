@@ -22,7 +22,7 @@ interface GreenhouseState {
     ventilationFanState: boolean;
     lightState: boolean;
     waterValveState: boolean;
-    ws: any;
+    ws: WebSocket | null;
     sessionDialog: boolean;
 }
 
