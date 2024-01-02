@@ -26,24 +26,18 @@ export default function WSTestConnectionForm({
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [conMsg, setConMsg] = useState<ConnectionMsgTypes>("Not Connected");
-  const [err, setErr] = useState<string>("");
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
   const router = useRouter();
-
-  const websocket = useWebSocket({ id: greenhouse?.id as string });
-
-  useEffect(() => {
-    store.updateGreenhouse(id, {
-      ws: websocket,
-    });
-  }, []);
-
+  const websocket = useWebSocket({ id: id });
   const testConnection = async () => {
     setConnecting(true);
     setConMsg("Connecting");
     try {
-      await greenhouse?.ws.connect();
+      await websocket.connect();
+      store.updateGreenhouse(id, {
+        ws: websocket
+      });
       setConnected(true);
       setConMsg("Connected");
       store.updateGreenhouse(id, { isConnected: true });
@@ -51,7 +45,6 @@ export default function WSTestConnectionForm({
       router.push(`/tabs/Home/Greenhouse/${id}`);
     } catch (error) {
       setConnected(false);
-      setErr(error as string);
       setConMsg("Connection Failed");
     } finally {
       setConnecting(false);
@@ -146,7 +139,6 @@ export default function WSTestConnectionForm({
               color: "#A0A0A0",
             }}
           >
-            {err && JSON.stringify(err)}
             Press the button for connection
           </Text>
         </View>

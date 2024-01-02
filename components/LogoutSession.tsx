@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useRouter } from "expo-router";
 import { View, Text } from "native-base";
 import Icons from "../assets/Icons/Icons";
+import { IWebSocket } from "../zustand/state";
 
 const KillSessionDialog = ({
   ws,
@@ -10,7 +11,7 @@ const KillSessionDialog = ({
   dialogVisible,
   setDialogVisible,
 }: {
-  ws: any;
+  ws: IWebSocket
   message: string;
   dialogVisible: boolean;
   setDialogVisible: (val: boolean) => void;
@@ -64,7 +65,8 @@ const KillSessionDialog = ({
             }}
             onPress={() => {
               ws.disconnect();
-              router.replace("/tabs/Home"); setDialogVisible(false);
+              router.replace("/tabs/Home");
+              setDialogVisible(false);
             }}
           >
             Disconnect

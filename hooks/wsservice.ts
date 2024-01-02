@@ -7,7 +7,7 @@ const useWebSocket = ({ id }: { id: string }) => {
   const socket = useRef<WebSocket | null>(null);
   let heartbeatInterval: NodeJS.Timeout | null = null;
 
-  const connect = () => {
+  const connect = (): Promise<WebSocket> => {
     return new Promise<WebSocket>((res, rej) => {
       const ws = new WebSocket(`ws://${greenhouse?.ipAddress}`);
       ws.onopen = () => {
@@ -30,17 +30,17 @@ const useWebSocket = ({ id }: { id: string }) => {
   };
 
   const disconnect = () => {
-    socket.current?.close();
-    clearInterval(heartbeatInterval!);
-    heartbeatInterval = null;
+    if (socket.current) {
+      socket.current?.close();
+      clearInterval(heartbeatInterval!);
+      heartbeatInterval = null;
+    } else {
+      console.log("socket is null");
+    }
   };
 
   const sendMessage = (message: string) => {
-    if (socket.current && socket.current.readyState === WebSocket.OPEN) {
-      socket.current.send(message);
-    } else {
-      console.warn("WebSocket is not open");
-    }
+    socket.current?.send(message);
   };
 
   const setupHeartbeat = () => {
@@ -68,11 +68,8 @@ const useWebSocket = ({ id }: { id: string }) => {
       case "soil":
         store.updateGreenhouse(id, { soil_moisture: Number(data) });
         break;
-      default:
-        break;
     }
   };
-
   const handleDisconnect = (message: string) => {
     console.log(message);
     store.updateGreenhouse(id, { isConnected: false });
@@ -80,7 +77,6 @@ const useWebSocket = ({ id }: { id: string }) => {
     clearInterval(heartbeatInterval!);
     heartbeatInterval = null;
   };
-
   return {
     connect,
     disconnect,

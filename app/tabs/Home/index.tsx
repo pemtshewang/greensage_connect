@@ -124,5 +124,4 @@ const IndexPage = () => {
     </View>
   );
 };
-
 export default IndexPage;
