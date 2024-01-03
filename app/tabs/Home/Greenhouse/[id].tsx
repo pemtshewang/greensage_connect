@@ -1,13 +1,16 @@
 import { useLocalSearchParams } from "expo-router";
-import { View, ScrollView } from "native-base";
+import { View } from "native-base";
 import { useGreenhouseStore } from "../../../../zustand/store";
 import { Icons } from "../../../../assets/Icons/Icons";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
 import { useState, useEffect } from "react";
+import { ScrollView } from "native-base";
+import { Dimensions } from "react-native";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { width } = Dimensions.get('window');
   const [params, setParams] = useState<{
     temperature: number;
     humidity: number;
@@ -33,37 +36,63 @@ const Page = () => {
   }, [greenhouse]);
   return (
     <>
-      < ScrollView
-        scrollEnabled={true}
-        style={{
-          paddingTop: 10
-        }}>
-        <ReadingsContainer
-          temperatureReading={params.temperature}
-          humidityReading={params.humidity}
-          soilMoistureReading={params.soil_moisture}
-          ldrReading={params.ldr}
-        />
-        <View style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-around",
-          marginTop: 20
-        }}>
-          <ShadowContainer
-            label={"Manage Temperature"}
-            id={id as string}
-            icon={<Icons.exhaustFan width={32} height={32} color="black" />}
-            navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
-          />
-          <ShadowContainer
-            label={"Manage Waterflow"}
-            id={id as string}
-            icon={<Icons.valve width={32} height={32} color="black" />}
-            navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
-          />
-        </View>
-      </ScrollView >
+      <ReadingsContainer
+        temperatureReading={params.temperature}
+        humidityReading={params.humidity}
+        soilMoistureReading={params.soil_moisture}
+        ldrReading={params.ldr}
+      />
+      {
+        width <= 768 ? (
+          <ScrollView
+            scrollEnabled={true}
+            style={{
+            }}
+          >
+            <View>
+              <View style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                marginTop: 20
+              }}>
+                <ShadowContainer
+                  label={"Manage Temperature"}
+                  id={id as string}
+                  icon={<Icons.exhaustFan width={32} height={32} color="black" />}
+                  navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
+                />
+                <ShadowContainer
+                  label={"Manage Waterflow"}
+                  id={id as string}
+                  icon={<Icons.valve width={32} height={32} color="black" />}
+                  navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
+                />
+              </View>
+            </View>
+          </ScrollView>) :
+          (
+            <View style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 20
+            }}>
+              <ShadowContainer
+                label={"Manage Temperature"}
+                id={id as string}
+                icon={<Icons.exhaustFan width={32} height={32} color="black" />}
+                navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
+              />
+              <ShadowContainer
+                label={"Manage Waterflow"}
+                id={id as string}
+                icon={<Icons.valve width={32} height={32} color="black" />}
+                navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
+              />
+            </View>
+          )
+      }
     </>
   );
 };

@@ -16,43 +16,36 @@ export default function ShadowContainer({
   const router = useRouter();
   return (
     <Pressable
+      style={{
+        width: 150,
+        paddingVertical: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 8, // Required for Android
+        backgroundColor: "green", // Add a background color if not already specified
+        borderRadius: 10, // Add border radius for rounded corners if desired
+      }}
       onPress={() => {
         router.setParams({ id: id });
         router.push(navigatePath);
       }}
     >
-      <View
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignContent: "center",
-          margin: 7,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.3,
-          shadowRadius: 4,
-          elevation: 8, // Required for Android
-          backgroundColor: "green", // Add a background color if not already specified
-          padding: 10, // Adjust padding as needed
-          borderRadius: 10, // Add border radius for rounded corners if desired
-        }}
-      >
-        <View style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignContent: "center",
-          padding: 10
-        }}>
-          {icon}
-        </View>
+      <View style={{
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 10
+      }}>
+        {icon}
         <Text style={{
-          textAlign: "center", fontWeight: "bold", color: "#fff",
-          width: "100%",
+          color: "#ffd"
         }}>{label}</Text>
       </View>
-    </Pressable>
+    </Pressable >
   )
 }

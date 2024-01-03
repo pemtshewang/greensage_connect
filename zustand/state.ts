@@ -1,4 +1,3 @@
-import WebSocketService from "../config/websocket/websocket";
 
 interface totalGreenhouseState {
     count: number;
@@ -8,6 +7,7 @@ export interface IWebSocket {
     sendMessage: (message: string) => void;
     connect: () => Promise<WebSocket>;
     disconnect: () => void;
+    isConnected: () => boolean | null | undefined;
 }
 
 interface GreenhouseState {

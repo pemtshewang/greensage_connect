@@ -13,23 +13,24 @@ export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
-  const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState as boolean);
+  const [state, updateFanState] = useState<boolean>(greenhouse?.ventilationFanState as boolean);
   const toggleState = () => {
-    const updatedState = !state;
-    if (!updatedState) {
+    if (state) {
+      console.log("Sending message to turn off light")
       greenhouse?.ws.sendMessage("light:off");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: false
       });
     } else {
+      console.log("Sending message to turn on light")
       greenhouse?.ws.sendMessage("light:on");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: true
       });
     }
-    opState(updatedState); // Update the state after performing actions
+    updateFanState(!state); // Update the state after performing actions
   };
   return (
     <View style={{

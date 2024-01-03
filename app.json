@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "y"
     },
     "android": {
       "adaptiveIcon": {
@@ -46,15 +47,16 @@
         }
       ],
       [
-        "expo-build-properties", 
+        "expo-build-properties",
         {
-        "android": {
-          "usesCleartextTraffic": true
-        },
-        "ios": {
-          "usesCleartextTraffic": true
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "usesCleartextTraffic": true
+          }
         }
-      }]
+      ]
     ],
     "extra": {
       "router": {

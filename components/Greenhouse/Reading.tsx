@@ -27,14 +27,14 @@ export default function ReadingsContainer({
         shadowRadius: 4,
         elevation: 8, // Required for Android
         backgroundColor: "#fff", // Add a background color if not already specified
-        padding: 10, // Adjust padding as needed
+        padding: 5, // Adjust padding as needed
         borderRadius: 10, // Add border radius for rounded corners if desired
       }}
     >
       {/* first row */}
       <View style={{
-        paddingTop: 5,
-        flexDirection: "row", justifyContent: "space-around"
+        flexDirection: "row",
+        justifyContent: "space-around"
       }}>
         {/* Temperature */}
         <View style={{ position: "relative" }}>
@@ -92,7 +92,6 @@ export default function ReadingsContainer({
 
       {/* start of second row */}
       <View style={{
-        paddingTop: 5,
         flexDirection: "row", justifyContent: "space-around"
       }}>
         {/* Soil Moisture */}

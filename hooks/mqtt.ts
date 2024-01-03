@@ -1,8 +1,6 @@
 import Paho from "paho-mqtt";
-import { useRef } from "react";
 
 const useMqtt = () => {
-  const mqttClient = useRef<Paho.Client | null>(null);
   const client = new Paho.Client("192.168.0.122", 8083, Math.random().toString());
   const connectToBroker = () => {
     client.connect({

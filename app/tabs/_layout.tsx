@@ -22,7 +22,6 @@ const TabLayout = () => {
       <Tabs.Screen
         name="Dashboard"
         options={{
-          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Icons.dashboard
               color={focused ? "green" : "#6b7280"}
@@ -30,6 +29,24 @@ const TabLayout = () => {
             />
           ),
           tabBarActiveTintColor: "green",
+          header: () => {
+            return (
+              <View
+                style={{
+                  backgroundColor: "green",
+                  padding: 10,
+                }}
+              >
+                <Heading
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  Dashboard Analytics
+                </Heading>
+              </View>
+            );
+          }
           // underlined when focused
         }}
       />
@@ -43,7 +60,6 @@ const TabLayout = () => {
                 style={{
                   backgroundColor: "green",
                   padding: 10,
-                  alignItems: "left",
                 }}
               >
                 <Heading
@@ -76,7 +92,6 @@ const TabLayout = () => {
                 style={{
                   backgroundColor: "green",
                   padding: 10,
-                  alignItems: "left",
                 }}
               >
                 <Heading

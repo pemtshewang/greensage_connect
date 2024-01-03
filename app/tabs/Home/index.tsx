@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { View, Animated, Easing, Pressable } from "react-native";
 import { Icons } from "../../../assets/Icons/Icons";
 import { Text, Heading, Button } from "native-base";
@@ -8,12 +8,11 @@ import GreenHouseAddForm from "../../../components/Forms/GreenhouseForm";
 import { useGreenhouseStore } from "../../../zustand/store";
 import GreenhouseNavContainer from "../../../components/GreehouseNavContainer";
 import { ScrollView } from "react-native";
-import MqttConnectionTestForm from "../../../components/Forms/MqttConnectionTest";
+import Banner from "../../../components/NoGreenhouseBanner";
 
 const IndexPage = () => {
   const store = useGreenhouseStore();
   const [showAddGreenhouseForm, setShowAddGreenhouseForm] = useState(false);
-  const [showMqtt, setShowMqtt] = useState(false);
   const scaleValue = useRef(new Animated.Value(1)).current;
   const startAnimation = () => {
     Animated.timing(scaleValue, {
@@ -72,13 +71,6 @@ const IndexPage = () => {
           </Pressable>
         </Animated.View>
       </View>
-      <Button onPress={
-        () => {
-          setShowMqtt(true);
-        }
-      }>
-        show Mqtt form
-      </Button>
       <CustomModal
         modalVisible={showAddGreenhouseForm}
         setModalVisible={setShowAddGreenhouseForm}
@@ -91,6 +83,8 @@ const IndexPage = () => {
       </CustomModal>
       {store.greenhouses.length > 0 ? (
         <ScrollView
+          scrollEnabled={true}
+          nestedScrollEnabled={true}
           style={{
             marginTop: 10,
             padding: 10,
@@ -117,10 +111,9 @@ const IndexPage = () => {
             padding: 10,
           }}
         >
-          <Text>No Greenhouses Found</Text>
+          <Banner message={"No greenhouse has been added yet, Add One!"} />
         </View>
       )}
-      <MqttConnectionTestForm showForm={showMqtt} setShowForm={setShowMqtt} id={"2"} />
     </View>
   );
 };

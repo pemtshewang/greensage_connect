@@ -40,19 +40,30 @@ const useWebSocket = ({ id }: { id: string }) => {
   };
 
   const sendMessage = (message: string) => {
+    if (socket.current === null) {
+      console.error("socket is null");
+      return;
+    }
     socket.current?.send(message);
   };
 
   const setupHeartbeat = () => {
     heartbeatInterval = setInterval(() => {
       sendMessage("ping");
+      let isDisconnected = false;
+      // Send ping and handle disconnect if no response received after 5 seconds
       setTimeout(() => {
-        if (socket.current?.readyState !== WebSocket.OPEN) {
-          handleDisconnect("The WebSocket is not connected [failed ping mechanism]");
+        if (!isDisconnected && socket.current?.readyState === WebSocket.OPEN) {
+          handleDisconnect("The WebSocket is not responding [no response]");
+          isDisconnected = true;
         }
       }, 5000);
     }, 10000);
   };
+
+  const isConnected = () => {
+    return socket.current?.readyState === WebSocket.OPEN;
+  }
 
   const handleMessage = (e: MessageEvent) => {
     const [type, data] = e.data.split(":");
@@ -70,6 +81,7 @@ const useWebSocket = ({ id }: { id: string }) => {
         break;
     }
   };
+
   const handleDisconnect = (message: string) => {
     console.log(message);
     store.updateGreenhouse(id, { isConnected: false });
@@ -77,10 +89,12 @@ const useWebSocket = ({ id }: { id: string }) => {
     clearInterval(heartbeatInterval!);
     heartbeatInterval = null;
   };
+
   return {
     connect,
     disconnect,
     sendMessage,
+    isConnected
   };
 };
 

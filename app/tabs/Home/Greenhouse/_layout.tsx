@@ -9,6 +9,7 @@ import WSDisconnectDialogBox from "../../../../components/WSDisconnectDialog";
 import { useEffect, useState } from "react";
 import KillSessionDialog from "../../../../components/LogoutSession";
 import WSSessionButton from "../../../../components/WSSessionButton";
+import { IWebSocket } from "../../../../zustand/state";
 
 export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -18,11 +19,14 @@ export default function Layout() {
   const name = greenhouse?.name;
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
+
   useEffect(() => {
-    if (greenhouse?.isConnected === false) {
+    if (!greenhouse?.ws.isConnected) setShowDialog(true);
+    if (!greenhouse?.ws) {
       setShowDialog(true);
     }
   }, [greenhouse]);
+
   return (
     <>
       <Stack.Screen
@@ -40,7 +44,7 @@ export default function Layout() {
         dialogVisible={showKillSessionDialog}
         message="Are you sure you want to disconnect this session?"
         setDialogVisible={setShowKillSessionDialog}
-        ws={greenhouse?.ws}
+        ws={greenhouse?.ws as IWebSocket}
       />
       <Stack
         screenOptions={{
