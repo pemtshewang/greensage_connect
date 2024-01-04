@@ -53,75 +53,43 @@ export default function TemperatureControllerContainer({
   });
   return (
     <View
+      w="container"
       style={{
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
-        width: "100%"
       }}>
-      <View style={{
-        width: "50%",
-        flexDirection: "row",
-        justifyContent: "center",
-        gap: 4,
-        // box shadow
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 8, // Required for Android
-        backgroundColor: "#fff", // Add a background color if not already specified
-        padding: 10, // Adjust padding as needed
-        borderRadius: 20
-
-      }}>
-        <Text style={{
-          fontWeight: "500"
-        }}>Ventilation Fan State:</Text>
-        <Icons.powerState color={state ? "green" : "red"} />
-      </View>
-      <View style={{
-        width: "85%",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 4,
-        // box shadow
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 8, // Required for Android
-        backgroundColor: "#fff", // Add a background color if not already specified
-        padding: 10, // Adjust padding as needed
-        borderRadius: 20
-
-      }}>
-        <Text style={{
-          fontWeight: "500"
-        }}>Toggle the switch to turn on and off</Text>
-        <View style={{
+      <View
+        w="100%"
+        style={{
           flexDirection: "row",
-          alignItems: "center",
-          gap: 20
+          gap: 4,
+          // box shadow
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.3,
+          shadowRadius: 4,
+          elevation: 8, // Required for Android
+          backgroundColor: "#fff", // Add a background color if not already specified
+          padding: 10, // Adjust padding as needed
+          borderRadius: 20
+
         }}>
-          <Switch
-            style={{
-              transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
-            }}
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={state ? 'green' : '#f33'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitchState}
-            value={switchState}
-          />
+        <View
+          w="10"
+          marginRight="5"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            gap: 4
+          }}
+        >
+          <Icons.powerState color={state ? "green" : "red"} />
           <View
             style={{
               borderColor: "black",
@@ -134,8 +102,31 @@ export default function TemperatureControllerContainer({
             </Animated.View>
           </View>
         </View>
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "center"
+          }}>
+          <Text fontWeight="semibold" color="#A0A0A0">Toggle the switch to turn on and off</Text>
+          <View style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 20
+          }}>
+            <Switch
+              style={{
+                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+              }}
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={state ? 'green' : '#f33'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitchState}
+              value={switchState}
+            />
+          </View>
+        </View>
       </View>
-    </View>
+    </View >
 
   )
 }

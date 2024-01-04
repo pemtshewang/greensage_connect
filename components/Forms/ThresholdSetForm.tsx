@@ -5,13 +5,11 @@ import { useState } from "react";
 
 const ThresholdSetForm = ({
   type,
-  title,
   message,
   ws,
   defaultValue
 }: {
   type: "ventilation" | "soil_moisture",
-  title: string,
   message: string,
   ws: IWebSocket,
   defaultValue: string
@@ -21,8 +19,9 @@ const ThresholdSetForm = ({
   const toggleChangeState = () => setChangeState(!changeState);
 
   const sendThreshold = () => {
-    setValue(defaultValue);
-    ws.sendMessage(`temperature:threshold:${value}`);
+    setValue(value);
+    ws.sendMessage(`threshold:temperature:${value}`);
+    console.log("Sending threshold");
     toggleChangeState();
   }
 
@@ -63,27 +62,33 @@ const ThresholdSetForm = ({
         gap: 5,
         alignItems: "center"
       }}>
-        <View alignItems="center" flexDirection="row">
+        <View position="relative" flexDirection="row" w="full" justifyContent="center" >
           <Input
             placeholder={`${parseInt(defaultValue) < 1 ? "You haven't set a threshold yet" : defaultValue}`}
             placeholderTextColor="#A0A0A0"
+            alignItems="center"
             style={{
               textAlign: "center",
-              fontSize: 20
+              fontSize: 20,
+              borderBottomWidth: 2,
+              borderBottomColor: "black"
             }}
             inputMode="numeric"
             onChangeText={(text: string) => setValue(text)}
             value={value.toString()}
             isDisabled={!changeState}
-            w="12"
-            borderWidth={changeState ? 2 : 0}
+            w={60}
+            borderWidth={0}
             autoFocus={changeState}
           />
-          <Text
-            style={{
-              color: "#A0A0A0",
-              fontSize: 20
-            }}
+          < Text style={{
+            position: "absolute",
+            top: "34%",
+            right: "35%",
+            textAlignVertical: "center",
+            color: "#A0A0A0",
+            fontSize: 20
+          }}
           >
             {
               type === "ventilation" ? "°C" : "%"

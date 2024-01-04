@@ -71,7 +71,7 @@ const useWebSocket = ({ id }: { id: string }) => {
         console.log("humidity", data);
         store.updateGreenhouse(id, { humidity: Number(data) });
         break;
-      case "soil":
+      case "soilMoisture":
         store.updateGreenhouse(id, { soil_moisture: Number(data) });
         break;
       default:
