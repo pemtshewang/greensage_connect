@@ -3,11 +3,11 @@ interface totalGreenhouseState {
     count: number;
     greenhouses: GreenhouseState[];
 }
+
 export interface IWebSocket {
     sendMessage: (message: string) => void;
     connect: () => Promise<WebSocket>;
     disconnect: () => void;
-    isConnected: () => boolean | null | undefined;
 }
 
 interface GreenhouseState {
@@ -20,6 +20,8 @@ interface GreenhouseState {
     temperature: number;
     humidity: number;
     soil_moisture: number;
+    temperatureThreshold: number;
+    soilMoistureThreshold: number;
     //end parameters 
     ventilationFanState: boolean;
     lightState: boolean;

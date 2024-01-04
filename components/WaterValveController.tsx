@@ -14,11 +14,15 @@ export default function WaterValveControllerContainer({
   const translation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (state) {
-      startDropletAnimation();
-    } else {
-      stopDropletAnimation();
+    const handleAnimation = () => {
+      if (state) {
+        startDropletAnimation();
+      } else {
+        stopDropletAnimation();
+      }
     }
+    const animationFrameId = requestAnimationFrame(handleAnimation);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [state]);
 
   const startDropletAnimation = () => {

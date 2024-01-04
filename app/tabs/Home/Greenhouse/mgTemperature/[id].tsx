@@ -7,6 +7,8 @@ import Icons from "../../../../../assets/Icons/Icons";
 import TemperatureControllerContainer from "../../../../../components/TemperatureController";
 import { useState } from "react";
 import { useGreenhouseStore } from "../../../../../zustand/store";
+import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
+import { IWebSocket } from "../../../../../zustand/state";
 
 export default function ParamsContainer() {
   const navigation = useNavigation();
@@ -15,22 +17,20 @@ export default function ParamsContainer() {
   const greenhouse = store.greenhouses.find((res) => res.id === id);
   const [state, updateFanState] = useState<boolean>(greenhouse?.ventilationFanState as boolean);
   const toggleState = () => {
+    updateFanState(!state); // Update the state after performing actions
     if (state) {
-      console.log("Sending message to turn off light")
       greenhouse?.ws.sendMessage("light:off");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: false
       });
     } else {
-      console.log("Sending message to turn on light")
       greenhouse?.ws.sendMessage("light:on");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: true
       });
     }
-    updateFanState(!state); // Update the state after performing actions
   };
   return (
     <View style={{
@@ -73,6 +73,12 @@ export default function ParamsContainer() {
       <TemperatureControllerContainer
         state={state}
         setState={toggleState} />
+      <ThresholdSetForm
+        type="ventilation"
+        title="Temperature Threshold"
+        message="Set the temperature threshold"
+        ws={greenhouse?.ws as IWebSocket}
+        defaultValue={"10"} />
     </View>
   )
 }

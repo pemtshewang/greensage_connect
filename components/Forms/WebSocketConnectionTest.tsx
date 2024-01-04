@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
@@ -36,7 +36,7 @@ export default function WSTestConnectionForm({
     try {
       await websocket.connect();
       store.updateGreenhouse(id, {
-        ws: websocket
+        ws: websocket,
       });
       setConnected(true);
       setConMsg("Connected");

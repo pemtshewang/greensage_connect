@@ -1,4 +1,4 @@
-import { DropletIcon, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, UnplugIcon, WavesIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, DropletIcon, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, UnplugIcon, WavesIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -33,6 +33,7 @@ import {
   LogInIcon,
   HelpCircleIcon,
   MenuIcon,
+  CrosshairIcon,
 } from "lucide-react-native";
 import Svg, { Rect, Path, G, SvgProps } from "react-native-svg"
 
@@ -78,7 +79,9 @@ export const Icons = {
   options: MoreHorizontalIcon,
   soilMoisture: WavesIcon,
   powerState: PowerCircleIcon,
+  target: CrosshairIcon,
   disconnectSession: UnplugIcon,
+  ArrowBigRight: ArrowBigRightIcon,
   greenhouseAddIcon: ({
     width,
     height,

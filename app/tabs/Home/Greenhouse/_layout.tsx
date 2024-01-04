@@ -4,7 +4,6 @@ import { useLocalSearchParams } from "expo-router";
 import { useGreenhouseStore } from "../../../../zustand/store";
 import Icons from "../../../../assets/Icons/Icons";
 import { Pressable } from "react-native";
-import { useNavigation } from "expo-router";
 import WSDisconnectDialogBox from "../../../../components/WSDisconnectDialog";
 import { useEffect, useState } from "react";
 import KillSessionDialog from "../../../../components/LogoutSession";
@@ -15,14 +14,13 @@ export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
-  const navigation = useNavigation();
   const name = greenhouse?.name;
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
 
+
   useEffect(() => {
-    if (!greenhouse?.ws.isConnected) setShowDialog(true);
-    if (!greenhouse?.ws) {
+    if (greenhouse?.isConnected === false) {
       setShowDialog(true);
     }
   }, [greenhouse]);
@@ -61,7 +59,7 @@ export default function Layout() {
               >
                 <Pressable
                   onPress={() => {
-                    navigation.goBack();
+                    setShowKillSessionDialog(true);
                   }}
                 >
                   <Icons.navigateBack color="black" size={32} />

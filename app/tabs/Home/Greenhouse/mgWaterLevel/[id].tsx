@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 import { useRouter } from "expo-router";
+import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
 
 export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -78,6 +79,12 @@ export default function ParamsContainer() {
       <WaterValveControllerContainer
         state={state}
         setState={toggleState} />
+      <ThresholdSetForm
+        type="soil_moisture"
+        title="Soil Moisture Threshold"
+        message="Set the soil moisture threshold"
+        ws={greenhouse?.ws as IWebSocket}
+        defaultValue={"10"} />
     </View>
   )
 }

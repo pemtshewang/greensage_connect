@@ -12,7 +12,6 @@ import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
-import useWebSocket, { ReadyState } from "react-use-websocket";
 
 const GreenHouseAddForm = ({
   modalState,
@@ -39,10 +38,13 @@ const GreenHouseAddForm = ({
       backgroundImage: imagePath,
       temperature: 0,
       humidity: 0,
+      soil_moisture: 0,
+      temperatureThreshold: 0,
+      soilMoistureThreshold: 0,
       ws: null,
       ventilationFanState: false,
-      soil_moisture: 0,
       lightState: false,
+      waterValveState: false,
     });
     setModalState(false);
   };
@@ -106,33 +108,40 @@ const GreenHouseAddForm = ({
           {errors.ipAddress && String(errors.ipAddress.message)}
         </Text>
       </View>
-      <Pressable
-        onPress={pickImage}
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          borderWidth: 2,
-          padding: 11,
-          borderRadius: 5,
-        }}
-      >
-        <Text>Choose an image for greenhouse</Text>
-        <Icons.camera color="black" />
-      </Pressable>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {imagePath && (
-          <Image
-            alt="Selected Image"
-            source={{ uri: imagePath }}
-            style={{ width: 200, height: 200 }}
-          />
-        )}
+      <View>
+        <Pressable
+          onPress={pickImage}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            borderWidth: 2,
+            padding: 11,
+            borderRadius: 5,
+          }}
+        >
+          <Text>Choose an image for greenhouse</Text>
+          <Icons.camera color="black" />
+        </Pressable>
+        <Text color="#f00">
+          {errors.image && String(errors.image.message)}
+        </Text>
+      </View>
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {imagePath && (
+            <Image
+              alt="Selected Image"
+              source={{ uri: imagePath }}
+              style={{ width: 200, height: 200 }}
+            />
+          )}
+        </View>
       </View>
       <Pressable
         onPress={handleSubmit(handleSubmitData)}

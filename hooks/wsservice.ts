@@ -1,5 +1,5 @@
-import { useRef } from "react";
 import { useGreenhouseStore } from "../zustand/store";
+import { useRef, useEffect } from "react";
 
 const useWebSocket = ({ id }: { id: string }) => {
   const store = useGreenhouseStore();
@@ -7,9 +7,15 @@ const useWebSocket = ({ id }: { id: string }) => {
   const socket = useRef<WebSocket | null>(null);
   let heartbeatInterval: NodeJS.Timeout | null = null;
 
-  const connect = (): Promise<WebSocket> => {
+  useEffect(() => {
+    if (socket.current) {
+      connect();
+    }
+  }, [])
+
+  const connect = () => {
     return new Promise<WebSocket>((res, rej) => {
-      const ws = new WebSocket(`ws://${greenhouse?.ipAddress}`);
+      const ws = new WebSocket(`ws://${greenhouse?.ipAddress}:80`);
       ws.onopen = () => {
         socket.current = ws;
         console.log("WebSocket connected");
@@ -30,40 +36,29 @@ const useWebSocket = ({ id }: { id: string }) => {
   };
 
   const disconnect = () => {
-    if (socket.current) {
-      socket.current?.close();
-      clearInterval(heartbeatInterval!);
-      heartbeatInterval = null;
-    } else {
-      console.log("socket is null");
-    }
+    socket.current?.close();
+    clearInterval(heartbeatInterval!);
+    heartbeatInterval = null;
   };
 
   const sendMessage = (message: string) => {
-    if (socket.current === null) {
-      console.error("socket is null");
-      return;
+    if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+      socket.current.send(message);
+    } else {
+      console.warn("WebSocket is not open");
     }
-    socket.current?.send(message);
   };
 
   const setupHeartbeat = () => {
     heartbeatInterval = setInterval(() => {
       sendMessage("ping");
-      let isDisconnected = false;
-      // Send ping and handle disconnect if no response received after 5 seconds
       setTimeout(() => {
-        if (!isDisconnected && socket.current?.readyState === WebSocket.OPEN) {
-          handleDisconnect("The WebSocket is not responding [no response]");
-          isDisconnected = true;
+        if (socket.current?.readyState !== WebSocket.OPEN) {
+          handleDisconnect("The WebSocket is not connected [failed ping mechanism]");
         }
       }, 5000);
     }, 10000);
   };
-
-  const isConnected = () => {
-    return socket.current?.readyState === WebSocket.OPEN;
-  }
 
   const handleMessage = (e: MessageEvent) => {
     const [type, data] = e.data.split(":");
@@ -79,6 +74,8 @@ const useWebSocket = ({ id }: { id: string }) => {
       case "soil":
         store.updateGreenhouse(id, { soil_moisture: Number(data) });
         break;
+      default:
+        break;
     }
   };
 
@@ -90,11 +87,11 @@ const useWebSocket = ({ id }: { id: string }) => {
     heartbeatInterval = null;
   };
 
+
   return {
     connect,
     disconnect,
     sendMessage,
-    isConnected
   };
 };
 

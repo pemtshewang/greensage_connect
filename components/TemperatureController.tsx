@@ -2,7 +2,7 @@ import { View, Text } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function TemperatureControllerContainer({
   state,
@@ -11,14 +11,22 @@ export default function TemperatureControllerContainer({
   state: boolean | undefined,
   setState: (state: boolean) => void,
 }) {
+  const [switchState, setSwitchState] = useState<boolean>(state as boolean);
+  const toggleSwitchState = () => {
+    setSwitchState(!switchState);
+    setState(!switchState);
+  }
   const rotation = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
-    if (state) {
-      startRotationAnimation();
-    } else {
-      stopRotationAnimation();
+    const handleAnimation = () => {
+      if (state) {
+        startRotationAnimation();
+      } else {
+        stopRotationAnimation();
+      }
     }
+    const animationFrameId = requestAnimationFrame(handleAnimation);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [state]);
 
   const startRotationAnimation = () => {
@@ -111,8 +119,8 @@ export default function TemperatureControllerContainer({
             trackColor={{ false: '#767577', true: '#81b0ff' }}
             thumbColor={state ? 'green' : '#f33'}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setState}
-            value={state}
+            onValueChange={toggleSwitchState}
+            value={switchState}
           />
           <View
             style={{
@@ -122,7 +130,7 @@ export default function TemperatureControllerContainer({
             }}
           >
             <Animated.View style={{ transform: [{ rotate: spin }] }}>
-              <Icons.animatedFan width={32} height={32} color={state ? 'green' : 'red'} />
+              <Icons.animatedFan width={32} height={32} color={switchState ? 'green' : 'red'} />
             </Animated.View>
           </View>
         </View>
