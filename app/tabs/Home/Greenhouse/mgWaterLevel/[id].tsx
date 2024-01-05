@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { View, Text } from "native-base";
+import { View, Text, ScrollView } from "native-base";
 import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
@@ -39,11 +39,7 @@ export default function ParamsContainer() {
     opState(updatedState); // Update the state after performing actions
   };
   return (
-    <View
-      style={{
-        padding: 20
-      }}
-    >
+    <View>
       <Stack.Screen
         options={{
           header: () => {
@@ -78,15 +74,20 @@ export default function ParamsContainer() {
           },
         }}
       />
-      <WaterValveControllerContainer
-        state={state}
-        setState={toggleState} />
-      <ThresholdSetForm
-        type="soil_moisture"
-        message="Set the soil moisture threshold"
-        ws={greenhouse?.ws as IWebSocket}
-        defaultValue={"10"} />
-      <WaterSchedulerForm />
+      <ScrollView
+        w="container"
+        padding="5"
+      >
+        <WaterValveControllerContainer
+          state={state}
+          setState={toggleState} />
+        <ThresholdSetForm
+          type="soil_moisture"
+          message="Set the soil moisture threshold"
+          ws={greenhouse?.ws as IWebSocket}
+          defaultValue={"10"} />
+        <WaterSchedulerForm ws={greenhouse?.ws as IWebSocket} />
+      </ScrollView>
     </View>
   )
 }

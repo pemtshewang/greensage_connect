@@ -50,12 +50,13 @@ export default function WaterValveControllerContainer({
 
   return (
     <View
+      padding="1"
       style={{
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
-        width: "100%"
+        width: "100%",
       }}>
       <View
         w="100%"

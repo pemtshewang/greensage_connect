@@ -44,23 +44,24 @@ const ThresholdSetForm = ({
     });
   }
   return (
-    <View style={{
-      flexDirection: "column",
-      borderWidth: 2,
-      width: "100%",
-      padding: 20,
-      marginTop: 20,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 2,
-      borderRadius: 9,
-      borderColor: "lightgray"
-    }}>
+    <View
+      margin="2"
+      padding="5"
+      style={{
+        flexDirection: "column",
+        borderWidth: 2,
+        marginTop: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 2,
+        borderRadius: 9,
+        borderColor: "lightgray"
+      }}>
       <View style={{
         flexDirection: "row",
         justifyContent: "space-between"
