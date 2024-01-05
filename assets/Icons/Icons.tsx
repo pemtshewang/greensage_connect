@@ -1,4 +1,4 @@
-import { ArrowBigRightIcon, DropletIcon, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, UnplugIcon, WavesIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, Clock3Icon, DropletIcon, MoreHorizontalIcon, PowerCircleIcon, ThermometerIcon, Timer, UnplugIcon, WavesIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -35,7 +35,7 @@ import {
   MenuIcon,
   CrosshairIcon,
 } from "lucide-react-native";
-import Svg, { Rect, Path, G, SvgProps } from "react-native-svg"
+import Svg, { G, Rect, Path, } from "react-native-svg"
 
 // export the icons by naming yourself
 export const Icons = {
@@ -82,6 +82,8 @@ export const Icons = {
   target: CrosshairIcon,
   disconnectSession: UnplugIcon,
   ArrowBigRight: ArrowBigRightIcon,
+  schedule: Clock3Icon,
+  timer: Timer,
   greenhouseAddIcon: ({
     width,
     height,

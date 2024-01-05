@@ -2,6 +2,7 @@ import { View, Text, Input, Button } from "native-base";
 import { IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
+import { useToast } from "native-base";
 
 const ThresholdSetForm = ({
   type,
@@ -17,14 +18,31 @@ const ThresholdSetForm = ({
   const [changeState, setChangeState] = useState(false);
   const [value, setValue] = useState(defaultValue);
   const toggleChangeState = () => setChangeState(!changeState);
+  const toast = useToast();
 
   const sendThreshold = () => {
     setValue(value);
     ws.sendMessage(`threshold:temperature:${value}`);
     console.log("Sending threshold");
     toggleChangeState();
+    toast.show({
+      render: () => {
+        return (
+          <View style={{
+            backgroundColor: "green",
+            padding: 10,
+            borderRadius: 20
+          }}>
+            <Text color="white">
+              The {type === "ventilation" ? "temperature" : "soil moisture"} threshold has been reset to {value} {type === "soil_moisture" ? "%" : "°C"}
+            </Text>
+          </View>
+        )
+      },
+      placement: "bottom",
+      duration: 2000,
+    });
   }
-
   return (
     <View style={{
       flexDirection: "column",

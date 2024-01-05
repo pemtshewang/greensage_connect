@@ -27,6 +27,10 @@ interface GreenhouseState {
     lightState: boolean;
     waterValveState: boolean;
     ws: IWebSocket;
-}
-
+    waterScheduleSlots: {
+        [key: string]: {
+            startTime: Date;
+            endTime: Date;
+        }
+    }
 export { GreenhouseState, totalGreenhouseState };

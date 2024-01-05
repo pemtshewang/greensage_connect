@@ -4,11 +4,13 @@ import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
 import WaterValveControllerContainer from "../../../../../components/WaterValveController";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 import { useRouter } from "expo-router";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
+import WaterSchedulerForm from "../../../../../components/Forms/WaterScheduleForm";
+import { IWebSocket } from "../../../../../zustand/state";
 
 export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -81,10 +83,10 @@ export default function ParamsContainer() {
         setState={toggleState} />
       <ThresholdSetForm
         type="soil_moisture"
-        title="Soil Moisture Threshold"
         message="Set the soil moisture threshold"
         ws={greenhouse?.ws as IWebSocket}
         defaultValue={"10"} />
+      <WaterSchedulerForm />
     </View>
   )
 }
