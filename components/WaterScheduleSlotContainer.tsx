@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
 import DateTimeModal from "./DateTimeModal"
 import { IWebSocket } from "../zustand/state"
+import { format } from "date-fns";
 
 const SlotContainer = ({
   ws,
@@ -36,8 +37,10 @@ const SlotContainer = ({
   const toast = useToast();
 
   const handleCommitEvent = () => {
-    ws.sendMessage(`schedule:${slot.toString()}:${startDateTime.toString()}:${endDateTime.toString()}`);
-    console.log("send")
+    const formattedStartDateTime = format(startDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+    const formattedEndDateTime = format(endDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+    ws.sendMessage(`schedule|${slot.toString()}|${formattedStartDateTime}|${formattedEndDateTime}`);
+    console.log(`schedule|${slot.toString()}|${formattedStartDateTime}|${formattedEndDateTime}`);
     toast.show({
       render: () => {
         return (
@@ -64,13 +67,13 @@ const SlotContainer = ({
 
     if (startTime >= endTime) {
       setErr("Start time cannot be equal to or later than end time.");
+    } else if (startTime <= new Date()) {
+      setErr("Start time cannot be earlier than current time.");
     } else {
       setErr(""); // Clear error if valid
     }
-
     setIsStartTimeChanged(prevStartTime !== startTime);
     setIsEndTimeChanged(prevEndTime !== endTime);
-
     // Check if start or end time has changed or there's an error
     if (!(isStartTimeChanged || isEndTimeChanged) || err) {
       setDisabled(true);
@@ -79,7 +82,7 @@ const SlotContainer = ({
     }
     setStartDateTime(new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startTime.getHours(), startTime.getMinutes()));
     setEndDateTime(new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endTime.getHours(), endTime.getMinutes()));
-  }, [startTime, endTime, isStartTimeChanged, startDate, endDate, setStartDate, setEndDate, isEndTimeChanged, err]);
+  }, [startTime, endTime, isStartTimeChanged, setStartDate, setEndDate, isEndTimeChanged, err]);
   return (
     <View
       style={{
