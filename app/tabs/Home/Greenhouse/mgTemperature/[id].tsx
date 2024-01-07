@@ -19,13 +19,15 @@ export default function ParamsContainer() {
   const toggleState = () => {
     updateFanState(!state); // Update the state after performing actions
     if (state) {
-      greenhouse?.ws.sendMessage("light:off");
+      console.log("sending message off");
+      greenhouse.ws?.sendMessage("light:off");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: false
       });
     } else {
-      greenhouse?.ws.sendMessage("light:on");
+      console.log("sending message on");
+      greenhouse.ws?.sendMessage("light:on");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         ventilationFanState: true
@@ -75,7 +77,6 @@ export default function ParamsContainer() {
         setState={toggleState} />
       <ThresholdSetForm
         type="ventilation"
-        title="Temperature Threshold"
         message="Set the temperature threshold"
         ws={greenhouse?.ws as IWebSocket}
         defaultValue={"10"} />

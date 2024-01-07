@@ -119,11 +119,11 @@ const GreenhouseNavContainer = ({
               borderRadius: 99,
             }}
             onPress={() => {
-              if (greenhouse?.isConnected) {
-                router.replace(`/tabs/Home/Greenhouse/${id}`);
-              } else {
-                setShowWSForm(true);
-              }
+              // if (greenhouse?.isConnected) {
+              // router.replace(`/tabs/Home/Greenhouse/${id}`);
+              // } else {
+              setShowWSForm(true);
+              // }
             }}
           >
             <Icons.enter color="black" />

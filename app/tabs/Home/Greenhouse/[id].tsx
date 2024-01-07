@@ -79,13 +79,13 @@ const Page = () => {
               marginTop: 20
             }}>
               <ShadowContainer
-                label={"Manage Temperature"}
+                label={"Temperature"}
                 id={id as string}
                 icon={<Icons.exhaustFan width={32} height={32} color="black" />}
                 navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
               />
               <ShadowContainer
-                label={"Manage Waterflow"}
+                label={"Waterflow"}
                 id={id as string}
                 icon={<Icons.valve width={32} height={32} color="black" />}
                 navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}

@@ -1,13 +1,15 @@
-
 interface totalGreenhouseState {
     count: number;
     greenhouses: GreenhouseState[];
 }
-
 export interface IWebSocket {
     sendMessage: (message: string) => void;
     connect: () => Promise<WebSocket>;
     disconnect: () => void;
+}
+interface TimeSets {
+    startTime: string | null;
+    endTime: string | null;
 }
 
 interface GreenhouseState {
@@ -26,11 +28,9 @@ interface GreenhouseState {
     ventilationFanState: boolean;
     lightState: boolean;
     waterValveState: boolean;
-    ws: IWebSocket;
-    waterScheduleSlots: {
-        [key: string]: {
-            startTime: Date;
-            endTime: Date;
-        }
-    }
+    ws: IWebSocket | null;
+    firstSlot: TimeSets | null;
+    secondSlot: TimeSets | null;
+    thirdSlot: TimeSets | null;
+}
 export { GreenhouseState, totalGreenhouseState };

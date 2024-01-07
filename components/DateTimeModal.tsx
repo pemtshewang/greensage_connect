@@ -1,37 +1,33 @@
-import { useState } from "react";
 import { Button, Text, View } from "native-base";
 import { Modal } from "native-base";
-import DateTimePicker from "@react-native-community/datetimepicker";
-
+import { useState } from "react";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const DateTimeModal = ({
   modalVisible,
   setModalVisible,
-  date,
   time,
-  setTime,
-  setDate
+  setTime
 }: {
   modalVisible: boolean,
-  setModalVisible: (bool: boolean) => void,
-  date: Date,
+  setModalVisible: (state: boolean) => void,
   time: Date,
-  setDate: (date: Date) => void,
   setTime: (time: Date) => void
 }) => {
-  const handleTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime;
-    setShowTimePicker(false);
-    setTime(currentTime);
-  }
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShowDatePicker(false);
-    setDate(currentDate);
-  }
-  const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
+  const handleDateConfirm = (date: Date) => {
+    setDatePickerVisibility(false);
+    setTime(date)
+    console.log("da", time);
+  }
+
+  const handleTimeConfirm = (date: Date) => {
+    setTimePickerVisibility(false);
+    setTime(date)
+    console.log("da", time);
+  }
   return (
     <Modal isOpen={modalVisible} onClose={setModalVisible}>
       <Modal.Content >
@@ -44,45 +40,45 @@ const DateTimeModal = ({
             <View alignContent="center" alignItems="center">
               <Text fontWeight="500">{time.getHours()}:{time.getMinutes()} (24hrs format)</Text>
             </View>
-            <Button onPress={() => {
-              setShowTimePicker(true);
-            }}>
+            <Button backgroundColor="green.500"
+              onPress={() => {
+                setTimePickerVisibility(true)
+              }}>
               Change
             </Button>
           </View>
           <View flexDirection="row" alignItems="center" justifyContent="space-between" alignContent="center">
             <View alignContent="center" flexDirection="column" justifyContent="center" alignItems="center">
-              <Text fontWeight="500" textAlign="center">{date.toLocaleDateString()}</Text>
+              <Text fontWeight="500" textAlign="center">{time.toLocaleDateString()}</Text>
             </View>
-            <Button onPress={() => {
-              setShowDatePicker(true);
-            }}>
+            <Button
+              backgroundColor="green.500"
+              onPress={() => {
+                setDatePickerVisibility(true)
+              }}>
               Change
             </Button>
           </View>
-          {showTimePicker && (
-            <DateTimePicker
-              mode="time"
-              is24Hour={true}
-              value={time}
-              onChange={handleTimeChange}
-            />
-          )}
-          {showDatePicker && (
-            <DateTimePicker
-              mode="date"
-              value={date}
-              onChange={handleDateChange}
-            />
-          )}
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            date={time}
+            onConfirm={handleDateConfirm}
+            onCancel={() => setDatePickerVisibility(false)}
+          />
+          <DateTimePickerModal
+            isVisible={isTimePickerVisible}
+            date={time}
+            mode="time"
+            onConfirm={handleTimeConfirm}
+            onCancel={() => setTimePickerVisibility(false)}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button
-            style={{
-              backgroundColor: "green"
-            }}
+            backgroundColor="blue.500"
             onPress={() => {
-              setModalVisible(false);
+              setModalVisible(false)
             }}>
             Save
           </Button>

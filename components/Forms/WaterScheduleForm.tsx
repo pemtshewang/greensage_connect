@@ -1,19 +1,14 @@
-import { useState } from "react";
 import { View } from "native-base";
 import SlotContainer from "../WaterScheduleSlotContainer";
 import { IWebSocket } from "../../zustand/state";
+import { useGreenhouseStore } from "../../zustand/store";
 
-const WaterSchedulerForm = ({ ws }: {
-  ws: IWebSocket
+const WaterSchedulerForm = ({ ws, id }: {
+  id: string,
+  ws: IWebSocket,
 }) => {
-  const [slot, setSlot] = useState<{
-    start: {
-      date: Date
-    }
-    end: {
-      date: Date
-    }
-  }>();
+  const store = useGreenhouseStore();
+  const greenhouse = store.greenhouses.find((greenhouse) => greenhouse.id === id);
   return (
     <View
       margin="2"
@@ -31,9 +26,9 @@ const WaterSchedulerForm = ({ ws }: {
         borderRadius: 9,
         borderColor: "lightgray",
       }}>
-      <SlotContainer slot={1} prevStartTime={new Date()} prevEndTime={new Date()} ws={ws} />
-      <SlotContainer slot={2} prevStartTime={new Date()} prevEndTime={new Date()} ws={ws} />
-      <SlotContainer slot={3} prevStartTime={new Date()} prevEndTime={new Date()} ws={ws} />
+      <SlotContainer
+        slot={1} id={id} prevStartTime={greenhouse?.firstSlot?.startTime || null}
+        prevEndTime={greenhouse?.firstSlot?.endTime || null} ws={ws} />
     </View >
   );
 };

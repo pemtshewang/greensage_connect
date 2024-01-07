@@ -45,6 +45,9 @@ const GreenHouseAddForm = ({
       ventilationFanState: false,
       lightState: false,
       waterValveState: false,
+      firstSlot: null,
+      secondSlot: null,
+      thirdSlot: null,
     });
     setModalState(false);
   };

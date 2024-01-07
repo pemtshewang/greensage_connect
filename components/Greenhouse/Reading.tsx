@@ -17,7 +17,7 @@ export default function ReadingsContainer({
   return (
     <View
       style={{
-        margin: 7,
+        margin: 17,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,

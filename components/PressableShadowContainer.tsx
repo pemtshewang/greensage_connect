@@ -18,7 +18,7 @@ export default function ShadowContainer({
     <Pressable
       style={{
         width: 150,
-        paddingVertical: 10,
+        padding: 10,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -42,9 +42,15 @@ export default function ShadowContainer({
         padding: 10
       }}>
         {icon}
+      </View>
+      <View style={{
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}>
         <Text style={{
           color: "#ffd"
-        }}>{label}</Text>
+        }}>Regulate</Text>
       </View>
     </Pressable >
   )

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "userInterfaceStyle": "automatic",
     "name": "greensage_connect",
     "slug": "greensage_connect",
     "version": "1.0.0",

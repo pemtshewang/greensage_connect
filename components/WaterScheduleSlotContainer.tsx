@@ -1,282 +1,166 @@
-import { View, Text, useColorMode, useToast } from "native-base"
+import { View, Text, useColorMode, useToast, Button } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
-import DateTimeModal from "./DateTimeModal"
 import { IWebSocket } from "../zustand/state"
-import { format } from "date-fns";
+import DateTimeModal from "./DateTimeModal"
+import { useGreenhouseStore } from "../zustand/store"
 
 const SlotContainer = ({
+  id,
   ws,
   slot,
   prevStartTime,
   prevEndTime,
 }: {
+  id: string,
   ws: IWebSocket;
   slot: number,
-  prevStartTime: Date,
-  prevEndTime: Date
+  prevStartTime: string | null,
+  prevEndTime: string | null,
 }) => {
-  // calculate the time difference in minutes 
-  const [timeDiff, setTimeDiff] = useState(0);
-  const [err, setErr] = useState<string>("");
-  const [startTime, setStartTime] = useState<Date>(prevStartTime);
-  const [endTime, setEndTime] = useState<Date>(prevEndTime);
-  const [startDate, setStartDate] = useState<Date>(prevStartTime);
-  const [endDate, setEndDate] = useState<Date>(prevEndTime);
-  const [isStartTimeChanged, setIsStartTimeChanged] = useState(false);
-  const [isEndTimeChanged, setIsEndTimeChanged] = useState(false);
-  const { colorMode } = useColorMode();
-  const backgroundColor = colorMode === "light" ? "#B1F4CF" : "#252525";
-  const disabledBackgroundColor = colorMode === "light" ? "#E5E5E5" : "#454545";
-  const [disabled, setDisabled] = useState(true);
-  const [startDateTime, setStartDateTime] = useState(prevStartTime);
-  const [endDateTime, setEndDateTime] = useState(prevEndTime);
-  const [showStartDateTimeModal, setShowStartDateTimeModal] = useState<boolean>(false);
-  const [showEndDateTimeModal, setShowEndDateTimeModal] = useState<boolean>(false);
-  const toast = useToast();
-
-  const handleCommitEvent = () => {
-    const formattedStartDateTime = format(startDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-    const formattedEndDateTime = format(endDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-    ws.sendMessage(`schedule|${slot.toString()}|${formattedStartDateTime}|${formattedEndDateTime}`);
-    console.log(`schedule|${slot.toString()}|${formattedStartDateTime}|${formattedEndDateTime}`);
-    toast.show({
-      render: () => {
-        return (
-          <View style={{
-            backgroundColor: "green",
-            padding: 10,
-            borderRadius: 20
-          }}>
-            <Text color="white">
-              The scheduled time has been updated for slot {slot}
-            </Text>
-          </View>
-        )
-      },
-      placement: "bottom",
-      duration: 2000,
-    });
-    setDisabled(true);
-  }
+  const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
+  const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
+  const [err, setErr] = useState<string | null>(null);
+  const [startTimeModal, setStartTimeModal] = useState<boolean>(false);
+  const [endTimeModal, setEndTimeModal] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const store = useGreenhouseStore();
   useEffect(() => {
-    const differenceInMilliseconds = Math.abs(endDateTime.getTime() - startDateTime.getTime());
-    const differenceInMinutes = differenceInMilliseconds / 60000; // Convert to minutes
-    setTimeDiff(Math.round(differenceInMinutes)); // Round to whole minutes
-
-    if (startTime >= endTime) {
-      setErr("Start time cannot be equal to or later than end time.");
-    } else if (startTime <= new Date()) {
-      setErr("Start time cannot be earlier than current time.");
-    } else {
-      setErr(""); // Clear error if valid
+    if (startTime && endTime) {
+      store.updateGreenhouse(id, {
+        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+        [slot === 1 ? "firstSlot" : slot === 2 ? "secondSlot" : "thirdSlot"]: {
+          startTime,
+          endTime,
+        }
+      });
+      console.log("For 1 slot updated: ", store.greenhouses.find((greenhouse) => greenhouse.id === id)?.firstSlot);
+      if (startTime.getTime() > endTime.getTime()) {
+        setErr("Start time cannot be greater than end time");
+      }
+      else {
+        setErr(null);
+      }
     }
-    setIsStartTimeChanged(prevStartTime !== startTime);
-    setIsEndTimeChanged(prevEndTime !== endTime);
-    // Check if start or end time has changed or there's an error
-    if (!(isStartTimeChanged || isEndTimeChanged) || err) {
-      setDisabled(true);
-    } else {
+    if (startTime) {
+      if (startTime < new Date()) {
+        setErr("Start time cannot be less than current time");
+      }
+    }
+    if (!startTime || !endTime) {
+      setErr("Please select a valid time for schedule");
+    }
+    if (startTime && endTime && !err) {
       setDisabled(false);
+    } else {
+      setDisabled(true);
     }
-    setStartDateTime(new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startTime.getHours(), startTime.getMinutes()));
-    setEndDateTime(new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endTime.getHours(), endTime.getMinutes()));
-  }, [startTime, endTime, isStartTimeChanged, setStartDate, setEndDate, isEndTimeChanged, err]);
+  }, [startTime, endTime, err])
   return (
-    <View
-      style={{
-        backgroundColor: "lightgray",
-        marginTop: 10,
-        padding: 7,
-        borderRadius: 10,
-        gap: 10,
-      }}>
-      <View style={{
-        flexDirection: "row",
-        gap: 5
-      }}>
-        <Icons.timer width={20} height={20} color="black" />
-        <Text style={{
-          fontWeight: "500"
-        }}>SLOT {slot}</Text>
-        <Text position="absolute" right="0" textAlign="center">Duration: {timeDiff.toString()} mins</Text>
+    <View >
+      <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
+        <Text fontSize="sm" backgroundColor="">SLOT {slot}</Text>
+        <Icons.timer size={25} color="black" />
       </View>
-      <Text
-        paddingY="4"
-        style={{
-          textAlign: "center",
-          fontWeight: "600"
-        }}>
-        From {startDateTime.toLocaleDateString()} To {endDateTime.toLocaleDateString()}
-      </Text>
-      <View style={{
-        flexDirection: "row"
-      }}>
-        <View style={{
-          width: "50%",
-        }}>
-          <Text textAlign="center">From</Text>
-          <View
-            padding="5"
-            style={{
-              gap: 10
-            }}
-            flexDirection="row"
-            justifyContent="center"
-          >
-            <View style={{
-              backgroundColor: "#fff",
-              padding: 10,
-              flexDirection: "row",
-              justifyContent: "center",
-              borderRadius: 10
-            }}
-              w="10"
-            >
-              <Text fontWeight="bold" fontSize="md">{startDateTime.getHours()}</Text>
-            </View>
-            <View style={{
-              backgroundColor: "#fff",
-              padding: 10,
-              flexDirection: "row",
-              justifyContent: "center",
-              borderRadius: 10
-            }}
-              w="10"
-            >
-              <Text fontWeight="bold" fontSize="md">{startDateTime.getMinutes()}</Text>
-            </View>
-          </View>
-          <Pressable
-            onPress={() => {
-              setShowStartDateTimeModal(true);
-            }}
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 3,
-              backgroundColor: "#B1F4CF",
-              padding: 5,
-              borderRadius: 10,
-              margin: 4,
-            }}>
-            <Text>Reschedule</Text>
-            <Icons.timerReset width={20} height={20} color="black" />
-          </Pressable>
-        </View>
-        <View style={{
-          width: "50%"
-        }}>
-          <Text textAlign="center">To</Text>
-          <View
-            padding="5"
-            style={{
-              gap: 10
-            }}
-            flexDirection="row"
-            justifyContent="center"
-          >
-            <View style={{
-              backgroundColor: "#fff",
-              padding: 10,
-              flexDirection: "row",
-              justifyContent: "center",
-              borderRadius: 10
-            }}
-              w="10"
-            >
-              <Text fontWeight="bold" fontSize="md">{endDateTime.getHours()}</Text>
-            </View>
-            <View style={{
-              backgroundColor: "#fff",
-              padding: 10,
-              flexDirection: "row",
-              justifyContent: "center",
-              borderRadius: 10
-            }}
-              w="10"
-            >
-              <Text fontWeight="bold" fontSize="md">{endDateTime.getMinutes()}</Text>
-            </View>
-          </View>
-          <Pressable
-            onPress={() => {
-              setShowEndDateTimeModal(true);
-            }}
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 3,
-              backgroundColor: "#B1F4CF",
-              padding: 5,
-              borderRadius: 10,
-              margin: 4,
-            }}>
-            <Text>Reschedule</Text>
-            <Icons.timerReset width={20} height={20} color="black" />
-          </Pressable>
-        </View>
+      <View flexDirection="row" justifyContent="center" backgroundColor="gray.200" padding="3" marginTop="5" borderRadius="full">
+        {/* display the dates */}
+        <Text>FROM {startTime?.toLocaleDateString() || "00/00/00"}</Text>
+        <Text>{" : "}</Text>
+        <Text>TO {endTime?.toLocaleDateString() || "00/00/00"}</Text>
       </View>
-      <Pressable
-        disabled={disabled}
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 3,
-          backgroundColor: !disabled ? backgroundColor : disabledBackgroundColor,
-          padding: 5,
-          borderRadius: 10,
-          margin: 4,
-        }}
-        onPress={handleCommitEvent}
-      >
-        <Text color={`${disabled ? "#A0A0A0" : "#000"}`}>
-          Commit Changes
-        </Text>
-        <Icons.send width={20} height={20} color={`${disabled ? "#A0A0A0" : "#000"}`} />
-      </Pressable>
-      {
-        err &&
-        (
-          <View style={{
-            flexDirection: "row",
-            gap: 5
+      <View flexDirection="row" w="100%" alignItems="center" marginTop="5">
+        <View flexDirection="column" alignItems="center" justifyContent="center" w="50%" >
+          <View flexDirection="row" style={{
+            gap: 2,
           }}>
-            <Icons.danger size={20} color="red" />
-            <Text fontSize={11} color="red.500">
-              {err}
-            </Text>
+            <View padding="5" backgroundColor="gray.200" borderRadius="md">
+              <Text>{startTime?.getHours() || "00"}</Text>
+            </View>
+            <View padding="5" backgroundColor="gray.200" borderRadius="md">
+              <Text>{startTime?.getMinutes() || "00"}</Text>
+            </View>
           </View>
+          <Pressable style={{
+            marginTop: 15,
+            padding: 5,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            backgroundColor: "green",
+            gap: 3,
+            borderRadius: 5,
+            alignItems: "center"
+          }}
+            onPress={() => {
+              setStartTimeModal(true);
+            }}
+          >
+            <Text color="white">Reschedule</Text>
+            <Icons.timerReset size={25} color="black" />
+          </Pressable>
+        </View>
+        <View flexDirection="column" alignItems="center" justifyContent="center" w="50%" >
+          <View flexDirection="row" style={{
+            gap: 2,
+          }}>
+            <View padding="5" backgroundColor="gray.200" borderRadius="md">
+              <Text>{endTime?.getHours() || "00"}</Text>
+            </View>
+            <View padding="5" backgroundColor="gray.200" borderRadius="md">
+              <Text>{endTime?.getMinutes() || "00"}</Text>
+            </View>
+          </View>
+          <Pressable style={{
+            marginTop: 15,
+            padding: 5,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            backgroundColor: "green",
+            gap: 3,
+            borderRadius: 5,
+            alignItems: "center"
+          }}
+            onPress={() => {
+              setEndTimeModal(true);
+            }}
+          >
+            <Text color="white">Reschedule</Text>
+            <Icons.timerReset size={25} color="black" />
+          </Pressable>
+        </View>
+      </View>
+      <View flexDirection="row" justifyContent="center" padding="5">
+        <Button backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Commit Changes</Button>
+      </View>
+      {
+        startTimeModal && (
+          <DateTimeModal
+            modalVisible={startTimeModal}
+            setModalVisible={setStartTimeModal}
+            time={startTime || new Date()}
+            setTime={setStartTime}
+          />
         )
       }
       {
-        showStartDateTimeModal &&
-        <DateTimeModal
-          modalVisible={showStartDateTimeModal}
-          setModalVisible={setShowStartDateTimeModal}
-          date={startDate}
-          setDate={setStartDate}
-          time={startTime}
-          setTime={setStartTime}
-        />
+        endTimeModal && (
+          <DateTimeModal
+            modalVisible={endTimeModal}
+            setModalVisible={setEndTimeModal}
+            time={endTime || new Date()}
+            setTime={setEndTime}
+          />
+        )
       }
       {
-        showEndDateTimeModal &&
-        <DateTimeModal
-          modalVisible={showEndDateTimeModal}
-          setModalVisible={setShowEndDateTimeModal}
-          date={endDate}
-          setDate={setEndDate}
-          time={endTime}
-          setTime={setEndTime}
-        />
+        err && (
+          <View flexDirection="row">
+            <Icons.danger size={20} color="red" />
+            <Text fontSize="sm" color="red.500" marginLeft="1">{err}</Text>
+          </View>
+        )
       }
     </View>
   )
 }
-
 export default SlotContainer;
