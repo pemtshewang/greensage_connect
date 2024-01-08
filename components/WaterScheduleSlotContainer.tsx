@@ -5,6 +5,7 @@ import { Pressable } from "react-native"
 import { IWebSocket } from "../zustand/state"
 import DateTimeModal from "./DateTimeModal"
 import { useGreenhouseStore } from "../zustand/store"
+import { changeToISO } from "../utils/dateFormat"
 
 const SlotContainer = ({
   id,
@@ -19,6 +20,12 @@ const SlotContainer = ({
   prevStartTime: string | null,
   prevEndTime: string | null,
 }) => {
+  const handleCommitChanges = () => {
+    const formattedStartTime = changeToISO(startTime as Date);
+    const formattedEndTime = changeToISO(endTime as Date);
+    ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}`)
+    console.log(`sending schedule|${slot}|${formattedStartTime}|${formattedEndTime}`)
+  }
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
   const [err, setErr] = useState<string | null>(null);
@@ -27,7 +34,7 @@ const SlotContainer = ({
   const [disabled, setDisabled] = useState<boolean>(false);
   const store = useGreenhouseStore();
   useEffect(() => {
-    if (startTime && endTime) {
+    if (startTime && endTime && !err) {
       store.updateGreenhouse(id, {
         ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
         [slot === 1 ? "firstSlot" : slot === 2 ? "secondSlot" : "thirdSlot"]: {
@@ -35,7 +42,7 @@ const SlotContainer = ({
           endTime,
         }
       });
-      console.log("For 1 slot updated: ", store.greenhouses.find((greenhouse) => greenhouse.id === id)?.firstSlot);
+      console.log(`updated greenhouse ${id} with slot ${slot} with startTime ${startTime} and endTime ${endTime}`)
       if (startTime.getTime() > endTime.getTime()) {
         setErr("Start time cannot be greater than end time");
       }
@@ -46,6 +53,8 @@ const SlotContainer = ({
     if (startTime) {
       if (startTime < new Date()) {
         setErr("Start time cannot be less than current time");
+      } else {
+        setErr(null);
       }
     }
     if (!startTime || !endTime) {
@@ -56,7 +65,7 @@ const SlotContainer = ({
     } else {
       setDisabled(true);
     }
-  }, [startTime, endTime, err])
+  }, [endTime, startTime, err])
   return (
     <View >
       <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
@@ -130,7 +139,9 @@ const SlotContainer = ({
         </View>
       </View>
       <View flexDirection="row" justifyContent="center" padding="5">
-        <Button backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Commit Changes</Button>
+        <Button
+          onPress={handleCommitChanges}
+          backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Commit Changes</Button>
       </View>
       {
         startTimeModal && (

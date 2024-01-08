@@ -29,6 +29,12 @@ const WaterSchedulerForm = ({ ws, id }: {
       <SlotContainer
         slot={1} id={id} prevStartTime={greenhouse?.firstSlot?.startTime || null}
         prevEndTime={greenhouse?.firstSlot?.endTime || null} ws={ws} />
+      <SlotContainer
+        slot={2} id={id} prevStartTime={greenhouse?.secondSlot?.startTime || null}
+        prevEndTime={greenhouse?.secondSlot?.endTime || null} ws={ws} />
+      <SlotContainer
+        slot={3} id={id} prevStartTime={greenhouse?.thirdSlot?.startTime || null}
+        prevEndTime={greenhouse?.secondSlot?.endTime || null} ws={ws} />
     </View >
   );
 };
