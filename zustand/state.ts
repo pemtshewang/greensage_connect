@@ -24,8 +24,11 @@ interface GreenhouseState {
     soil_moisture: number;
     temperatureThreshold: number;
     soilMoistureThreshold: number;
+    humidityThreshold: number;
     //end parameters 
     ventilationFanState: boolean;
+    rollerShutterRightState: boolean;
+    rollerShutterLeftState: boolean;
     lightState: boolean;
     waterValveState: boolean;
     ws: IWebSocket | null;

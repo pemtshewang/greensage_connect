@@ -14,7 +14,7 @@ export default function TemperatureControllerContainer({
   const [switchState, setSwitchState] = useState<boolean>(state as boolean);
   const toggleSwitchState = () => {
     setSwitchState(!switchState);
-    setState(!switchState);
+    setState(switchState);
   }
   const rotation = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -127,6 +127,5 @@ export default function TemperatureControllerContainer({
         </View>
       </View>
     </View >
-
   )
 }

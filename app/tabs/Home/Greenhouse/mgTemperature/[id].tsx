@@ -76,10 +76,17 @@ export default function ParamsContainer() {
         state={state}
         setState={toggleState} />
       <ThresholdSetForm
-        type="ventilation"
+        id={id as string}
+        type="temperature"
         message="Set the temperature threshold"
         ws={greenhouse?.ws as IWebSocket}
-        defaultValue={"10"} />
+        defaultValue={greenhouse?.temperatureThreshold || 0} />
+      <ThresholdSetForm
+        id={id as string}
+        type="humidity"
+        message="Set the humidity threshold"
+        ws={greenhouse?.ws as IWebSocket}
+        defaultValue={greenhouse?.humidityThreshold || 0} />
     </View>
   )
 }

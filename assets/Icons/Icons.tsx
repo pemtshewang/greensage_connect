@@ -259,6 +259,27 @@ export const Icons = {
         </G>
       </Svg>
     );
+  },
+  rollerShutter: (props) => {
+    return (
+      <Svg
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#000000"
+        {...props}
+      >
+        <G id="SVGRepo_bgCarrier" strokeWidth={0} />
+        <G
+          id="SVGRepo_tracerCarrier"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <G id="SVGRepo_iconCarrier">
+          <Path d="M18,9.5V8H17V7a2,2,0,0,0-2-2H4A2,2,0,0,0,2,7v7a2,2,0,0,0,2,2H15a2,2,0,0,0,2-2V13h1V11.5h4v-2ZM14,14H5V13h9Zm0-2H5V11h9Zm0-2H5V9h9Zm0-2H5V7h9ZM3,17H16v2H3Z" />
+          <Rect width={24} height={24} fill="none" />
+        </G>
+      </Svg>
+    )
   }
 };
 

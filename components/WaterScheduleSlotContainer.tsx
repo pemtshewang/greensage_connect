@@ -1,4 +1,4 @@
-import { View, Text, useColorMode, useToast, Button } from "native-base"
+import { View, Text, Button, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
@@ -6,6 +6,7 @@ import { IWebSocket } from "../zustand/state"
 import DateTimeModal from "./DateTimeModal"
 import { useGreenhouseStore } from "../zustand/store"
 import { changeToISO } from "../utils/dateFormat"
+import { useColorModeValue } from "native-base"
 
 const SlotContainer = ({
   id,
@@ -25,6 +26,17 @@ const SlotContainer = ({
     const formattedEndTime = changeToISO(endTime as Date);
     ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}`)
     console.log(`sending schedule|${slot}|${formattedStartTime}|${formattedEndTime}`)
+    toast.show({
+      render: () => {
+        return (
+          <View bg="green.600" padding="5" borderRadius="md">
+            <Text color="white">Scheduled for slot {slot} successfully</Text>
+          </View>
+        )
+      },
+      duration: 2000,
+      placement: "bottom"
+    })
   }
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
@@ -33,6 +45,7 @@ const SlotContainer = ({
   const [endTimeModal, setEndTimeModal] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
   const store = useGreenhouseStore();
+  const toast = useToast();
   useEffect(() => {
     if (startTime && endTime && !err) {
       store.updateGreenhouse(id, {
@@ -67,7 +80,7 @@ const SlotContainer = ({
     }
   }, [endTime, startTime, err])
   return (
-    <View >
+    <View paddingY="2" borderBottomWidth={2}>
       <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
         <Text fontSize="sm" backgroundColor="">SLOT {slot}</Text>
         <Icons.timer size={25} color="black" />

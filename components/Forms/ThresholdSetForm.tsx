@@ -3,38 +3,38 @@ import { IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
 import { useToast } from "native-base";
+import { useGreenhouseStore } from "../../zustand/store";
 
 const ThresholdSetForm = ({
+  id,
   type,
   message,
   ws,
-  defaultValue
+  defaultValue,
 }: {
-  type: "ventilation" | "soil_moisture",
+  id: string,
+  type: "temperature" | "soil_moisture" | "humidity",
   message: string,
   ws: IWebSocket,
-  defaultValue: string
+  defaultValue: number
 }) => {
   const [changeState, setChangeState] = useState(false);
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState<number>(defaultValue);
   const toggleChangeState = () => setChangeState(!changeState);
   const toast = useToast();
+  const store = useGreenhouseStore();
 
   const sendThreshold = () => {
     setValue(value);
-    ws.sendMessage(`threshold:temperature:${value}`);
-    console.log("Sending threshold");
+    ws.sendMessage(`threshold:${type}:${value}`);
+    console.log(`Sending ${type} threshold with ${value}`);
     toggleChangeState();
     toast.show({
       render: () => {
         return (
-          <View style={{
-            backgroundColor: "green",
-            padding: 10,
-            borderRadius: 20
-          }}>
+          <View padding="5" bg="green.600">
             <Text color="white">
-              The {type === "ventilation" ? "temperature" : "soil moisture"} threshold has been reset to {value} {type === "soil_moisture" ? "%" : "°C"}
+              The ${type} threshold has been set to ${value}
             </Text>
           </View>
         )
@@ -42,6 +42,22 @@ const ThresholdSetForm = ({
       placement: "bottom",
       duration: 2000,
     });
+    if (type === "humidity") {
+      store.updateGreenhouse(id, {
+        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+        humidityThreshold: value
+      });
+    } else if (type === "temperature") {
+      store.updateGreenhouse(id, {
+        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+        temperatureThreshold: value
+      });
+    } else {
+      store.updateGreenhouse(id, {
+        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+        soilMoistureThreshold: value
+      });
+    }
   }
   return (
     <View
@@ -71,9 +87,12 @@ const ThresholdSetForm = ({
           flexDirection: "row",
           justifyContent: "space-around",
         }}>
-          {type === "ventilation" ? <Icons.thermometer width={25} height={25} color="black" /> : <Icons.soilMoisture width={25} height={25} color="black" />}
+          {
+            type === "temperature" ? <Icons.thermometer width={25} height={25} color="black" /> : type === "humidity" ? <Icons.humid width={25} height={25} color="black" /> : <Icons.soilMoisture width={25} height={25} color="black" />}
           <Icons.ArrowBigRight size={25} color="black" />
-          {type === "ventilation" ? <Icons.exhaustFan width={25} height={25} color="black" /> : <Icons.waterTap width={25} height={25} color="black" />}
+          {type === "temperature" ? <Icons.exhaustFan width={25} height={25} color="black" /> :
+            type === "humidity" ? <Icons.exhaustFan width={25} height={25} color="black" />
+              : <Icons.waterTap width={25} height={25} color="black" />}
         </View>
       </View>
       <View style={{
@@ -83,7 +102,7 @@ const ThresholdSetForm = ({
       }}>
         <View position="relative" flexDirection="row" w="full" justifyContent="center" >
           <Input
-            placeholder={`${parseInt(defaultValue) < 1 ? "You haven't set a threshold yet" : defaultValue}`}
+            placeholder={`${defaultValue < 1 ? "You haven't set a threshold yet" : defaultValue}`}
             placeholderTextColor="#A0A0A0"
             alignItems="center"
             style={{
@@ -93,7 +112,7 @@ const ThresholdSetForm = ({
               borderBottomColor: "black"
             }}
             inputMode="numeric"
-            onChangeText={(text: string) => setValue(text)}
+            onChangeText={(text: string) => setValue(parseInt(text))}
             value={value.toString()}
             isDisabled={!changeState}
             w={60}
@@ -110,7 +129,7 @@ const ThresholdSetForm = ({
           }}
           >
             {
-              type === "ventilation" ? "°C" : "%"
+              type === "temperature" ? "°C" : "%"
             }
           </Text>
         </View>

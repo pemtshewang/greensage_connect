@@ -14,7 +14,7 @@ export default function WaterValveControllerContainer({
   const [switchState, setSwitchState] = useState<boolean>(state as boolean);
   const toggleSwitchState = () => {
     setSwitchState(!switchState);
-    setState(!switchState);
+    setState(switchState);
   }
   const translation = useRef(new Animated.Value(0)).current;
 
