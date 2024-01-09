@@ -10,7 +10,7 @@ Greensage Connect is an IoT application designed to facilitate seamless connecti
 - **Remote Control:** Control IoT devices remotely via the application.
 
 ## Lead Developer
-- **Pem Tshewang:** As the lead developer, Pem has been instrumental in architecting and developing Greensage Connect. Their expertise in IoT technologies and software development has been vital in creating a robust and user-friendly application.
+- **Pem Tshewang:** As the lead developer, Pem has been instrumental in architecting and developing Greensage Connect. This has been his single crafted work and any contributions are welcomed to the repository
 
 ## Getting Started
 To get started with Greensage Connect, follow these steps:

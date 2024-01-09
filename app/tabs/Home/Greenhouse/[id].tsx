@@ -42,57 +42,25 @@ const Page = () => {
         soilMoistureReading={params.soil_moisture}
         ldrReading={params.ldr}
       />
-      {
-        width <= 768 ? (
-          <ScrollView
-            scrollEnabled={true}
-            style={{
-            }}
-          >
-            <View>
-              <View style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-around",
-                marginTop: 20
-              }}>
-                <ShadowContainer
-                  label={"Manage Temperature"}
-                  id={id as string}
-                  icon={<Icons.exhaustFan width={32} height={32} color="black" />}
-                  navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
-                />
-                <ShadowContainer
-                  label={"Manage Waterflow"}
-                  id={id as string}
-                  icon={<Icons.valve width={32} height={32} color="black" />}
-                  navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
-                />
-              </View>
-            </View>
-          </ScrollView>) :
-          (
-            <View style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              marginTop: 20
-            }}>
-              <ShadowContainer
-                label={"Temperature"}
-                id={id as string}
-                icon={<Icons.exhaustFan width={32} height={32} color="black" />}
-                navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
-              />
-              <ShadowContainer
-                label={"Waterflow"}
-                id={id as string}
-                icon={<Icons.valve width={32} height={32} color="black" />}
-                navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
-              />
-            </View>
-          )
-      }
+      <View style={{
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        marginTop: 20
+      }}>
+        <ShadowContainer
+          label={"Temperature"}
+          id={id as string}
+          icon={<Icons.exhaustFan width={32} height={32} color="black" />}
+          navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
+        />
+        <ShadowContainer
+          label={"Waterflow"}
+          id={id as string}
+          icon={<Icons.valve width={32} height={32} color="black" />}
+          navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
+        />
+      </View>
     </>
   );
 };

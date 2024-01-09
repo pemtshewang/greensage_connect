@@ -24,13 +24,13 @@ export default function ParamsContainer() {
     const updatedState = !state; // Calculate the updated state value
     // Perform actions based on the updatedState
     if (!updatedState) {
-      greenhouse?.ws.sendMessage("waterValve:off");
+      greenhouse?.ws.sendMessage("waterValve:close");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         waterValveState: false
       });
     } else {
-      greenhouse?.ws.sendMessage("waterValve:on");
+      greenhouse?.ws.sendMessage("waterValve:open");
       store.updateGreenhouse(id as string, {
         ...greenhouse,
         waterValveState: true

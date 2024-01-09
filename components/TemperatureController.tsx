@@ -9,12 +9,12 @@ export default function TemperatureControllerContainer({
   setState,
 }: {
   state: boolean | undefined,
-  setState: (state: boolean) => void,
+  setState: () => void,
 }) {
   const [switchState, setSwitchState] = useState<boolean>(state as boolean);
   const toggleSwitchState = () => {
     setSwitchState(!switchState);
-    setState(switchState);
+    setState();
   }
   const rotation = useRef(new Animated.Value(0)).current;
   useEffect(() => {
