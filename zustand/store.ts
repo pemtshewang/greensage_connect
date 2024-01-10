@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { GreenhouseState, totalGreenhouseState } from "./state";
+import { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState } from "./state";
 // import zustandStorage from "./mmkvWrapper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -11,6 +11,49 @@ interface StoreState extends totalGreenhouseState {
   removeGreenhouse: (id: string) => void;
   removeAllGreenhouses: () => void;
 }
+
+interface IrrigationControllerStoreState extends totalIrrigationControllerState {
+  addIrrigationController: (irrigationController: IrrigationControllerState) => void;
+  updateIrrigationController: (id: string, data: Partial<IrrigationControllerState>) => void;
+  removeIrrigationController: (id: string) => void;
+  removeAllIrrigationControllers: () => void;
+}
+
+export const useIrrigationControllerStore = create<IrrigationControllerStoreState>(
+  persist(
+    (set) => ({
+      count: 0,
+      irrigationControllers: [],
+      addIrrigationController: (irrigationController) =>
+        set((state) => ({
+          count: state.count + 1,
+          irrigationControllers: [...state.irrigationControllers, irrigationController],
+        })),
+      updateIrrigationController: (id, data) =>
+        set((state) => ({
+          irrigationControllers: state.irrigationControllers.map((irrigationController) =>
+            irrigationController.id === id ? { ...irrigationController, ...data } : irrigationController
+          ),
+        })),
+      removeIrrigationController: (id) =>
+        set((state) => ({
+          count: state.count - 1,
+          irrigationControllers: state.irrigationControllers.filter(
+            (irrigationController) => irrigationController.id !== id
+          ),
+        })),
+      removeAllIrrigationControllers: () =>
+        set(() => ({
+          count: 0,
+          irrigationControllers: [],
+        })),
+    }),
+    {
+      name: "irrigationControllerStore",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
 
 export const useGreenhouseStore = create<StoreState>(
   persist(

@@ -1,9 +1,13 @@
 
 import React from "react";
 import { View, Text } from "react-native";
-import Icons from "../assets/Icons/Icons";
 
-const Banner = ({ message }: { message: string }) => {
+const Banner = ({ message,
+  icon
+}: {
+  message: string,
+  icon: JSX.Element
+}) => {
   return (
     <View
       style={{
@@ -24,7 +28,7 @@ const Banner = ({ message }: { message: string }) => {
           padding: 10
         }}
       >
-        <Icons.greenhouseAddIcon fill="#999" width={32} height={32} />
+        {icon}
       </View>
     </View>
   );

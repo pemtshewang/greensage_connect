@@ -18,7 +18,6 @@ export default function ParamsContainer() {
   const store = useGreenhouseStore();
   const greenhouse = store.greenhouses.find((res) => res.id === id);
   const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
-  const router = useRouter();
   // session ends 
   const toggleState = () => {
     const updatedState = !state; // Calculate the updated state value

@@ -27,14 +27,26 @@ const WaterSchedulerForm = ({ ws, id }: {
         borderColor: "lightgray",
       }}>
       <SlotContainer
-        slot={1} id={id} prevStartTime={greenhouse?.firstSlot?.startTime || null}
-        prevEndTime={greenhouse?.firstSlot?.endTime || null} ws={ws} />
+        slot={1}
+        id={id}
+        prevStartTime={greenhouse?.firstSlot?.startTime || null}
+        prevEndTime={greenhouse?.firstSlot?.endTime || null}
+        repDays={greenhouse?.firstSlot?.repetitionDays || 0}
+        ws={ws} />
       <SlotContainer
-        slot={2} id={id} prevStartTime={greenhouse?.secondSlot?.startTime || null}
-        prevEndTime={greenhouse?.secondSlot?.endTime || null} ws={ws} />
+        slot={2}
+        id={id}
+        prevStartTime={greenhouse?.secondSlot?.startTime || null}
+        prevEndTime={greenhouse?.secondSlot?.endTime || null}
+        repDays={greenhouse?.secondSlot?.repetitionDays || 0}
+        ws={ws} />
       <SlotContainer
-        slot={3} id={id} prevStartTime={greenhouse?.thirdSlot?.startTime || null}
-        prevEndTime={greenhouse?.secondSlot?.endTime || null} ws={ws} />
+        slot={3}
+        id={id}
+        prevStartTime={greenhouse?.thirdSlot?.startTime || null}
+        prevEndTime={greenhouse?.thirdSlot?.endTime || null}
+        repDays={greenhouse?.thirdSlot?.repetitionDays || 0}
+        ws={ws} />
     </View >
   );
 };

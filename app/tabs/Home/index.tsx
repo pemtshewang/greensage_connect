@@ -1,120 +1,63 @@
-import React, { useState, useRef } from "react";
-import { View, Animated, Easing, Pressable } from "react-native";
-import { Icons } from "../../../assets/Icons/Icons";
-import { Text, Heading, Button } from "native-base";
-import { GreenHouseContainerStyles } from "../../../styles/styles";
-import CustomModal from "../../../components/ui/Modal";
-import GreenHouseAddForm from "../../../components/Forms/GreenhouseForm";
-import { useGreenhouseStore } from "../../../zustand/store";
-import GreenhouseNavContainer from "../../../components/GreehouseNavContainer";
-import { ScrollView } from "react-native";
-import Banner from "../../../components/NoGreenhouseBanner";
+import { View } from "native-base";
+import { useState } from "react";
+import GreenhouseList from "../../../components/GreenhouseList";
+import { TouchableOpacity } from "react-native";
+import Icons from "../../../assets/Icons/Icons";
+import { Text } from "native-base";
+import IrrigationNavList from "../../../components/IrrigationNavList";
 
 const IndexPage = () => {
-  const store = useGreenhouseStore();
-  const [showAddGreenhouseForm, setShowAddGreenhouseForm] = useState(false);
-  const scaleValue = useRef(new Animated.Value(1)).current;
-  const startAnimation = () => {
-    Animated.timing(scaleValue, {
-      toValue: 1.2,
-      duration: 100,
-      easing: Easing.ease,
-      useNativeDriver: true,
-    }).start(() => {
-      // Reverse the animation
-      Animated.timing(scaleValue, {
-        toValue: 1,
-        duration: 500,
-        easing: Easing.ease,
-        useNativeDriver: true,
-      }).start();
-    });
-  };
-
-  const scale = scaleValue.interpolate({
-    inputRange: [1, 1.2],
-    outputRange: [1, 1.2],
-  });
-
+  const [currentList, setCurrentList] = useState<"greenhouse" | "irrigation">("greenhouse");
+  const toggleList = () => {
+    setCurrentList(state => state === "greenhouse" ? "irrigation" : "greenhouse");
+  }
   return (
-    <View
-      style={{
-        padding: 10,
-      }}
-    >
+    <View padding="3">
+      <View
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <View flexDirection="row" style={{
+          gap: 4
+        }}>
+          <Icons.help width={20} height={20} color="black" />
+          <Text color="#A0A0A0">Click to switch to {currentList === "greenhouse" ? "irrigation" : "greenhouse"} navigator</Text>
+        </View>
+        <TouchableOpacity
+          onPress={toggleList}
+          style={{
+            width: 50,
+            height: 50,
+            backgroundColor: "green",
+            borderWidth: 2,
+            padding: 5,
+            borderRadius: 50,
+            alignItems: "center",
+            marginRight: 10
+          }}
+        >
+          {
+            currentList === "greenhouse" ?
+              <Icons.waterIrrigation width={32} height={32} color="black" />
+              :
+              <Icons.greenhouse width={32} height={32} color="black" />
+          }
+        </TouchableOpacity>
+      </View>
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          padding: 10,
         }}
       >
-        <Heading>Available greenhouses</Heading>
-        <Animated.View
-          style={[
-            GreenHouseContainerStyles.addButton,
-            { transform: [{ scale }] },
-          ]}
-        >
-          <Pressable
-            onPress={() => {
-              setShowAddGreenhouseForm(true);
-              startAnimation();
-            }}
-            style={{
-              backgroundColor: "green",
-              borderRadius: 99,
-              borderCurve: "circular",
-              padding: 7,
-            }}
-          >
-            <Icons.greenhouseAddIcon width={32} height={32} color={"black"} />
-          </Pressable>
-        </Animated.View>
+        {
+          currentList === "greenhouse" ?
+            <GreenhouseList />
+            :
+            <IrrigationNavList />
+        }
       </View>
-      <CustomModal
-        modalVisible={showAddGreenhouseForm}
-        setModalVisible={setShowAddGreenhouseForm}
-        modalTitle={"Add Greenhouse"}
-      >
-        <GreenHouseAddForm
-          modalState={showAddGreenhouseForm}
-          setModalState={setShowAddGreenhouseForm}
-        />
-      </CustomModal>
-      {store.greenhouses.length > 0 ? (
-        <ScrollView
-          scrollEnabled={true}
-          nestedScrollEnabled={true}
-          style={{
-            marginTop: 10,
-            padding: 10,
-          }}
-        >
-          {store.greenhouses.map((greenhouse) => {
-            return (
-              <GreenhouseNavContainer
-                key={greenhouse.id}
-                name={greenhouse.name}
-                id={greenhouse.id}
-                imageUrl={greenhouse.backgroundImage}
-                removeGreenhouse={store.removeGreenhouse}
-              />
-            );
-          })}
-        </ScrollView>
-      ) : (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 10,
-          }}
-        >
-          <Banner message={"No greenhouse has been added yet, Add One!"} />
-        </View>
-      )}
-    </View>
+    </View >
   );
 };
 export default IndexPage;

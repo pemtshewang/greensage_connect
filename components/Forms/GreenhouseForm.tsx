@@ -10,19 +10,19 @@ import * as ImagePicker from "expo-image-picker";
 import { Pressable } from "react-native";
 import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
-import { useGreenhouseStore } from "../../zustand/store";
+import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
 
 const GreenHouseAddForm = ({
-  modalState,
+  type,
   setModalState,
 }: {
-  modalState: boolean;
+  type: "irrigation" | "greenhouse"
   setModalState: (state: boolean) => void;
 }) => {
-  const [loading, setLoading] = useState(false);
   const [imagePath, setImage] = useState<string>("");
-  const store = useGreenhouseStore();
+  const irrigationStore = useIrrigationControllerStore();
+  const greenhouseStore = useGreenhouseStore();
   const [data, setData] = useState({
     id: Crypto.randomUUID(),
     name: "",
@@ -30,27 +30,42 @@ const GreenHouseAddForm = ({
     image: imagePath,
   });
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
-    store.addGreenhouse({
-      id: data.id,
-      name: data.name,
-      ipAddress: data.ipAddress,
-      isConnected: false,
-      backgroundImage: imagePath,
-      temperature: 0,
-      humidity: 0,
-      soil_moisture: 0,
-      temperatureThreshold: 0,
-      soilMoistureThreshold: 0,
-      ws: null,
-      ventilationFanState: false,
-      lightState: false,
-      waterValveState: false,
-      firstSlot: null,
-      secondSlot: null,
-      thirdSlot: null,
-    });
-    setModalState(false);
-  };
+    if (type === "irrigation") {
+      irrigationStore.addIrrigationController({
+        id: data.id,
+        name: data.name,
+        ipAddress: data.ipAddress,
+        isConnected: false,
+        backgroundImage: imagePath,
+        valveStates: {},
+        soil_moisture: 0,
+      });
+    } else {
+      greenhouseStore.addGreenhouse({
+        id: data.id,
+        name: data.name,
+        ipAddress: data.ipAddress,
+        isConnected: false,
+        backgroundImage: imagePath,
+        temperature: 0,
+        humidity: 0,
+        soil_moisture: 0,
+        temperatureThreshold: 0,
+        soilMoistureThreshold: 0,
+        ws: null,
+        ventilationFanState: false,
+        lightState: false,
+        waterValveState: false,
+        firstSlot: null,
+        secondSlot: null,
+        thirdSlot: null,
+        humidityThreshold: 0,
+        rollerShutterLeftState: false,
+        rollerShutterRightState: false,
+      });
+      setModalState(false);
+    }
+  }
   const {
     handleSubmit,
     formState: { errors },
@@ -80,7 +95,7 @@ const GreenHouseAddForm = ({
       <View>
         <TextInputIcon
           type="text"
-          placeholder="Keep a name for your greenhouse"
+          placeholder={`Keep a name for your ${type}`}
           value={data.name}
           onChangeText={(text: string) => {
             setData({ ...data, name: text });
@@ -158,10 +173,10 @@ const GreenHouseAddForm = ({
           backgroundColor: "#228B29",
         }}
       >
-        <Text>Add Greenhouse</Text>
+        <Text>Add {type}</Text>
       </Pressable>
     </VStack>
   );
-};
+}
 
 export default GreenHouseAddForm;

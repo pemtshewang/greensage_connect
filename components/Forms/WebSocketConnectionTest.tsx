@@ -35,12 +35,13 @@ export default function WSTestConnectionForm({
     setConMsg("Connecting");
     try {
       await websocket.connect();
-      store.updateGreenhouse(id, {
-        ws: websocket,
-      });
       setConnected(true);
       setConMsg("Connected");
-      store.updateGreenhouse(id, { isConnected: true });
+      store.updateGreenhouse(id, {
+        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+        ws: websocket,
+        isConnected: true
+      });
       setShowForm(false);
       router.push(`/tabs/Home/Greenhouse/${id}`);
     } catch (error) {

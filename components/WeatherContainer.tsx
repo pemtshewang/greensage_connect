@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, View } from "native-base";
 import * as Location from "expo-location";
 import getWeather from "../api/weather/api";
 import { Icons } from "../assets/Icons/Icons";
@@ -12,7 +12,7 @@ const WeatherContainer = () => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [weatherIcon, setWeatherIcon] = useState(
-    <Icons.cloudIcon width={55} height={55} color="black" />
+    <Icons.sunnyWeather width={55} height={55} color="black" />
   );
   const [weatherData, setWeatherData] = useState();
 
@@ -43,25 +43,25 @@ const WeatherContainer = () => {
       if (is_day === 1) {
         // Daytime conditions
         if (precipitation > 0 || rain > 0 || showers > 0) {
-          return <Icons.cloudRainIcon width={55} height={55} color="black" />;
+          return <Icons.rain width={55} height={55} />;
         } else if (cloud_cover >= 80) {
-          return <Icons.cloudIcon width={55} height={55} color="black" />;
+          return <Icons.sunnyCloudy width={55} height={55} />;
         } else {
-          return <Icons.sunIcon width={55} height={55} color="black" />;
+          return <Icons.sunnyWeather width={55} height={55} />;
         }
       } else {
         // Nighttime conditions
         if (precipitation > 0 || rain > 0 || showers > 0) {
-          return <Icons.cloudRainIcon width={55} height={55} color="black" />;
+          return <Icons.moon width={55} height={55} />;
         } else if (cloud_cover >= 80) {
-          return <Icons.cloudRainIcon width={55} height={55} color="black" />;
+          return <Icons.moon width={55} height={55} />;
         } else {
-          return <Icons.moonIcon width={55} height={55} color="black" />;
+          return <Icons.moon width={55} height={55} />;
         }
       }
     }
     // Default icon if no conditions match
-    return <Icons.cloudIcon width={55} height={55} color="black" />;
+    return <Icons.sunnyWeather width={55} height={55} />;
   };
 
   let text = "Getting Location...";
@@ -72,9 +72,11 @@ const WeatherContainer = () => {
   }
 
   return (
-    <View style={{
-      flexDirection: 'row',
-    }}
+    <View
+      padding="2"
+      style={{
+        flexDirection: 'row',
+      }}
     >
       {weatherIcon}
       <View style={{

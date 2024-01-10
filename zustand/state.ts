@@ -2,16 +2,20 @@ interface totalGreenhouseState {
     count: number;
     greenhouses: GreenhouseState[];
 }
+interface totalIrrigationControllerState {
+    count: number;
+    irrigationControllers: IrrigationControllerState[];
+}
 export interface IWebSocket {
     sendMessage: (message: string) => void;
     connect: () => Promise<WebSocket>;
     disconnect: () => void;
 }
 interface TimeSets {
+    repetitionDays: number; // bitmask
     startTime: string | null;
     endTime: string | null;
 }
-
 interface GreenhouseState {
     id: string;
     name: string;
@@ -32,8 +36,25 @@ interface GreenhouseState {
     lightState: boolean;
     waterValveState: boolean;
     ws: IWebSocket | null;
-    firstSlot: TimeSets | null;
-    secondSlot: TimeSets | null;
-    thirdSlot: TimeSets | null;
+    firstSlot?: TimeSets | null;
+    secondSlot?: TimeSets | null;
+    thirdSlot?: TimeSets | null;
 }
-export { GreenhouseState, totalGreenhouseState };
+
+interface IrrigationControllerState {
+    id: string;
+    name: string;
+    backgroundImage: string;
+    ipAddress: string;
+    isConnected: boolean;
+    //parameters
+    soil_moisture: number;
+    valveStates: {
+        [key: string]: {
+            state: boolean;
+            startTime: Date | null;
+            endTime: Date | null;
+        }
+    }
+}
+export { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState };

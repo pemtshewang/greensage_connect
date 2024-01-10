@@ -1,10 +1,10 @@
-import { View, Text, Button, useToast, useColorModeValue } from "native-base"
+import { View, Text, Button, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
 import { IWebSocket } from "../zustand/state"
 import { useGreenhouseStore } from "../zustand/store"
-import { changeToISO } from "../utils/dateFormat"
+import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 
 const SlotContainer = ({
@@ -13,12 +13,14 @@ const SlotContainer = ({
   slot,
   prevStartTime,
   prevEndTime,
+  repDays
 }: {
   id: string,
   ws: IWebSocket;
   slot: number,
   prevStartTime: string | null,
   prevEndTime: string | null,
+  repDays: number,
 }) => {
   const daysOfWeek = [
     { name: 'Sun', value: 0b00000001 },
@@ -29,11 +31,17 @@ const SlotContainer = ({
     { name: 'Fri', value: 0b00100000 },
     { name: 'Sat', value: 0b01000000 },
   ];
+  const slotKeys: {
+    [key: number]: string
+  } = {
+    1: "firstSlot",
+    2: "secondSlot",
+    3: "thirdSlot",
+  };
   const handleCommitChanges = () => {
-    const formattedStartTime = changeToISO(startTime as Date);
-    const formattedEndTime = changeToISO(endTime as Date);
-    ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}`)
-    console.log(`sending schedule|${slot}|${formattedStartTime}|${formattedEndTime}`)
+    const formattedStartTime = extractTime(startTime as Date);
+    const formattedEndTime = extractTime(endTime as Date);
+    ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`);
     toast.show({
       render: () => {
         return (
@@ -45,37 +53,53 @@ const SlotContainer = ({
       duration: 2000,
       placement: "bottom"
     })
+    store.updateGreenhouse(id, {
+      ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+      [slotKeys[slot]]: {
+        startTime: startTime,
+        endTime: endTime,
+        repetitionDays: repetitionDays,
+      }
+    });
+  }
+  const handleClearSlot = () => {
+    ws.sendMessage(`scheduleClear|${slot}`);
+    setStartTime(null);
+    setEndTime(null);
+    setRepetitionDays(0);
+    store.updateGreenhouse(id, {
+      ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+      [slotKeys[slot]]: {
+        startTime: null,
+        endTime: null,
+        repetitionDays: 0,
+      }
+    });
   }
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
   const [err, setErr] = useState<string | null>(null);
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [repetitionDays, setRepetitionDays] = useState(0); // Initialize bitmask
+  const [clearBtnDisabled, setClearBtnDisabled] = useState<boolean>(false);
+  const [repetitionDays, setRepetitionDays] = useState(repDays); // Initialize bitmask
   const store = useGreenhouseStore();
   const toast = useToast();
   const [startTimePickerVisible, setStartTimePickerVisible] = useState<boolean>(false);
   const [endTimePickerVisible, setEndTimePickerVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    if (startTime && endTime && !err) {
-      store.updateGreenhouse(id, {
-        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
-        [slot === 1 ? "firstSlot" : slot === 2 ? "secondSlot" : "thirdSlot"]: {
-          startTime,
-          endTime,
-        }
-      });
-      console.log(`updated greenhouse ${id} with slot ${slot} with startTime ${startTime} and endTime ${endTime}`)
-    }
-    if (startTime === null || endTime === null) {
-      setErr("Please select a valid time for schedule");
-    }
-    if (startTime && endTime && !err) {
-      setDisabled(false);
+    if (repetitionDays === 0) {
+      setErr("Please select a valid day(s) for schedule");
     } else {
-      setDisabled(true);
+      setErr(null);
     }
-  }, [endTime, startTime, err])
+  }, [repetitionDays]);
+
+  useEffect(() => {
+    setDisabled(!(!(isNaN(startTime?.getTime() as number)) && !(isNaN(endTime?.getTime() as number)) && !err && repetitionDays !== 0));
+    setClearBtnDisabled(!(!(isNaN(startTime?.getTime() as number)) && !(isNaN(endTime?.getTime() as number)) && !err && repetitionDays !== 0));
+  }, [endTime, startTime, err, repetitionDays]);
+
   const toggleDay = (dayValue: number) => {
     const newRepetitionDays = repetitionDays ^ dayValue; // Toggle the selected day in bitmask
     setRepetitionDays(newRepetitionDays);
@@ -170,18 +194,33 @@ const SlotContainer = ({
           </Pressable>
         </View>
       </View>
-      <View flexDirection="row" justifyContent="center" padding="5">
+      <View padding="5" flexDirection="row" justifyContent="center" style={{
+        gap: 5
+      }}>
         <Button
+          w={120}
           onPress={handleCommitChanges}
           backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Commit Changes</Button>
+        <Button
+          w={120}
+          onPress={handleClearSlot}
+          backgroundColor={clearBtnDisabled ? "gray.300" : "red.500"} disabled={clearBtnDisabled} endIcon={<Icons.trash size={20} color={clearBtnDisabled ? "gray" : "black"} />}>Clear Slot</Button>
       </View>
+      {
+        err && (
+          <View flexDirection="row">
+            <Icons.danger size={20} color="red" />
+            <Text marginRight="3" color="red.500">{err}</Text>
+          </View>
+        )
+      }
       <DateTimePickerModal
         is24Hour={true}
         isVisible={startTimePickerVisible}
         mode="time"
         onConfirm={(date) => {
-          setStartTime(date);
           setStartTimePickerVisible(false);
+          setStartTime(date);
         }}
         display="spinner"
         onCancel={() => setStartTimePickerVisible(false)}
@@ -191,13 +230,12 @@ const SlotContainer = ({
         isVisible={endTimePickerVisible}
         mode="time"
         onConfirm={(date) => {
-          setEndTime(date);
           setEndTimePickerVisible(false);
+          setEndTime(date);
         }}
         display="spinner"
         onCancel={() => setEndTimePickerVisible(false)}
       />
-      <Text>{err} {startTime?.toString()} {endTime?.toString()}</Text>
     </View>
   )
 }
