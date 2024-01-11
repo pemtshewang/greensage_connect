@@ -10,15 +10,18 @@ import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useGreenhouseStore } from "../zustand/store";
 import { useRouter } from "expo-router";
+import IrrigationWSTestConnectionForm from "./Forms/WSConnectionIrrigationTest";
 
 const GreenhouseNavContainer = ({
   id,
   name,
   imageUrl,
   removeGreenhouse,
+  type
 }: {
   id: string;
   name: string;
+  type: "greenhouse" | "irrigation";
   imageUrl: string;
   removeGreenhouse: (id: string) => void;
 }) => {
@@ -26,9 +29,6 @@ const GreenhouseNavContainer = ({
   const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
-  const greenhouseStore = useGreenhouseStore();
-  const greenhouse = greenhouseStore.greenhouses.find(res => res.id === id);
-  const router = useRouter();
 
   useEffect(() => {
     if (removeGreenhouseConfirm) {
@@ -129,11 +129,20 @@ const GreenhouseNavContainer = ({
             <Icons.enter color="black" />
           </Pressable>
         </View>
-        <WSTestConnectionForm
-          id={id}
-          showForm={showWSForm}
-          setShowForm={setShowWSForm}
-        />
+        {
+          type === "greenhouse" ? (
+            <WSTestConnectionForm
+              id={id}
+              showForm={showWSForm}
+              setShowForm={setShowWSForm}
+            />) : (
+            <IrrigationWSTestConnectionForm
+              id={id}
+              showForm={showWSForm}
+              setShowForm={setShowWSForm}
+            />
+          )
+        }
         <CustomActionSheet
           onClose={onClose}
           onOpen={onOpen}
@@ -154,7 +163,7 @@ const GreenhouseNavContainer = ({
           </Actionsheet.Item>
         </CustomActionSheet>
         <CustomAlertDialog
-          title={"Remove Greenhouse"}
+          title={`Remove ${type}`}
           isOpen={alertDialog}
           message={`Are you sure you want to remove ${name}?`}
           setIsOpen={setAlertDialogOpen}

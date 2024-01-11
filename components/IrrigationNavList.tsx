@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from "native-base";
-import { useGreenhouseStore, useIrrigationControllerStore } from "../zustand/store";
+import { useIrrigationControllerStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
 import { useEffect, useState } from "react";
@@ -40,8 +40,10 @@ const IrrigationNavList = () => {
             data={greenhouses}
             renderItem={({ item }) => (
               <GreenhouseNavContainer
+                type="irrigation"
                 id={item.id}
                 name={item.name}
+                routeUrl={`/tabs/Home/Irrigation/${item.id}`}
                 imageUrl={item.backgroundImage}
                 removeGreenhouse={(id) => {
                   store.removeIrrigationController(id);

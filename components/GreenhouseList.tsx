@@ -40,7 +40,9 @@ const GreenhouseList = () => {
             data={greenhouses}
             renderItem={({ item }) => (
               <GreenhouseNavContainer
+                type="greenhouse"
                 id={item.id}
+                routeUrl={`/tabs/Home/Greenhouse/${item.id}`}
                 name={item.name}
                 imageUrl={item.backgroundImage}
                 removeGreenhouse={(id) => {
@@ -66,7 +68,6 @@ const GreenhouseList = () => {
       >
         <GreenHouseAddForm
           type="greenhouse"
-          modalState={showGreenhouseAddForm}
           setModalState={setShowGreenhouseAddForm}
         />
       </CustomModal>

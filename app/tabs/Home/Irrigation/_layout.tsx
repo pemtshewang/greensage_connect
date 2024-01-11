@@ -1,7 +1,7 @@
 import { Text, View } from "native-base";
 import { Stack } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
-import { useGreenhouseStore } from "../../../../zustand/store";
+import { useGreenhouseStore, useIrrigationControllerStore } from "../../../../zustand/store";
 import Icons from "../../../../assets/Icons/Icons";
 import { Pressable } from "react-native";
 import WSDisconnectDialogBox from "../../../../components/WSDisconnectDialog";
@@ -12,17 +12,18 @@ import { IWebSocket } from "../../../../zustand/state";
 
 export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
-  const name = greenhouse?.name;
+  const irrigationStore = useIrrigationControllerStore();
+  const irrigationController = irrigationStore.irrigationControllers.find((res) => res.id === id);
+  const name = irrigationController?.name;
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
 
+
   useEffect(() => {
-    if (greenhouse?.isConnected === false) {
+    if (irrigationController?.isConnected === false) {
       setShowDialog(true);
     }
-  }, [greenhouse]);
+  }, [irrigationController]);
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function Layout() {
         dialogVisible={showKillSessionDialog}
         message="Are you sure you want to disconnect this session?"
         setDialogVisible={setShowKillSessionDialog}
-        ws={greenhouse?.ws as IWebSocket}
+        ws={irrigationController?.ws as IWebSocket}
       />
       <Stack
         screenOptions={{
@@ -81,7 +82,7 @@ export default function Layout() {
                 >
                   <WSSessionButton showDialog={showKillSessionDialog}
                     setShowDialog={setShowKillSessionDialog}
-                    ws={greenhouse?.ws}
+                    ws={irrigationController?.ws}
                   />
                 </View>
               </View>

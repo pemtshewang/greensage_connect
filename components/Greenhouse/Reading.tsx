@@ -1,5 +1,6 @@
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { View, Text } from "native-base";
+
 import { Circle } from "react-native-svg";
 import Icons from "../../assets/Icons/Icons";
 

@@ -49,6 +49,7 @@ interface IrrigationControllerState {
     isConnected: boolean;
     //parameters
     soil_moisture: number;
+    ws: IWebSocket | null;
     valveStates: {
         [key: string]: {
             state: boolean;

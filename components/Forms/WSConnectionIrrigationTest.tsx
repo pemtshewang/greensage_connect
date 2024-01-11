@@ -4,9 +4,9 @@ import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
 import { useRouter } from "expo-router";
-import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
+import { useIrrigationControllerStore } from "../../zustand/store";
 import { Text } from "native-base";
-import useWebSocket from "../../hooks/wsservice";
+import useIrrigationWebSocket from "../../hooks/irrigationws";
 
 type ConnectionMsgTypes =
   | "Connected"
@@ -14,7 +14,7 @@ type ConnectionMsgTypes =
   | "Connection Failed"
   | "Connecting";
 
-export default function WSTestConnectionForm({
+export default function IrrigationWSTestConnectionForm({
   id,
   showForm,
   setShowForm,
@@ -26,22 +26,22 @@ export default function WSTestConnectionForm({
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [conMsg, setConMsg] = useState<ConnectionMsgTypes>("Not Connected");
-  const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const store = useIrrigationControllerStore();
+  const irrigationController = store.irrigationControllers.find((res) => res.id === id);
   const router = useRouter();
-  const websocket = useWebSocket({ id: id });
+  const websocket = useIrrigationWebSocket({ id: id });
   const testConnection = async () => {
     setConnecting(true);
     setConMsg("Connecting");
     try {
       await websocket.connect();
-      store.updateGreenhouse(id, {
+      store.updateIrrigationController(id, {
         ws: websocket,
       });
       setConnected(true);
       setConMsg("Connected");
-      store.updateGreenhouse(id, { isConnected: true });
-      router.push(`/tabs/Home/Greenhouse/${id}`);
+      store.updateIrrigationController(id, { isConnected: true });
+      router.push(`/tabs/Home/Irrigation/${id}`);
     } catch (error) {
       setConnected(false);
       setConMsg("Connection Failed");
@@ -71,7 +71,7 @@ export default function WSTestConnectionForm({
             textAlign: "center"
           }}
         >
-          Testing connection with {greenhouse?.ipAddress as string}
+          Testing connection with {irrigationController?.ipAddress as string}
         </Text>
         <Pressable
           disabled={connecting || connected}

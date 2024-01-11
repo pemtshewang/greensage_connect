@@ -39,6 +39,7 @@ const GreenHouseAddForm = ({
         backgroundImage: imagePath,
         valveStates: {},
         soil_moisture: 0,
+        ws: null
       });
     } else {
       greenhouseStore.addGreenhouse({
@@ -63,8 +64,8 @@ const GreenHouseAddForm = ({
         rollerShutterLeftState: false,
         rollerShutterRightState: false,
       });
-      setModalState(false);
     }
+    setModalState(false);
   }
   const {
     handleSubmit,
