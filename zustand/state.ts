@@ -51,11 +51,31 @@ interface IrrigationControllerState {
     soil_moisture: number;
     ws: IWebSocket | null;
     valveStates: {
-        [key: string]: {
+        firstSlot: {
             state: boolean;
             startTime: Date | null;
             endTime: Date | null;
-        }
+        } | null,
+        secondSlot: {
+            state: boolean;
+            startTime: Date | null;
+            endTime: Date | null;
+        } | null,
+        thirdSlot: {
+            state: boolean;
+            startTime: Date | null;
+            endTime: Date | null;
+        } | null,
+        fourthSlot: {
+            state: boolean;
+            startTime: Date | null;
+            endTime: Date | null;
+        } | null,
+        fifthSlot: {
+            state: boolean;
+            startTime: Date | null;
+            endTime: Date | null;
+        } | null,
     }
 }
 export { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState };

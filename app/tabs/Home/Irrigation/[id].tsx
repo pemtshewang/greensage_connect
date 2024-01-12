@@ -1,66 +1,64 @@
 import { useLocalSearchParams } from "expo-router";
-import { View } from "native-base";
-import { useGreenhouseStore } from "../../../../zustand/store";
-import { Icons } from "../../../../assets/Icons/Icons";
-import ReadingsContainer from "../../../../components/Greenhouse/Reading";
-import ShadowContainer from "../../../../components/PressableShadowContainer";
+import { useIrrigationControllerStore } from "../../../../zustand/store";
 import { useState, useEffect } from "react";
-import { Dimensions } from "react-native";
+import IrrigationControllerContainer from "../../../../components/IrrigationControllerContainer";
+import ThresholdSetForm from "../../../../components/Forms/ThresholdSetForm";
+import { IWebSocket } from "../../../../zustand/state";
+import { ScrollView } from "native-base";
+import IrrigationSchedulerContainer from "../../../../components/IrrigationSchedulerContainer";
+
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { width } = Dimensions.get('window');
   const [params, setParams] = useState<{
-    temperature: number;
-    humidity: number;
     soil_moisture: number;
-    ldr: number;
   }>({
-    temperature: 0,
-    humidity: 0,
     soil_moisture: 0,
-    ldr: 0,
   });
-  const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find(
+  const store = useIrrigationControllerStore();
+  const irrigation = store.irrigationControllers.find(
     (g) => g.id === id
   );
   useEffect(() => {
     setParams({
-      temperature: greenhouse?.temperature as number,
-      humidity: greenhouse?.humidity as number,
-      soil_moisture: greenhouse?.soil_moisture as number,
-      ldr: greenhouse?.soil_moisture as number,
+      soil_moisture: irrigation?.soil_moisture as number,
     });
-  }, [greenhouse]);
+  }, [irrigation]);
   return (
-    <>
-      <ReadingsContainer
-        temperatureReading={params.temperature}
-        humidityReading={params.humidity}
-        soilMoistureReading={params.soil_moisture}
-        ldrReading={params.ldr}
+    <ScrollView>
+      <IrrigationControllerContainer soilMoistureReading={params.soil_moisture} />
+      <ThresholdSetForm
+        id={id as string}
+        message="Set a threshold for water valves"
+        type="soil_moisture"
+        ws={irrigation?.ws as IWebSocket}
+        defaultValue={irrigation?.soil_moisture as number} />
+      <IrrigationSchedulerContainer
+        valveLabel="firstSlot"
+        id={id as string}
+        state={irrigation?.valveStates.firstSlot?.state as boolean}
       />
-      <View style={{
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 20
-      }}>
-        <ShadowContainer
-          label={"Temperature"}
-          id={id as string}
-          icon={<Icons.exhaustFan width={32} height={32} color="black" />}
-          navigatePath={`/tabs/Home/Greenhouse/mgTemperature/${id}`}
-        />
-        <ShadowContainer
-          label={"Waterflow"}
-          id={id as string}
-          icon={<Icons.valve width={32} height={32} color="black" />}
-          navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
-        />
-      </View>
-    </>
+      <IrrigationSchedulerContainer
+        valveLabel="secondSlot"
+        id={id as string}
+        state={irrigation?.valveStates.secondSlot?.state as boolean}
+      />
+      <IrrigationSchedulerContainer
+        valveLabel="thirdSlot"
+        id={id as string}
+        state={irrigation?.valveStates.thirdSlot?.state as boolean}
+      />
+      <IrrigationSchedulerContainer
+        valveLabel="fourthSlot"
+        id={id as string}
+        state={irrigation?.valveStates.fourthSlot?.state as boolean}
+      />
+      <IrrigationSchedulerContainer
+        valveLabel="fifthSlot"
+        id={id as string}
+        state={irrigation?.valveStates.fifthSlot?.state as boolean}
+      />
+    </ScrollView>
   );
 };
 

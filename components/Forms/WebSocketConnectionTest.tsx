@@ -52,7 +52,7 @@ export default function WSTestConnectionForm({
 
   return (
     <CustomModal
-      modalTitle="Local Connection Test"
+      modalTitle="Local Connection Test greenhouse"
       modalVisible={showForm}
       setModalVisible={setShowForm}
     >

@@ -37,7 +37,13 @@ const GreenHouseAddForm = ({
         ipAddress: data.ipAddress,
         isConnected: false,
         backgroundImage: imagePath,
-        valveStates: {},
+        valveStates: {
+          firstSlot: null,
+          secondSlot: null,
+          thirdSlot: null,
+          fourthSlot: null,
+          fifthSlot: null
+        },
         soil_moisture: 0,
         ws: null
       });

@@ -42,7 +42,6 @@ const GreenhouseList = () => {
               <GreenhouseNavContainer
                 type="greenhouse"
                 id={item.id}
-                routeUrl={`/tabs/Home/Greenhouse/${item.id}`}
                 name={item.name}
                 imageUrl={item.backgroundImage}
                 removeGreenhouse={(id) => {
