@@ -110,6 +110,34 @@ const TabLayout = () => {
           tabBarActiveTintColor: "green",
         }}
       />
+      <Tabs.Screen
+        name="Settings"
+        options={{
+          headerShown: true,
+          header: () => {
+            return (
+              <View
+                style={{
+                  backgroundColor: "green",
+                  padding: 10,
+                }}
+              >
+                <Heading
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  Settings
+                </Heading>
+              </View>
+            );
+          },
+          tabBarIcon: ({ focused, color, size }) => (
+            <Icons.settings color={focused ? "green" : "#6b7280"} size={size} />
+          ),
+          tabBarActiveTintColor: "green",
+        }}
+      />
     </Tabs>
   );
 };

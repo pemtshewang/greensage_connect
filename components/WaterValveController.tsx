@@ -1,4 +1,4 @@
-import { View, Text } from "native-base"
+import { View, Badge, Text } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
@@ -113,9 +113,15 @@ export default function WaterValveControllerContainer({
         <View
           style={{
             flexDirection: "column",
-            alignItems: "center"
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center"
           }}>
-          <Text fontWeight="semibold" color="#A0A0A0">Toggle the switch to turn close and open</Text>
+          <Badge
+            colorScheme="info"
+          >
+            Manual On and Off
+          </Badge>
           <View style={{
             flexDirection: "row",
             alignItems: "center",

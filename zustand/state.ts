@@ -51,30 +51,35 @@ interface IrrigationControllerState {
     soil_moisture: number;
     ws: IWebSocket | null;
     valveStates: {
-        firstSlot: {
+        firstSlot?: {
             state: boolean;
             startTime: Date | null;
             endTime: Date | null;
+            repDays: number;
         } | null,
-        secondSlot: {
+        secondSlot?: {
             state: boolean;
             startTime: Date | null;
             endTime: Date | null;
+            repDays: number;
         } | null,
-        thirdSlot: {
+        thirdSlot?: {
             state: boolean;
             startTime: Date | null;
             endTime: Date | null;
+            repDays: number;
         } | null,
-        fourthSlot: {
+        fourthSlot?: {
             state: boolean;
             startTime: Date | null;
             endTime: Date | null;
+            repDays: number;
         } | null,
-        fifthSlot: {
+        fifthSlot?: {
             state: boolean;
             startTime: Date | null;
             endTime: Date | null;
+            repDays: number;
         } | null,
     }
 }

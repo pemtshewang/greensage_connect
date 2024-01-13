@@ -1,4 +1,4 @@
-import { ArrowBigRightIcon, Clock3Icon, DropletIcon, MoreHorizontalIcon, PowerCircleIcon, SendHorizontalIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, XOctagonIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, Clock3Icon, DropletIcon, MoreHorizontalIcon, PowerCircleIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, XOctagonIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -72,6 +72,7 @@ export const Icons = {
   disconnectSession: UnplugIcon,
   ArrowBigRight: ArrowBigRightIcon,
   schedule: Clock3Icon,
+  settings: SettingsIcon,
   timer: Timer,
   timerReset: TimerResetIcon,
   send: SendHorizontalIcon,

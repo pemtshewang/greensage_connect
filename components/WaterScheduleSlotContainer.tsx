@@ -1,4 +1,4 @@
-import { View, Text, Button, useToast } from "native-base"
+import { View, Badge, Text, Button, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
@@ -6,6 +6,7 @@ import { IWebSocket } from "../zustand/state"
 import { useGreenhouseStore } from "../zustand/store"
 import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
+import { TouchableOpacity } from "react-native"
 
 const SlotContainer = ({
   id,
@@ -107,32 +108,32 @@ const SlotContainer = ({
   return (
     <View paddingY="2" borderBottomWidth={2} padding="2">
       <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
-        <Text fontSize="sm" backgroundColor="">SLOT {slot}</Text>
+        <Badge colorScheme="amber">{"Slot " + slot}</Badge>
         <Icons.timer size={25} color="black" />
       </View>
       <View flexDirection="row" justifyContent="center" padding="5">
         {/* Display selected days */}
-        {daysOfWeek.map((day) => (
-          <Pressable
-            key={day.name}
-            onPress={() => toggleDay(day.value)}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: "center",
-              marginVertical: 5,
-              borderWidth: 2,
-              borderRadius: 40,
-              padding: 5,
-              height: 37,
-              width: 37,
-              marginLeft: 3,
-              backgroundColor: (repetitionDays & day.value) ? 'green' : 'white',
-            }}
-          >
-            <Text>{day.name}</Text>
-          </Pressable>
-        ))}
+        {daysOfWeek.map((day) => {
+          return (
+            <TouchableOpacity
+              key={day.name}
+              onPress={() => toggleDay(day.value)}
+              style={{
+                borderRadius: 5,
+              }}
+            >
+              <Badge
+                colorScheme={`${repetitionDays & day.value ? "green" : "gray"}`}
+                marginLeft={1}
+                borderWidth={1}
+                borderColor={"black"}
+              >
+                {day.name}
+              </Badge>
+            </TouchableOpacity>
+          )
+        })
+        }
       </View>
       <View flexDirection="row" w="100%" alignItems="center" marginTop="5">
         <View flexDirection="column" alignItems="center" justifyContent="center" w="50%" >

@@ -9,7 +9,6 @@ import { Dimensions } from "react-native";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { width } = Dimensions.get('window');
   const [params, setParams] = useState<{
     temperature: number;
     humidity: number;
@@ -36,10 +35,10 @@ const Page = () => {
   return (
     <>
       <ReadingsContainer
-        temperatureReading={params.temperature}
-        humidityReading={params.humidity}
-        soilMoistureReading={params.soil_moisture}
-        ldrReading={params.ldr}
+        temperatureReading={12}
+        humidityReading={12}
+        soilMoistureReading={12}
+        ldrReading={12}
       />
       <View style={{
         width: "100%",

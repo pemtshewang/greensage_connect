@@ -1,9 +1,9 @@
-import { View, Text, Button, useToast } from "native-base"
+import { View, Badge, Text, Button, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
-import { Pressable } from "react-native"
+import { Pressable, TouchableOpacity } from "react-native"
 import { IWebSocket } from "../zustand/state"
-import { useGreenhouseStore, useIrrigationControllerStore } from "../zustand/store"
+import { useIrrigationControllerStore } from "../zustand/store"
 import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 
@@ -18,18 +18,18 @@ const IrrigationSlotContainer = ({
   id: string,
   ws: IWebSocket;
   valveNumber: "firstSlot" | "secondSlot" | "thirdSlot" | "fourthSlot" | "fifthSlot"
-  prevStartTime: string | null,
-  prevEndTime: string | null,
+  prevStartTime: Date | null,
+  prevEndTime: Date | null,
   repDays: number,
 }) => {
   const daysOfWeek = [
-    { name: 'Sun', value: 0b00000001 },
-    { name: 'Mon', value: 0b00000010 },
-    { name: 'Tue', value: 0b00000100 },
-    { name: 'Wed', value: 0b00001000 },
-    { name: 'Thu', value: 0b00010000 },
-    { name: 'Fri', value: 0b00100000 },
-    { name: 'Sat', value: 0b01000000 },
+    { name: 'S', value: 0b00000001 },
+    { name: 'M', value: 0b00000010 },
+    { name: 'T', value: 0b00000100 },
+    { name: 'W', value: 0b00001000 },
+    { name: 'T', value: 0b00010000 },
+    { name: 'F', value: 0b00100000 },
+    { name: 'S', value: 0b01000000 },
   ];
   const store = useIrrigationControllerStore();
   const handleCommitChanges = () => {
@@ -52,18 +52,22 @@ const IrrigationSlotContainer = ({
     })
   }
   const handleClearSlot = () => {
-    ws.sendMessage(`scheduleClear|${slot}`);
+    ws.sendMessage(`scheduleClear|${valveNumber}`);
     setStartTime(null);
     setEndTime(null);
     setRepetitionDays(0);
-    store.updateGreenhouse(id, {
-      ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
-      [slotKeys[slot]]: {
-        startTime: null,
-        endTime: null,
-        repetitionDays: 0,
+    store.updateIrrigationController(id, {
+      ...store.irrigationControllers.find((g) => g.id === id),
+      valveStates: {
+        ...store.irrigationControllers.find((g) => g.id === id)?.valveStates,
+        [valveNumber]: {
+          state: false,
+          startTime: null,
+          endTime: null
+        }
       }
-    });
+    }
+    )
   }
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
@@ -77,7 +81,7 @@ const IrrigationSlotContainer = ({
 
   useEffect(() => {
     if (repetitionDays === 0) {
-      setErr("Please select a valid day(s) for schedule");
+      setErr("Please select a valid day(s)");
     } else {
       setErr(null);
     }
@@ -93,35 +97,42 @@ const IrrigationSlotContainer = ({
     setRepetitionDays(newRepetitionDays);
   };
   return (
-    <View paddingY="2" borderBottomWidth={2} padding="2">
-      <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
-        <Text fontSize="sm" backgroundColor="">SLOT {slot}</Text>
-        <Icons.timer size={25} color="black" />
+    <View flexDirection="column" alignItems="center">
+      <View flexDirection="row" alignItems="center">
+        <Badge colorScheme="info">Scheduler</Badge>
+        <Icons.timer size={32} color="black" />
       </View>
-      <View flexDirection="row" justifyContent="center" padding="5">
-        {/* Display selected days */}
-        {daysOfWeek.map((day) => (
-          <Pressable
-            key={day.name}
-            onPress={() => toggleDay(day.value)}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: "center",
-              marginVertical: 5,
-              borderWidth: 2,
-              borderRadius: 40,
-              padding: 5,
-              height: 37,
-              width: 37,
-              marginLeft: 3,
-              backgroundColor: (repetitionDays & day.value) ? 'green' : 'white',
-            }}
-          >
-            <Text>{day.name}</Text>
-          </Pressable>
-        ))}
+      <View flexDirection="row" alignItems="center" justifyContent="center" padding="5">
+        {
+          daysOfWeek.map((day) => {
+            return (
+              <TouchableOpacity
+                key={day.value}
+                onPress={() => {
+                  toggleDay(day.value);
+                }}
+              >
+                <Badge
+                  colorScheme={
+                    repetitionDays & day.value ? "green" : "gray"
+                  }
+                  style={{
+                    marginLeft: 5,
+                  }}
+                >
+                  {day.name}
+                </Badge>
+              </TouchableOpacity>
+            )
+          })
+        }
       </View>
+      {repetitionDays === 0 && (
+        <Text color="red.500">
+          Please select a valid day(s)
+        </Text>
+      )
+      }
       <View flexDirection="row" w="100%" alignItems="center" marginTop="5">
         <View flexDirection="column" alignItems="center" justifyContent="center" w="50%" >
           <View flexDirection="row" style={{
@@ -182,15 +193,15 @@ const IrrigationSlotContainer = ({
           </Pressable>
         </View>
       </View>
-      <View padding="5" flexDirection="row" justifyContent="center" style={{
+      <View padding="5" flexDirection="column" justifyContent="center" style={{
         gap: 5
       }}>
         <Button
-          w={120}
+          w={150}
           onPress={handleCommitChanges}
           backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Commit Changes</Button>
         <Button
-          w={120}
+          w={150}
           onPress={handleClearSlot}
           backgroundColor={clearBtnDisabled ? "gray.300" : "red.500"} disabled={clearBtnDisabled} endIcon={<Icons.trash size={20} color={clearBtnDisabled ? "gray" : "black"} />}>Clear Slot</Button>
       </View>
@@ -227,4 +238,4 @@ const IrrigationSlotContainer = ({
     </View>
   )
 }
-export default SlotContainer;
+export default IrrigationSlotContainer;

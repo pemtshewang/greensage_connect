@@ -1,4 +1,4 @@
-import { View, Text, Input, Button } from "native-base";
+import { View, Text, Input, Button, Badge } from "native-base";
 import { IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
@@ -65,8 +65,8 @@ const ThresholdSetForm = ({
       padding="5"
       style={{
         flexDirection: "column",
-        borderWidth: 2,
         marginTop: 20,
+        backgroundColor: "#fff",
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -74,15 +74,14 @@ const ThresholdSetForm = ({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 2,
+        elevation: 8,
         borderRadius: 9,
-        borderColor: "lightgray"
       }}>
       <View style={{
         flexDirection: "row",
         justifyContent: "space-between"
       }}>
-        <Text>{message}</Text>
+        <Badge colorScheme="info">{message}</Badge>
         <View style={{
           flexDirection: "row",
           justifyContent: "space-around",
@@ -143,10 +142,8 @@ const ThresholdSetForm = ({
         >
           <Button
             onPress={changeState ? sendThreshold : toggleChangeState}
-            style={{
-              backgroundColor: changeState ? "green" : "#0f9",
-              paddingTop: 5,
-            }}
+            padding="2"
+            bg="info.300"
           >
             <Text color="#002">
               {
@@ -156,7 +153,7 @@ const ThresholdSetForm = ({
           </Button>
           {
             changeState && (
-              <Button onPress={
+              <Button bg="danger.500" onPress={
                 () => {
                   setValue(defaultValue);
                   toggleChangeState();

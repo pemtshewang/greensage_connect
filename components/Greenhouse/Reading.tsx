@@ -1,5 +1,5 @@
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { View, Text } from "native-base";
+import { View, Text, Badge } from "native-base";
 
 import { Circle } from "react-native-svg";
 import Icons from "../../assets/Icons/Icons";
@@ -39,9 +39,7 @@ export default function ReadingsContainer({
       }}>
         {/* Temperature */}
         <View style={{ position: "relative" }}>
-          <Text style={{ textAlign: "center", fontSize: 15, fontWeight: "bold" }}>
-            Temperature
-          </Text>
+          <Badge colorScheme="red">Temperature</Badge>
           <AnimatedCircularProgress
             size={120}
             width={15}
@@ -53,9 +51,9 @@ export default function ReadingsContainer({
             padding={10}
             renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
           />
-          <Text style={{ position: "absolute", top: "60%", left: "40%", textAlign: "center", fontWeight: "bold" }}>
-            {temperatureReading}°C
-          </Text>
+          <Badge colorScheme="red" style={{ position: "absolute", top: "70%", left: "34%" }}>
+            {temperatureReading + " °C"}
+          </Badge>
           <Icons.thermometer
             style={{ position: "absolute", top: "39%", left: "39%" }}
             size={32}
@@ -65,9 +63,7 @@ export default function ReadingsContainer({
 
         {/* Humidity */}
         <View style={{ position: "relative" }}>
-          <Text style={{ textAlign: "center", fontSize: 15, fontWeight: "bold" }}>
-            Humidity
-          </Text>
+          <Badge colorScheme="cyan">Humidity</Badge>
           <AnimatedCircularProgress
             size={120}
             width={15}
@@ -79,9 +75,9 @@ export default function ReadingsContainer({
             padding={10}
             renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
           />
-          <Text style={{ position: "absolute", top: "60%", left: "40%", textAlign: "center", fontWeight: "bold" }}>
-            {humidityReading}%
-          </Text>
+          <Badge colorScheme="cyan" style={{ position: "absolute", top: "70%", left: "34%" }}>
+            {temperatureReading + " °C"}
+          </Badge>
           <Icons.droplets
             style={{ position: "absolute", top: "39%", left: "39%" }}
             size={32}
@@ -97,9 +93,7 @@ export default function ReadingsContainer({
       }}>
         {/* Soil Moisture */}
         <View style={{ position: "relative" }}>
-          <Text style={{ textAlign: "center", fontSize: 15, fontWeight: "bold" }}>
-            Soil Moisture
-          </Text>
+          <Badge colorScheme="lightBlue">Soil Moisture</Badge>
           <AnimatedCircularProgress
             size={120}
             width={15}
@@ -111,9 +105,9 @@ export default function ReadingsContainer({
             padding={10}
             renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
           />
-          <Text style={{ position: "absolute", top: "60%", left: "40%", textAlign: "center", fontWeight: "bold" }}>
-            {soilMoistureReading}%
-          </Text>
+          <Badge colorScheme="lightBlue" style={{ position: "absolute", top: "70%", left: "34%" }}>
+            {soilMoistureReading + " %"}
+          </Badge>
           <Icons.soilMoisture
             style={{ position: "absolute", top: "39%", left: "39%" }}
             size={32}
@@ -123,9 +117,7 @@ export default function ReadingsContainer({
 
         {/* LDR */}
         <View style={{ position: "relative" }}>
-          <Text style={{ textAlign: "center", fontSize: 15, fontWeight: "bold" }}>
-            LDR
-          </Text>
+          <Badge colorScheme="indigo">Light Intensity</Badge>
           <AnimatedCircularProgress
             size={120}
             width={15}
@@ -137,9 +129,9 @@ export default function ReadingsContainer({
             padding={10}
             renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
           />
-          <Text style={{ position: "absolute", top: "60%", left: "40%", textAlign: "center", fontWeight: "bold" }}>
-            {ldrReading}%
-          </Text>
+          <Badge colorScheme="indigo" style={{ position: "absolute", top: "70%", left: "34%" }}>
+            {ldrReading + " %"}
+          </Badge>
           <Icons.sunIcon
             style={{ position: "absolute", top: "39%", left: "39%" }}
             size={32}

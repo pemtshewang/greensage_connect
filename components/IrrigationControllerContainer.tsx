@@ -1,4 +1,4 @@
-import { Text, View } from "native-base"
+import { Badge, Text, View } from "native-base"
 import { AnimatedCircularProgress } from "react-native-circular-progress"
 import { Circle } from "react-native-svg"
 import Icons from "../assets/Icons/Icons"
@@ -25,7 +25,7 @@ const IrrigationControllerContainer = (
         borderRadius: 10,
         margin: 10
       }}>
-        <Text>Soil Moisture</Text>
+        <Badge colorScheme="blue">Soil Moisture</Badge>
         <AnimatedCircularProgress
           size={120}
           width={15}
@@ -37,9 +37,11 @@ const IrrigationControllerContainer = (
           padding={10}
           renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
         />
-        <View position="absolute" top="1/2">
+        <View position="absolute" top="1/2" alignItems="center" style={{
+          gap: 5
+        }}>
           <Icons.soilMoisture size={24} color="black" />
-          <Text textAlign="center">{soilMoistureReading}%</Text>
+          <Badge colorScheme="blue">{soilMoistureReading + " %"}</Badge>
         </View>
       </View>
     </>

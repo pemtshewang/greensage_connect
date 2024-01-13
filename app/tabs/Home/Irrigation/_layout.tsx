@@ -19,11 +19,11 @@ export default function Layout() {
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
 
 
-  useEffect(() => {
-    if (irrigationController?.isConnected === false) {
-      setShowDialog(true);
-    }
-  }, [irrigationController]);
+  // useEffect(() => {
+  //   if (irrigationController?.isConnected === false) {
+  //     setShowDialog(true);
+  //   }
+  // }, [irrigationController]);
 
   return (
     <>

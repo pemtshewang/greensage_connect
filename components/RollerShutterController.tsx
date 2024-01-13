@@ -1,4 +1,4 @@
-import { View, Text } from "native-base"
+import { View, Text, Badge } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { Switch } from "react-native";
 import { useState } from "react";
@@ -73,15 +73,15 @@ export default function RollerShutterController({
           </View>
           <View padding="2" borderWidth="1" w="16" flexDirection="column" alignItems="center">
             <Icons.powerState color={rightSwitchState ? "green" : "red"} />
-            <Text>Right</Text>
+            <Badge colorScheme="lime">Right</Badge>
           </View>
           <View padding="2" borderWidth="1" w="16" flexDirection="column" alignItems="center">
             <Icons.powerState color={leftSwitchState ? "green" : "red"} />
-            <Text>Left</Text>
+            <Badge colorScheme="teal">Left</Badge>
           </View>
           <View padding="2" borderWidth="1" w="16" flexDirection="column" alignItems="center">
             <Icons.powerState color={bothSwitchState ? "green" : "red"} />
-            <Text>Both</Text>
+            <Badge colorScheme="fuchsia">Both</Badge>
           </View>
         </View>
         <View
@@ -89,7 +89,7 @@ export default function RollerShutterController({
             flexDirection: "column",
             alignItems: "center"
           }}>
-          <Text fontWeight="semibold" color="#A0A0A0">Toggle the RollerShutter State</Text>
+          <Badge colorScheme="info">Manual On and Off</Badge>
           {/* For both */}
           <View w={200} marginTop="5" borderWidth="2" padding="2" flexDirection="column" alignItems="center">
             <Switch
@@ -102,7 +102,7 @@ export default function RollerShutterController({
               onValueChange={toggleBothSwitchState}
               value={bothSwitchState}
             />
-            <Text>For Both Roller Shutter State</Text>
+            <Badge colorScheme="fuchsia">Both Shutter Manual Switch</Badge>
           </View>
           <View borderWidth="2"
             padding="5"
@@ -126,7 +126,7 @@ export default function RollerShutterController({
                 onValueChange={toggleRightSwitchState}
                 value={rightSwitchState}
               />
-              <Text>Right</Text>
+              <Badge colorScheme="lime">Right</Badge>
             </View>
             {/* For left */}
             <View flexDirection="column" alignItems="center">
@@ -140,7 +140,7 @@ export default function RollerShutterController({
                 onValueChange={toggleLeftSwitchState}
                 value={leftSwitchState}
               />
-              <Text textAlign="center">Left</Text>
+              <Badge colorScheme="teal">Left</Badge>
             </View>
           </View>
         </View>

@@ -8,7 +8,6 @@ import { Actionsheet } from "native-base";
 import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
-import { useGreenhouseStore } from "../zustand/store";
 import { useRouter } from "expo-router";
 import IrrigationWSTestConnectionForm from "./Forms/WSConnectionIrrigationTest";
 
@@ -25,6 +24,7 @@ const GreenhouseNavContainer = ({
   imageUrl: string;
   removeGreenhouse: (id: string) => void;
 }) => {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclose();
   const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
@@ -120,9 +120,9 @@ const GreenhouseNavContainer = ({
             }}
             onPress={() => {
               // if (greenhouse?.isConnected) {
-              // router.replace(`/tabs/Home/Greenhouse/${id}`);
+              router.replace(`/tabs/Home/Irrigation/${id}`);
               // } else {
-              setShowWSForm(true);
+              // setShowWSForm(true);
               // }
             }}
           >
