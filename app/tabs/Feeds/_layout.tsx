@@ -7,6 +7,8 @@ export default function NewsFeedLayout() {
     <View>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
+        padding="2"
+        marginTop="3"
       >
         <Slot />
       </ScrollView>

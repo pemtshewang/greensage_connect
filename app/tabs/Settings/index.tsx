@@ -3,7 +3,7 @@ import { Text, View } from "native-base";
 const SettingsIndex = () => {
   return (
     <View>
-      <Text>Lets</Text>
+      <Text textAlign="center">Settings</Text>
     </View>
   )
 }

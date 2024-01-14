@@ -1,15 +1,18 @@
 import { PostType } from "../../../types";
-import { useState, useEffect } from "react";
-import NewsContainer from "../../../components/NewsContainer";
-import { View } from "native-base";
-import { Spinner } from "native-base";
+import { useState } from "react";
+import { VStack } from "native-base";
+import CardSkeleton from "../../../components/CardSkeleton";
 
 export default function SingleNewsPage() {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(true);
   return (
-    <View paddingX="0" >
-    </View>
+    <VStack marginBottom="5" space={5} paddingY="2" >
+      <CardSkeleton />
+      <CardSkeleton />
+      <CardSkeleton />
+      <CardSkeleton />
+    </VStack>
   );
 }
 
