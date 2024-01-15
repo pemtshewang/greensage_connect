@@ -1,10 +1,7 @@
 import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { View } from "native-base";
-import { Text, Heading } from "native-base";
-import { Link } from "expo-router";
-import WeatherContainer from "../../components/WeatherContainer";
-import { SafeAreaView } from "react-native";
+import { Heading } from "native-base";
 
 const TabLayout = () => {
   return (

@@ -18,11 +18,11 @@ export default function Layout() {
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (greenhouse?.isConnected === false) {
-  //     setShowDialog(true);
-  //   }
-  // }, [greenhouse]);
+  useEffect(() => {
+    if (greenhouse?.isConnected === false) {
+      setShowDialog(true);
+    }
+  }, [greenhouse]);
 
   return (
     <>

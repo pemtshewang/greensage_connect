@@ -5,7 +5,6 @@ import { Icons } from "../../../../assets/Icons/Icons";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
 import { useState, useEffect } from "react";
-import { Dimensions } from "react-native";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();

@@ -1,4 +1,4 @@
-import { ArrowBigRightIcon, Clock3Icon, DropletIcon, MoreHorizontalIcon, PowerCircleIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, XOctagonIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, ArrowDown10, ArrowDown10Icon, AtSignIcon, CheckCheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, LinkIcon, LinkedinIcon, MailIcon, MailXIcon, Mailbox, MoreHorizontalIcon, PowerCircleIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, XIcon, XOctagonIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -49,8 +49,10 @@ export const Icons = {
   notification: BellIcon,
   newNotification: BellDotIcon,
   circleUser: CircleUserIcon,
+  link: LinkIcon,
   contentNotification: BellRing,
   profile: User,
+  checkCheck: CheckCheckIcon,
   plusCircle: PlusCircleIcon,
   warehouseIcon: WarehouseIcon,
   internet: ArrowUpDownIcon,
@@ -58,6 +60,7 @@ export const Icons = {
   navigateBack: ArrowLeftCircleIcon,
   trash: Trash2Icon,
   edit: FileEditIcon,
+  portNumber: ArrowDown10Icon,
   enter: LogInIcon,
   help: HelpCircleIcon,
   action: MenuIcon,
@@ -70,10 +73,15 @@ export const Icons = {
   powerState: PowerCircleIcon,
   target: CrosshairIcon,
   disconnectSession: UnplugIcon,
+  github: GithubIcon,
+  linkedIn: LinkedinIcon,
+  gmail: AtSignIcon,
+  X: XIcon,
   ArrowBigRight: ArrowBigRightIcon,
   schedule: Clock3Icon,
   settings: SettingsIcon,
   timer: Timer,
+  clipboard: ClipboardCopyIcon,
   timerReset: TimerResetIcon,
   send: SendHorizontalIcon,
   danger: XOctagonIcon,
@@ -531,6 +539,105 @@ export const Icons = {
             </G>
           </G>
         </G>
+      </Svg>
+    )
+  },
+  mqttServerAdd: (props) => {
+    return (
+      <Svg
+        fill="#000000"
+        height="200px"
+        width="200px"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 512 512"
+        xmlSpace="preserve"
+        {...props}
+      >
+        <G id="SVGRepo_bgCarrier" strokeWidth={0} />
+        <G
+          id="SVGRepo_tracerCarrier"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <G id="SVGRepo_iconCarrier">
+          <G>
+            <G>
+              <Path d="M405.787,0H51.745c-4.512,0-8.17,3.658-8.17,8.17v441.191c0,4.512,3.658,8.17,8.17,8.17h168.857 c4.512,0,8.17-3.658,8.17-8.17s-3.658-8.17-8.17-8.17H59.915V16.34h337.702v247.835c0,4.512,3.657,8.17,8.17,8.17 s8.17-3.658,8.17-8.17V8.17C413.957,3.658,410.3,0,405.787,0z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M210.117,375.83h-93.011c-4.512,0-8.17,3.658-8.17,8.17s3.658,8.17,8.17,8.17h93.011c4.512,0,8.17-3.658,8.17-8.17 S214.629,375.83,210.117,375.83z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M216.569,343.149h-99.463c-4.512,0-8.17,3.658-8.17,8.17s3.658,8.17,8.17,8.17h99.463c4.512,0,8.17-3.658,8.17-8.17 S221.082,343.149,216.569,343.149z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Circle cx={340.426} cy={73.532} r={8.17} />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M373.106,32.681H84.426c-4.512,0-8.17,3.658-8.17,8.17v65.362c0,4.512,3.658,8.17,8.17,8.17h288.681 c4.513,0,8.17-3.658,8.17-8.17V40.851C381.277,36.339,377.62,32.681,373.106,32.681z M364.936,98.043H92.596V49.021h272.34V98.043 z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Circle cx={340.426} cy={171.574} r={8.17} />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Circle cx={307.745} cy={73.532} r={8.17} />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Circle cx={307.745} cy={171.574} r={8.17} />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M373.106,130.723H84.426c-4.512,0-8.17,3.658-8.17,8.17v65.362c0,4.512,3.658,8.17,8.17,8.17h288.681 c4.513,0,8.17-3.658,8.17-8.17v-65.362C381.277,134.381,377.62,130.723,373.106,130.723z M364.936,196.085H92.596v-49.021h272.34 V196.085z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M373.106,228.766H84.426c-4.512,0-8.17,3.658-8.17,8.17c0,4.512,3.658,8.17,8.17,8.17h288.681 c4.513,0,8.17-3.658,8.17-8.17C381.277,232.424,377.62,228.766,373.106,228.766z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M351.319,277.787c-64.572,0-117.106,52.533-117.106,117.106S286.747,512,351.319,512s117.106-52.533,117.106-117.106 S415.891,277.787,351.319,277.787z M351.319,495.66c-55.563,0-100.766-45.203-100.766-100.766 c0-55.563,45.203-100.766,100.766-100.766s100.766,45.203,100.766,100.766C452.085,450.457,406.882,495.66,351.319,495.66z" />
+            </G>
+          </G>
+          <G>
+            <G>
+              <Path d="M405.787,370.383H375.83v-29.957c0-13.516-10.996-24.511-24.511-24.511s-24.511,10.995-24.511,24.511v29.957h-29.957 c-13.515,0-24.511,10.995-24.511,24.511s10.996,24.511,24.511,24.511h29.957v29.957c0,13.516,10.996,24.511,24.511,24.511 s24.511-10.995,24.511-24.511v-29.957h29.957c13.515,0,24.511-10.995,24.511-24.511S419.302,370.383,405.787,370.383z M405.787,403.064H367.66c-4.513,0-8.17,3.658-8.17,8.17v38.128c0,4.506-3.665,8.17-8.17,8.17s-8.17-3.665-8.17-8.17v-38.128 c0-4.512-3.657-8.17-8.17-8.17h-38.128c-4.506,0-8.17-3.665-8.17-8.17c0-4.506,3.665-8.17,8.17-8.17h38.128 c4.513,0,8.17-3.658,8.17-8.17v-38.128c0-4.506,3.665-8.17,8.17-8.17s8.17,3.665,8.17,8.17v38.128c0,4.512,3.657,8.17,8.17,8.17 h38.128c4.506,0,8.17,3.665,8.17,8.17C413.957,399.399,410.293,403.064,405.787,403.064z" />
+            </G>
+          </G>
+        </G>
+      </Svg>
+    )
+  },
+  XIcon: (props) => {
+    return (
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        x="0px"
+        y="0px"
+        width={100}
+        height={100}
+        viewBox="0 0 30 30"
+        {...props}
+      >
+        <Path d="M26.37,26l-8.795-12.822l0.015,0.012L25.52,4h-2.65l-6.46,7.48L11.28,4H4.33l8.211,11.971L12.54,15.97L3.88,26h2.65 l7.182-8.322L19.42,26H26.37z M10.23,6l12.34,18h-2.1L8.12,6H10.23z" />
       </Svg>
     )
   }

@@ -1,5 +1,6 @@
 import { LoginSchema, SignUpSchema } from "../validations/Auth/schema";
 import GreenhouseAddFormSchema from '../validations/GreenhouseAddFormSchema';
+import { MQTTBrokerSchema } from "../validations/MQTTBroker";
 
 // Path: types/index.d.ts
 interface Post {
@@ -24,5 +25,6 @@ type PostType = z.infer<typeof Post>;
 type GreenhouseAddFormSchemaType = z.infer<typeof GreenhouseAddFormSchema>;
 type DzongkhagCategoryType = z.infer<typeof DzongkhagCategory>;
 type DzongkhagSubCategoryType = z.infer<typeof DzongkhagSubCategory>;
+type BrokerConfigType = z.infer<typeof MQTTBrokerSchema>;
 
-export { LoginSchemaType, SignUpSchemaType, PostType, GreenhouseAddFormSchemaType, DzongkhagCategoryType, DzongkhagSubCategoryType };
+export { LoginSchemaType, SignUpSchemaType, PostType, GreenhouseAddFormSchemaType, DzongkhagCategoryType, DzongkhagSubCategoryType, BrokerConfigType };

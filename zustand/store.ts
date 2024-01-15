@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState } from "./state";
 // import zustandStorage from "./mmkvWrapper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BrokerConfigType } from "../types";
 
 // Define your store state
 interface StoreState extends totalGreenhouseState {
@@ -86,6 +87,46 @@ export const useGreenhouseStore = create<StoreState>(
     }),
     {
       name: "greenhouseStore",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
+interface BrokerStoreState {
+  brokerUsername: string;
+  brokerPassword: string;
+  brokerURL: string;
+  brokerPort: number;
+  setBrokerConfig: (data: BrokerConfigType) => void;
+  updateBrokerConfig: (data: Partial<BrokerConfigType>) => void;
+  deleteBrokerConfig: () => void;
+}
+
+export const useMQTTBrokerStore = create<BrokerStoreState>(
+  persist(
+    (set) => ({
+      brokerUsername: "",
+      brokerPassword: "",
+      brokerURL: "",
+      brokerPort: 0,
+      setBrokerConfig: (data) =>
+        set(() => (data)),
+      updateBrokerConfig: (data) =>
+        set((state) => ({
+          brokerUsername: data.brokerUsername ?? state.brokerUsername,
+          brokerPassword: data.brokerPassword ?? state.brokerPassword,
+          brokerURL: data.brokerURL ?? state.brokerURL,
+          brokerPort: data.brokerPort ?? state.brokerPort,
+        })),
+      deleteBrokerConfig: () =>
+        set(() => ({
+          brokerUsername: "",
+          brokerPassword: "",
+          brokerURL: "",
+          brokerPort: 0,
+        })),
+    }),
+    {
+      name: "mqttBrokerStore",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

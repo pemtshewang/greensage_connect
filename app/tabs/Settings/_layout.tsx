@@ -4,7 +4,6 @@ import { Slot } from "expo-router";
 const NotificationLayout = () => {
   return (
     <ScrollView
-      scrollEnabled={true}
       style={{
         marginTop: 10,
       }}

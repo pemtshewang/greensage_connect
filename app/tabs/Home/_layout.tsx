@@ -9,19 +9,8 @@ const Layout = () => {
       screenOptions={{
         header: (props) => {
           return (
-            <SafeAreaView
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignContent: "center",
-                }}
-              >
+            <SafeAreaView>
+              <View>
                 <WeatherContainer />
               </View>
             </SafeAreaView>

@@ -120,9 +120,9 @@ const GreenhouseNavContainer = ({
             }}
             onPress={() => {
               // if (greenhouse?.isConnected) {
-              router.replace(`/tabs/Home/Irrigation/${id}`);
+              // router.replace(`/tabs/Home/Irrigation/${id}`);
               // } else {
-              // setShowWSForm(true);
+              setShowWSForm(true);
               // }
             }}
           >

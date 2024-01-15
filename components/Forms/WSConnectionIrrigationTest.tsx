@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Pressable, View, ActivityIndicator } from "react-native";
-import CustomModal from "../ui/Modal";
-import Icons from "../../assets/Icons/Icons";
+import CustomModal from "../ui/Modal"; import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useIrrigationControllerStore } from "../../zustand/store";

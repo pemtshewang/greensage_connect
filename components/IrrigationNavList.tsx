@@ -43,7 +43,6 @@ const IrrigationNavList = () => {
                 type="irrigation"
                 id={item.id}
                 name={item.name}
-                routeUrl={`/tabs/Home/Irrigation/${item.id}`}
                 imageUrl={item.backgroundImage}
                 removeGreenhouse={(id) => {
                   store.removeIrrigationController(id);

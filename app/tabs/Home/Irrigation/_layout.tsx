@@ -1,7 +1,7 @@
 import { Text, View } from "native-base";
 import { Stack } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
-import { useGreenhouseStore, useIrrigationControllerStore } from "../../../../zustand/store";
+import { useIrrigationControllerStore } from "../../../../zustand/store";
 import Icons from "../../../../assets/Icons/Icons";
 import { Pressable } from "react-native";
 import WSDisconnectDialogBox from "../../../../components/WSDisconnectDialog";
@@ -14,16 +14,15 @@ export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const irrigationStore = useIrrigationControllerStore();
   const irrigationController = irrigationStore.irrigationControllers.find((res) => res.id === id);
-  const name = irrigationController?.name;
+  const name = irrigationController?.name || "Irrigation Controller";
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
 
-
-  // useEffect(() => {
-  //   if (irrigationController?.isConnected === false) {
-  //     setShowDialog(true);
-  //   }
-  // }, [irrigationController]);
+  useEffect(() => {
+    if (irrigationController?.isConnected === false) {
+      setShowDialog(true);
+    }
+  }, [irrigationController]);
 
   return (
     <>
