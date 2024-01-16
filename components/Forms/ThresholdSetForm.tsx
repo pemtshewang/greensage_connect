@@ -4,6 +4,7 @@ import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
 import { useToast } from "native-base";
 import { useGreenhouseStore } from "../../zustand/store";
+import Example from "../ThresholdDropDown";
 
 const ThresholdSetForm = ({
   id,
@@ -172,11 +173,13 @@ const ThresholdSetForm = ({
           }}>
             <Icons.help size={16} color="#A0A0A0" />
             <Text color="#A0A0A0">
-              Enter the temperature threshold and press confirm
+              Enter the {type === "soil_moisture" ?
+                "soil moisture" : type === "humidity" ? "humidity" : "temperature"} threshold and press confirm
             </Text>
           </View>
         )
       }
+      <Example />
     </View >
   )
 }

@@ -2,13 +2,12 @@ const LocationDetails = async ({ latitude, longitude }: {
   latitude: number;
   longitude: number;
 }) => {
-  console.log('LocationDetails', latitude, longitude);
   try {
     const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?key=${process.env.EXPO_PUBLIC_OPENCAGE_API}&q=${latitude}+${longitude}&pretty=1`
+      `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${process.env.EXPO_PUBLIC_OPENCAGE_API}`
     );
     const data = await response.json();
-    return data.results[0].components;
+    return data.address;
   } catch (error) {
     console.error('Error fetching location details:', error);
   }

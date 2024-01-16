@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Box, HStack, Text, VStack, View } from "native-base";
+import { Badge, HStack, Text, VStack, View } from "native-base";
 import * as Location from "expo-location";
 import getWeather from "../api/weather/api";
 import { Icons } from "../assets/Icons/Icons";
@@ -7,6 +7,7 @@ import { exportReadings as wData } from "../api/weather/api";
 import { format } from "date-fns";
 import { useNetInfo } from "@react-native-community/netinfo";
 import LocationDetails from "../api/location";
+import { Skeleton } from "native-base";
 
 const WeatherContainer = () => {
   const { isInternetReachable } = useNetInfo();
@@ -19,12 +20,10 @@ const WeatherContainer = () => {
   const [locationName, setLocationName] = useState<{
     village: string;
     state: string;
-    country: string;
     county: string;
   }>({
     village: "",
     state: "",
-    country: "",
     county: "",
   });
   useEffect(() => {
@@ -42,10 +41,10 @@ const WeatherContainer = () => {
           latitude: location.coords.latitude,
         }).then((data) => {
           setReadings(data);
-          setWeatherIcon(getWeatherIcon()); // Set the weather icon based on weather data
+          setWeatherIcon(getWeatherIcon());
         });
       } else {
-        setErrorMsg("No internet connection");
+        setErrorMsg("No Internet connection");
       }
     })();
   }, [isInternetReachable]);
@@ -60,7 +59,6 @@ const WeatherContainer = () => {
           setLocationName({
             village: locationName.village,
             state: locationName.state,
-            country: locationName.country,
             county: locationName.county,
           });
         }
@@ -69,8 +67,6 @@ const WeatherContainer = () => {
       }
     })();
   }, [isInternetReachable, location]);
-  console.log(readings);
-  console.log(locationName);
   const getWeatherIcon = () => {
     if (wData) {
       const { is_day, precipitation, rain, showers, cloud_cover } = wData;
@@ -116,21 +112,39 @@ const WeatherContainer = () => {
     >
       {weatherIcon}
       <VStack padding="4" space={2}>
-        <Text>{locationName.village}, {locationName.county}, {locationName.state}</Text>
+        {
+          locationName.village === "" ?
+            <HStack space="2">
+              <Skeleton height="2" width="12" />
+              <Skeleton height="2" width="10" />
+              <Skeleton height="2" width="10" />
+            </HStack>
+            :
+            <Text>{locationName.village}, {locationName.county}, {locationName.state}</Text>
+        }
         <Text>{format(new Date(), "EEEE")}, {format(new Date(), "dd")} {format(new Date(), "MMMM")}</Text>
         <HStack space="3">
           <HStack>
             <Icons.thermometer width={25} height={25} color="black" />
-            <Badge colorScheme="tertiary">{readings.temperature_2m}</Badge>
+            {
+              readings.temperature_2m ?
+                <Badge colorScheme="tertiary">{readings.temperature_2m}</Badge>
+                :
+                <Skeleton colorScheme="trueGray" height="2" width="9" />
+            }
           </HStack>
           <HStack>
             <Icons.droplets width={25} height={25} color="black" />
-            <Badge colorScheme="tertiary">{readings.relative_humidity_2m}</Badge>
+            {
+              readings.relative_humidity_2m ?
+                <Badge colorScheme="tertiary">{readings.relative_humidity_2m}</Badge>
+                :
+                <Skeleton colorScheme="trueGray" height="2" width="9" />
+            }
           </HStack>
         </HStack>
       </VStack>
     </View>
   );
 };
-
 export default WeatherContainer;

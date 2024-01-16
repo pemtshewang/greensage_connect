@@ -68,7 +68,6 @@ export default function HomeLayout() {
     return (
       <View style={{
         flex: 1,
-        backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
       }}>
@@ -84,7 +83,7 @@ export default function HomeLayout() {
     );
   }
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider >
       <SafeAreaView style={{ flex: 1 }}>
         <CustomStatusBar style="auto" />
         <Slot />

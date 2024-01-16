@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "native-base";
+import { View, Text, FlatList, Badge } from "native-base";
 import { useIrrigationControllerStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
@@ -18,7 +18,7 @@ const IrrigationNavList = () => {
   return (
     <View >
       <View flexDirection="row" alignItems="center" justifyContent="space-between" paddingY="5">
-        <Text fontSize={19} >Available Irrigation Outlet</Text>
+        <Badge colorScheme="success">Available Added Irrigation</Badge>
         <View bg="green.700" padding="2" borderRadius="full">
           <TouchableOpacity
             onPress={() => {

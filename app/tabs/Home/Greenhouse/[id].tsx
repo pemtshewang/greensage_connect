@@ -34,10 +34,10 @@ const Page = () => {
   return (
     <>
       <ReadingsContainer
-        temperatureReading={12}
-        humidityReading={12}
-        soilMoistureReading={12}
-        ldrReading={12}
+        temperatureReading={params.temperature}
+        humidityReading={params.humidity}
+        soilMoistureReading={params.soil_moisture}
+        ldrReading={params.ldr}
       />
       <View style={{
         width: "100%",

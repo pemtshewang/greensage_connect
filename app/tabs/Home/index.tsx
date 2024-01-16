@@ -12,7 +12,7 @@ const IndexPage = () => {
     setCurrentList(state => state === "greenhouse" ? "irrigation" : "greenhouse");
   }
   return (
-    <View padding="3">
+    <View padding="3" bg="white" flex="1">
       <View
         flexDirection="row"
         justifyContent="space-between"

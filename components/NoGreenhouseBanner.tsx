@@ -18,7 +18,7 @@ const Banner = ({ message,
       }}
     >
       <Text style={{
-        fontSize: 14,
+        fontSize: 11,
         color: '#999'
       }}>{message}</Text>
       <View

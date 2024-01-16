@@ -1,5 +1,5 @@
 import { Pressable } from "react-native";
-import { View, Image, Text } from "native-base";
+import { View, Image, Text, Badge } from "native-base";
 import { Divider } from "native-base";
 import Icons from "../assets/Icons/Icons";
 import { useDisclose } from "native-base";
@@ -39,7 +39,7 @@ const GreenhouseNavContainer = ({
     <View
       style={{
         width: "100%",
-        borderRadius: 9,
+        borderRadius: 11,
         backgroundColor: "white", // Card background color
         shadowColor: "#000",
         shadowOffset: {
@@ -50,6 +50,7 @@ const GreenhouseNavContainer = ({
         shadowRadius: 3.84,
         elevation: 6,
         marginVertical: 10,
+        borderWidth: 1,
       }}
     >
       <View
@@ -89,6 +90,8 @@ const GreenhouseNavContainer = ({
         style={{
           alignContent: "center",
           backgroundColor: "green",
+          borderBottomRightRadius: 9,
+          borderBottomLeftRadius: 9,
         }}
       >
         <View
@@ -98,20 +101,7 @@ const GreenhouseNavContainer = ({
             padding: 10,
           }}
         >
-          <View
-            style={{
-              backgroundColor: "darkgreen",
-              flexDirection: "column",
-              justifyContent: "center",
-              padding: 5,
-              borderRadius: 99,
-              borderEndEndRadius: 999,
-            }}
-          >
-            <Text color="white" backgroundColor="white">
-              {name}
-            </Text>
-          </View>
+          <Badge colorScheme="green">{name}</Badge>
           <Pressable
             style={{
               borderWidth: 2,
