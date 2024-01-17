@@ -1,6 +1,6 @@
-import { VStack, Select } from "native-base";
+import { VStack, Select, Box, Badge, HStack } from "native-base";
 import { useState } from "react";
-import { CheckIcon, Image } from "native-base";
+import { VegIcons } from "../api/data/threshold";
 import Icons from "../assets/Icons/Icons";
 
 const Example = ({
@@ -9,28 +9,30 @@ const Example = ({
   Items: {
     label: string;
     value: string;
-    _icon: JSX.Element
-  }
+    _icon: any;
+  }[]
 }) => {
   let [service, setService] = useState("");
-  return <VStack alignItems="center" space={4}>
-    <Select shadow={2} selectedValue={service} minWidth="200" accessibilityLabel="Choose threshold for the plants " placeholder="Choose Service" _selectedItem={{
-      bg: "teal.600",
-      endIcon: <CheckIcon size="5" />
-    }} _light={{
-      bg: "coolGray.100",
-    }} _dark={{
-      bg: "coolGray.800",
-    }} onValueChange={itemValue => setService(itemValue)}>
-      <Select.Item shadow={2} label="UX Res" value="ux"
-        startIcon={<Icons.maizeIcon width={32} height={32} />}
-      />
-      <Select.Item shadow={2} label="Web Development" value="web" />
-      <Select.Item shadow={2} label="Cross Platform Development" value="cross" />
-      <Select.Item shadow={2} label="UI Designing" value="ui" />
-      <Select.Item shadow={2} label="Backend Development" value="backend" />
+  return <HStack borderWidth={1} maxW={250}>
+    <Icons.onionIcon width={32} height={32} />
+    <Select
+      shadow={2}
+      selectedValue={service}
+      w="container"
+      minW={200}
+      accessibilityLabel="Choose threshold for the plants "
+      placeholder="Select a threshold"
+      borderWidth="0"
+      onValueChange={itemValue => setService(itemValue)}>
+      {
+        Items.map((item, index) => {
+          return <Select.Item key={index} label={item.label}
+            endIcon={<Box><Badge>{item.value + "%"}</Badge></Box>}
+            value={item.value} startIcon={<item._icon width={32} height={32} />} />
+        })
+      }
     </Select>
-  </VStack>;
+  </HStack >;
 }
 
 export default Example;

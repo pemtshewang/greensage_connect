@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useToast } from "native-base";
 import { useGreenhouseStore } from "../../zustand/store";
 import Example from "../ThresholdDropDown";
+import { temperatureThreshold } from "../../api/data/threshold";
 
 const ThresholdSetForm = ({
   id,
@@ -179,7 +180,7 @@ const ThresholdSetForm = ({
           </View>
         )
       }
-      <Example />
+      <Example Items={temperatureThreshold} />
     </View >
   )
 }

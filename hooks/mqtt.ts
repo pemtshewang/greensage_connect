@@ -1,12 +1,14 @@
 import Paho from "paho-mqtt";
+import { useMQTTBrokerStore } from "../zustand/store";
 
 const useMqtt = () => {
-  const client = new Paho.Client("d4aedf513f114236aedd2023e7bff5cd.s2.eu.hivemq.cloud", 8884, Math.random().toString());
+  const store = useMQTTBrokerStore();
+  const client = new Paho.Client(store.brokerURL, store.brokerPort, Math.random().toString());
   const connectToBroker = () => {
     client.connect({
       useSSL: true,
-      userName: "pemtshewang",
-      password: "$10Bpemtshewang",
+      userName: store.brokerUsername,
+      password: store.brokerPassword,
       cleanSession: true,
       onFailure: (err) => {
         console.log("ERROR", err);
