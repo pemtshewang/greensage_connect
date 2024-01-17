@@ -4,7 +4,7 @@ const ThresholdValues: {
   value: {
     humidity: number,
     temperature: number,
-    soilMoisture: number,
+    soil_moisture: number,
   },
   _icon: any
 }[] = [
@@ -13,7 +13,7 @@ const ThresholdValues: {
       value: {
         humidity: 80,
         temperature: 30,
-        soilMoisture: 50,
+        soil_moisture: 50,
       },
       _icon: Icons.maizeIcon
     },
@@ -22,7 +22,7 @@ const ThresholdValues: {
       value: {
         humidity: 80,
         temperature: 30,
-        soilMoisture: 50,
+        soil_moisture: 50,
       },
       _icon: Icons.cabbageIcon
     },
@@ -31,7 +31,7 @@ const ThresholdValues: {
       value: {
         humidity: 80,
         temperature: 30,
-        soilMoisture: 50,
+        soil_moisture: 50,
       },
       _icon: Icons.lettuceIcon
     },
@@ -40,7 +40,7 @@ const ThresholdValues: {
       value: {
         humidity: 80,
         temperature: 30,
-        soilMoisture: 50,
+        soil_moisture: 50,
       },
       _icon: Icons.broccoliIcon
     },
@@ -49,7 +49,7 @@ const ThresholdValues: {
       value: {
         humidity: 80,
         temperature: 30,
-        soilMoisture: 50,
+        soil_moisture: 50,
       },
       _icon: Icons.onionIcon
     },

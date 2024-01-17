@@ -7,8 +7,8 @@ interface totalIrrigationControllerState {
     irrigationControllers: IrrigationControllerState[];
 }
 export interface IWebSocket {
-    sendMessage: (message: string) => void;
-    connect: () => Promise<WebSocket>;
+    sendMessage: (topic?: string, message?: string) => void;
+    connect: () => Promise<any>;
     disconnect: () => void;
 }
 interface TimeSets {

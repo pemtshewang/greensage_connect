@@ -1,45 +1,68 @@
-import { Select, Box, Badge, HStack } from "native-base";
+import { Button, HStack, VStack } from "native-base";
+import ThresholdValues from "../api/data/threshold";
+import { useState, useRef } from "react";
+import { Modal, Badge, Text, Box } from "native-base";
 import Icons from "../assets/Icons/Icons";
-import { useState } from "react";
-
-const ThresholdDropDown = ({
-  Items,
+import { TouchableOpacity } from "react-native";
+const ThresholdDropdown = ({
+  type,
   value,
   setValue
 }: {
-  Items: {
-    label: string;
-    value: {
-      humidity: number;
-      temperature: number;
-      soil_moisture: number;
-    };
-    _icon: any;
-  }[],
+  type: "temperature" | "soil_moisture" | "humidity",
   value: number,
   setValue: (value: number) => void
 }) => {
-  const [icon, setIcon] = useState(<Icons.vegetablesIcon width={32} height={32} />);
-  return <HStack borderWidth={1} maxW={250} padding="2">
-    {icon}
-    <Select
-      shadow={2}
-      selectedValue={value.toString()}
-      w="container"
-      minW={200}
-      accessibilityLabel="Choose threshold for the plants "
-      placeholder="Select a threshold"
-      borderWidth="0"
-      onValueChange={itemValue => setValue(Number(itemValue))}>
-      {
-        Items.map((item, index) => {
-          return <Select.Item key={index} label={item.label} onPress={() => setIcon(<item._icon width={32} height={32} />)}
-            endIcon={<Box><Badge>{item.value.humidity + "%"}</Badge></Box>}
-            value={String(item.value.humidity)} startIcon={<item._icon width={32} height={32} />} />
-        })
-      }
-    </Select>
-  </HStack >;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [icon, setIcon] = useState(<Icons.vegetablesIcon width={32} height={32} />)
+  const initialRef = useRef(null);
+  const finalRef = useRef(null);
+  return <>
+    <HStack space={2}>
+      {icon}
+      <Button
+        bg="green.500"
+        onPress={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        Select Threshold
+      </Button>
+    </HStack>
+    <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)} initialFocusRef={initialRef} finalFocusRef={finalRef}>
+      <Modal.Content>
+        <Modal.CloseButton bg="white" />
+        <Modal.Header bg="green.500" ><Text color="white">Choose a suitable threshold</Text></Modal.Header>
+        <Modal.Body>
+          <VStack space={3}>
+            {
+              ThresholdValues.map((item, index) => {
+                return (
+                  <TouchableOpacity style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                    onPress={() => {
+                      setValue(item.value[type]);
+                      setIcon(<item._icon width={32} height={32} />);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <HStack flexDirection="row" space={1}>
+                      <item._icon width={32} height={32} />
+                      <Badge colorScheme="coolGray">{item.label}</Badge>
+                    </HStack>
+                    <Badge colorScheme="info">
+                      {(type === "temperature" ? item.value.temperature : type === "humidity" ? item.value.humidity : item.value.soil_moisture) + (type === "temperature" ? "°C" : "%")}
+                    </Badge>
+                  </TouchableOpacity>
+                )
+              })
+            }
+          </VStack>
+        </Modal.Body>
+      </Modal.Content>
+    </Modal>
+  </>;
 }
 
-export default ThresholdDropDown;
+export default ThresholdDropdown; 

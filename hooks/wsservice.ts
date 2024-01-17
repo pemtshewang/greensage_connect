@@ -1,6 +1,5 @@
 import { useGreenhouseStore } from "../zustand/store";
-import { useRef, useEffect, useContext, useState } from "react";
-import { EnvtParamsContext } from "../context/envParamsContext";
+import { useRef, useEffect } from "react";
 
 const useWebSocket = ({ id }: { id: string }) => {
   const store = useGreenhouseStore();
@@ -13,14 +12,6 @@ const useWebSocket = ({ id }: { id: string }) => {
       connect();
     }
   }, [])
-
-  const [params, setParams] = useState({
-    temperature: 0,
-    humidity: 0,
-    soilMoisture: 0,
-    light: 0,
-  })
-  const envtContext = useContext(EnvtParamsContext);
 
   const connect = () => {
     return new Promise<WebSocket>((res, rej) => {
@@ -73,16 +64,16 @@ const useWebSocket = ({ id }: { id: string }) => {
     const [type, data] = e.data.split(":");
     switch (type) {
       case "temperature":
-        store.updateGreenhouse(id, { temperature: Number(data) });
+        // store.updateGreenhouse(id, { temperature: Number(data) });
         break;
       case "humidity":
-        store.updateGreenhouse(id, { humidity: Number(data) });
+        // store.updateGreenhouse(id, { humidity: Number(data) });
         break;
       case "soilMoisture":
-        store.updateGreenhouse(id, { soil_moisture: Number(data) });
+        // store.updateGreenhouse(id, { soil_moisture: Number(data) });
         break;
       case "light":
-        store.updateGreenhouse(id, { ldrReading: Number(data) });
+        // store.updateGreenhouse(id, { ldrReading: Number(data) });
         break;
       default:
         break;

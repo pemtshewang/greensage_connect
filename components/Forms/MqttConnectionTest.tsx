@@ -3,8 +3,9 @@ import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
-import { useGreenhouseStore } from "../../zustand/store";
-import { Button, Text } from "native-base";
+import { useRouter } from "expo-router";
+import { useGreenhouseStore, useIrrigationControllerStore, useMQTTBrokerStore } from "../../zustand/store";
+import { Text } from "native-base";
 import useMqtt from "../../hooks/mqtt";
 
 type ConnectionMsgTypes =
@@ -13,25 +14,58 @@ type ConnectionMsgTypes =
   | "Connection Failed"
   | "Connecting";
 
-export default function MqttConnectionTestForm({
+export default function MQTTTestConnectionForm({
   id,
+  type,
   showForm,
   setShowForm,
 }: {
   id: string;
+  type: "irrigation" | "greenhouse";
   showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [conMsg, setConMsg] = useState<ConnectionMsgTypes>("Not Connected");
-  const [err, setErr] = useState<string>("");
   const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
-  const client = useMqtt();
+  const irrigationStore = useIrrigationControllerStore();
+  const mqttBroker = useMQTTBrokerStore();
+  const router = useRouter();
+  const mqtt = useMqtt({ id: id });
+  const testConnection = async () => {
+    setConnecting(true);
+    setConMsg("Connecting");
+    try {
+      await mqtt.connect();
+      if (type === "greenhouse") {
+        store.updateGreenhouse(id, {
+          ws: mqtt
+        });
+      } else {
+        irrigationStore.updateIrrigationController(id, {
+          ws: mqtt
+        })
+      }
+      setConnected(true);
+      setConMsg("Connected");
+      store.updateGreenhouse(id, { isConnected: true });
+      if (type === "greenhouse") {
+        router.push(`/tabs/Home/Greenhouse/${id}`);
+      } else {
+        router.push(`/tabs/Home/Irrigation/${id}`);
+      }
+    } catch (error) {
+      setConnected(false);
+      setConMsg("Connection Failed");
+    } finally {
+      setConnecting(false);
+    }
+  };
+
   return (
     <CustomModal
-      modalTitle="Local Connection Test"
+      modalTitle="MQTT Connection Test"
       modalVisible={showForm}
       setModalVisible={setShowForm}
     >
@@ -50,15 +84,11 @@ export default function MqttConnectionTestForm({
             textAlign: "center"
           }}
         >
-          Testing connection with {greenhouse?.ipAddress as string}
+          Testing connection with {mqttBroker.brokerURL}
         </Text>
         <Pressable
           disabled={connecting || connected}
-          onPress={
-            () => {
-              client.connectToBroker();
-            }
-          }
+          onPress={testConnection}
           style={({ pressed }) => [
             {
               flexDirection: "row",
@@ -121,16 +151,9 @@ export default function MqttConnectionTestForm({
               color: "#A0A0A0",
             }}
           >
-            {err && err.toString()}
             Press the button for connection
           </Text>
-          <Button onPress={() => client.disconnectFromBroker()}>
-            Disconnect from broker
-          </Button>
         </View>
-        <Button onPress={() => client.sendMessage("temperature", "32%c")}>
-          Send Message
-        </Button>
       </View>
     </CustomModal>
   );

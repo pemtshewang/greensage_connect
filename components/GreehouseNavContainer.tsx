@@ -1,4 +1,4 @@
-import { Pressable } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 import { View, Image, Text, Badge } from "native-base";
 import { Divider } from "native-base";
 import Icons from "../assets/Icons/Icons";
@@ -10,6 +10,7 @@ import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useRouter } from "expo-router";
 import IrrigationWSTestConnectionForm from "./Forms/WSConnectionIrrigationTest";
+import MQTTTestConnectionForm from "./Forms/MqttConnectionTest";
 
 const GreenhouseNavContainer = ({
   id,
@@ -29,6 +30,7 @@ const GreenhouseNavContainer = ({
   const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
+  const [showMQTTForm, setShowMQTTForm] = useState<boolean>(false);
 
   useEffect(() => {
     if (removeGreenhouseConfirm) {
@@ -102,22 +104,50 @@ const GreenhouseNavContainer = ({
           }}
         >
           <Badge colorScheme="green">{name}</Badge>
-          <Pressable
-            style={{
-              borderWidth: 2,
-              padding: 5,
-              borderRadius: 99,
-            }}
+          <TouchableOpacity style={{
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#fff", // Use your desired background color
+            padding: 5,
+            borderRadius: 10,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 8,
+          }}
             onPress={() => {
-              // if (greenhouse?.isConnected) {
-              // router.replace(`/tabs/Home/Greenhouse/${id}`);
-              // } else {
-              setShowWSForm(true);
-              // }
+              setShowMQTTForm(true);
             }}
           >
-            <Icons.enter color="black" />
-          </Pressable>
+            <Icons.mqttIcon width={32} height={32} color="black" />
+            <Text style={{ marginLeft: 10 }}>MQTT</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#fff", // Use your desired background color
+            padding: 5,
+            borderRadius: 10,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 8,
+          }}
+            onPress={() => {
+              setShowWSForm(true);
+            }}
+          >
+            <Icons.wifiIcon width={32} height={32} color="black" />
+            <Text style={{ marginLeft: 10 }}>WiFi</Text>
+          </TouchableOpacity>
         </View>
         {
           type === "greenhouse" ? (
@@ -133,6 +163,11 @@ const GreenhouseNavContainer = ({
             />
           )
         }
+        <MQTTTestConnectionForm
+          id={id}
+          type={type}
+          showForm={showMQTTForm}
+          setShowForm={setShowMQTTForm} />
         <CustomActionSheet
           onClose={onClose}
           onOpen={onOpen}

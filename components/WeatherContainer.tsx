@@ -28,6 +28,7 @@ const WeatherContainer = () => {
   });
   useEffect(() => {
     (async () => {
+
       if (isInternetReachable) {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
@@ -43,14 +44,6 @@ const WeatherContainer = () => {
           setReadings(data);
           setWeatherIcon(getWeatherIcon());
         });
-      } else {
-        setErrorMsg("No Internet connection");
-      }
-    })();
-  }, [isInternetReachable]);
-  useEffect(() => {
-    (async () => {
-      if (isInternetReachable) {
         if (location) {
           const locationName = await LocationDetails({
             latitude: location.coords.latitude,
@@ -66,7 +59,11 @@ const WeatherContainer = () => {
         setErrorMsg("No internet connection");
       }
     })();
-  }, [isInternetReachable, location]);
+  }, [isInternetReachable]);
+  useEffect(() => {
+    (async () => {
+    })();
+  }, []);
   const getWeatherIcon = () => {
     if (wData) {
       const { is_day, precipitation, rain, showers, cloud_cover } = wData;

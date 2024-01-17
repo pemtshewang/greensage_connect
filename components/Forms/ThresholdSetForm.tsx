@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useToast } from "native-base";
 import { useGreenhouseStore } from "../../zustand/store";
 import ThresholdDropDown from "../ThresholdDropDown";
-import ThresholdValues from "../../api/data/threshold";
 
 const ThresholdSetForm = ({
   id,
@@ -21,11 +20,10 @@ const ThresholdSetForm = ({
   defaultValue: number
 }) => {
   const [changeState, setChangeState] = useState(false);
-  const [value, setValue] = useState<number>(defaultValue);
+  const [value, setValue] = useState<number>(0);
   const toggleChangeState = () => setChangeState(!changeState);
   const toast = useToast();
   const store = useGreenhouseStore();
-
   const sendThreshold = () => {
     setValue(value);
     ws.sendMessage(`threshold:${type}:${value}`);
@@ -123,14 +121,23 @@ const ThresholdSetForm = ({
             />
             {
               changeState && (
-                <>
+                <VStack alignItems="center">
                   <HStack space={2} alignItems="center">
                     <Icons.keyboardIcon size={20} color="#A0A0A0" />
                     <Text color="#A0A0A0"> You may type the threshold manually</Text>
                   </HStack>
-                  <Divider />
-                  <ThresholdDropDown Items={ThresholdValues} value={value} setValue={setValue} />
-                </>
+                  <View alignItems="center" marginTop="2">
+                    <View flexDirection="row" padding="1" marginBottom="3" style={{
+                      gap: 2
+                    }}>
+                      <Icons.help size={16} color="#A0A0A0" />
+                      <Text color="#A0A0A0">
+                        Select suitable threshold from dropdown
+                      </Text>
+                    </View>
+                    <ThresholdDropDown type={type} value={value} setValue={setValue} />
+                  </View>
+                </VStack>
               )
             }
           </VStack>
@@ -168,19 +175,6 @@ const ThresholdSetForm = ({
           }
         </View>
       </View>
-      {
-        changeState && (
-          <View flexDirection="row" style={{
-            gap: 2
-          }}>
-            <Icons.help size={16} color="#A0A0A0" />
-            <Text color="#A0A0A0">
-              Enter the {type === "soil_moisture" ?
-                "soil moisture" : type === "humidity" ? "humidity" : "temperature"} threshold and press confirm
-            </Text>
-          </View>
-        )
-      }
     </View >
   )
 }

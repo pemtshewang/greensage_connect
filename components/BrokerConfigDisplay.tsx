@@ -10,6 +10,7 @@ const BrokerConfigDisplay = ({
   brokerConfig: BrokerConfigType | null;
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <VStack padding="3">
       <HStack>
@@ -32,9 +33,59 @@ const BrokerConfigDisplay = ({
       </HStack>
       {
         brokerConfig ? (
-          <Box>
-            <Text>Lets go</Text>
-          </Box>
+          <VStack>
+            <HStack>
+              <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+                Username
+              </Box>
+              <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
+                {brokerConfig.brokerUsername}
+              </Box>
+            </HStack>
+            <HStack>
+              <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+                Password
+              </Box>
+              <Box flex="1" padding="2" flexDirection="row" borderWidth="1" borderColor="coolGray.500">
+                <Text flex="1">
+                  {
+                    showPassword ? (
+                      brokerConfig.brokerPassword
+                    ) : (
+                      brokerConfig.brokerPassword.replace(/./g, "*")
+                    )
+                  }
+                </Text>
+                <TouchableOpacity onPress={() => {
+                  setShowPassword(!showPassword)
+                }}>
+                  {
+                    showPassword ? (
+                      <Icons.visible width={20} height={20} color="black" />
+                    ) : (
+                      <Icons.visibleOff width={20} height={20} color="black" />
+                    )
+                  }
+                </TouchableOpacity>
+              </Box>
+            </HStack>
+            <HStack>
+              <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+                Broker URL
+              </Box>
+              <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
+                {brokerConfig.brokerURL}
+              </Box>
+            </HStack>
+            <HStack>
+              <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+                Broker Port
+              </Box>
+              <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
+                {brokerConfig.brokerPort}
+              </Box>
+            </HStack>
+          </VStack>
         ) : (
           <Box paddingY="5">
             <Text color="#A0A0A0">You haven't configured any MQTT Broker yet!</Text>
