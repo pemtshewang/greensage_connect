@@ -1,41 +1,58 @@
 import Icons from "../../assets/Icons/Icons"
-const VegIcons = {
-  'Maize': Icons.maizeIcon,
-  'Cabbage': Icons.cabbageIcon,
-  'Spinach': Icons.lettuceIcon,
-  'Broccoli': Icons.broccoliIcon,
-  'Onion': Icons.onionIcon,
-}
-const temperatureThreshold: {
+const ThresholdValues: {
   label: string,
-  value: number,
+  value: {
+    humidity: number,
+    temperature: number,
+    soilMoisture: number,
+  },
   _icon: any
 }[] = [
     {
       label: 'Maize',
-      value: 36,
+      value: {
+        humidity: 80,
+        temperature: 30,
+        soilMoisture: 50,
+      },
       _icon: Icons.maizeIcon
     },
     {
       label: 'Cabbage',
-      value: 20,
+      value: {
+        humidity: 80,
+        temperature: 30,
+        soilMoisture: 50,
+      },
       _icon: Icons.cabbageIcon
     },
     {
       label: 'Spinach',
-      value: 15,
+      value: {
+        humidity: 80,
+        temperature: 30,
+        soilMoisture: 50,
+      },
       _icon: Icons.lettuceIcon
     },
     {
       label: 'Broccoli',
-      value: 18,
+      value: {
+        humidity: 80,
+        temperature: 30,
+        soilMoisture: 50,
+      },
       _icon: Icons.broccoliIcon
     },
     {
       label: 'Onion',
-      value: 18,
+      value: {
+        humidity: 80,
+        temperature: 30,
+        soilMoisture: 50,
+      },
       _icon: Icons.onionIcon
     },
   ]
-export { temperatureThreshold, VegIcons };
+export default ThresholdValues;
 

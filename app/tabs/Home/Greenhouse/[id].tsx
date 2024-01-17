@@ -1,43 +1,21 @@
 import { useLocalSearchParams } from "expo-router";
 import { View } from "native-base";
-import { useGreenhouseStore } from "../../../../zustand/store";
 import { Icons } from "../../../../assets/Icons/Icons";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
-import { useState, useEffect } from "react";
+import { useGreenhouseStore } from "../../../../zustand/store";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [params, setParams] = useState<{
-    temperature: number;
-    humidity: number;
-    soil_moisture: number;
-    ldr: number;
-  }>({
-    temperature: 0,
-    humidity: 0,
-    soil_moisture: 0,
-    ldr: 0,
-  });
-  const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find(
-    (g) => g.id === id
-  );
-  useEffect(() => {
-    setParams({
-      temperature: greenhouse?.temperature as number,
-      humidity: greenhouse?.humidity as number,
-      soil_moisture: greenhouse?.soil_moisture as number,
-      ldr: greenhouse?.soil_moisture as number,
-    });
-  }, [greenhouse]);
+  const store = useGreenhouseStore()
+  const greenhouse = store.greenhouses.find((res) => res.id === id);
   return (
     <>
       <ReadingsContainer
-        temperatureReading={params.temperature}
-        humidityReading={params.humidity}
-        soilMoistureReading={params.soil_moisture}
-        ldrReading={params.ldr}
+        temperatureReading={greenhouse?.temperature as number}
+        humidityReading={greenhouse?.humidity as number}
+        soilMoistureReading={greenhouse?.soil_moisture as number}
+        ldrReading={greenhouse?.ldrReading as number}
       />
       <View style={{
         width: "100%",

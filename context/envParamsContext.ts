@@ -1,13 +1,15 @@
 import { createContext } from "react";
 
-export const EnvtParamsContext = createContext<{
-  temperature: number,
-  humidity: number,
-  soilMoisture: number,
-  light: number,
-}>({
-  temperature: 0,
-  humidity: 0,
-  soilMoisture: 0,
-  light: 0,
-});
+export interface EnvtParamsContextType {
+  values: {
+    temperature: number;
+    humidity: number;
+    soilMoisture: number;
+    light: number;
+  };
+  updateValues: (newValues: Partial<EnvtParamsContextType['values']>) => void;
+}
+
+export const EnvtParamsContext = createContext<EnvtParamsContextType | undefined>(undefined);
+
+

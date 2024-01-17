@@ -4,4 +4,3 @@ export default function Page() {
     <Redirect href="/tabs/Home" />
   );
 }
-

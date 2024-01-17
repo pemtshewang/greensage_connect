@@ -1,11 +1,11 @@
-import { View, Text, Input, Button, Badge } from "native-base";
+import { View, Text, Input, Button, Badge, HStack, VStack, Divider } from "native-base";
 import { IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
 import { useToast } from "native-base";
 import { useGreenhouseStore } from "../../zustand/store";
-import Example from "../ThresholdDropDown";
-import { temperatureThreshold } from "../../api/data/threshold";
+import ThresholdDropDown from "../ThresholdDropDown";
+import ThresholdValues from "../../api/data/threshold";
 
 const ThresholdSetForm = ({
   id,
@@ -102,27 +102,35 @@ const ThresholdSetForm = ({
         alignItems: "center"
       }}>
         <View position="relative" flexDirection="row" w="full" justifyContent="center" >
-          <Input
-            placeholder={`${defaultValue < 1 ? "You haven't set a threshold yet" : defaultValue}`}
-            placeholderTextColor="#A0A0A0"
-            alignItems="center"
-            style={{
-              textAlign: "center",
-              fontSize: 20,
-              borderBottomWidth: 2,
-              borderBottomColor: "black"
-            }}
-            inputMode="numeric"
-            onChangeText={(text: string) => setValue(parseInt(text))}
-            value={value.toString()}
-            isDisabled={!changeState}
-            w={60}
-            borderWidth={0}
-            autoFocus={changeState}
-          />
-          < Text style={{
+          <VStack space={2} alignItems="center">
+            <Input
+              placeholder={`${defaultValue < 1 ? "You haven't set a threshold yet" : defaultValue}`}
+              placeholderTextColor="#A0A0A0"
+              alignItems="center"
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                borderBottomWidth: 2,
+                borderBottomColor: "black"
+              }}
+              inputMode="numeric"
+              onChangeText={(text: string) => setValue(parseInt(text))}
+              value={value.toString()}
+              isDisabled={!changeState}
+              w={60}
+              borderWidth={0}
+              autoFocus={changeState}
+            />
+            <HStack space={2} alignItems="center">
+              <Icons.keyboardIcon size={20} color="#A0A0A0" />
+              <Text color="#A0A0A0"> You may type the threshold manually</Text>
+            </HStack>
+            <Divider />
+            <ThresholdDropDown Items={ThresholdValues} value={value} setValue={setValue} />
+          </VStack>
+          <Text style={{
             position: "absolute",
-            top: "34%",
+            top: "20%",
             right: "35%",
             textAlignVertical: "center",
             color: "#A0A0A0",
@@ -180,7 +188,6 @@ const ThresholdSetForm = ({
           </View>
         )
       }
-      <Example Items={temperatureThreshold} />
     </View >
   )
 }

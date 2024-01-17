@@ -21,6 +21,7 @@ interface GreenhouseState {
     name: string;
     backgroundImage: string;
     ipAddress: string;
+    ldrReading: number;
     isConnected: boolean;
     //parameters
     temperature: number;

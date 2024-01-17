@@ -10,7 +10,7 @@ import { useGreenhouseStore } from "../../../../../zustand/store";
 import { useRouter } from "expo-router";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
 import WaterSchedulerForm from "../../../../../components/Forms/WaterScheduleForm";
-import { IWebSocket, WaterScheduleSets } from "../../../../../zustand/state";
+import { IWebSocket } from "../../../../../zustand/state";
 
 export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -81,14 +81,14 @@ export default function ParamsContainer() {
           state={state}
           setState={toggleState} />
         <ThresholdSetForm
+          id={id as string}
           type="soil_moisture"
           message="Set the soil moisture threshold"
           ws={greenhouse?.ws as IWebSocket}
-          defaultValue={"10"} />
+          defaultValue={10} />
         <WaterSchedulerForm
           id={id as string}
           ws={greenhouse?.ws as IWebSocket}
-          waterScheduleSets={greenhouse?.waterSchedule as WaterScheduleSets}
         />
       </ScrollView>
     </View>

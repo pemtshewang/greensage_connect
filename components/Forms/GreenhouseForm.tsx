@@ -60,6 +60,7 @@ const GreenHouseAddForm = ({
         temperatureThreshold: 0,
         soilMoistureThreshold: 0,
         ws: null,
+        ldrReading: 0,
         ventilationFanState: false,
         lightState: false,
         waterValveState: false,
