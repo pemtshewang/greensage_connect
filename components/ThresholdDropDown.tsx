@@ -1,5 +1,6 @@
 import { Select, Box, Badge, HStack } from "native-base";
 import Icons from "../assets/Icons/Icons";
+import { useState } from "react";
 
 const ThresholdDropDown = ({
   Items,
@@ -18,8 +19,9 @@ const ThresholdDropDown = ({
   value: number,
   setValue: (value: number) => void
 }) => {
-  return <HStack borderWidth={1} maxW={250}>
-    <Icons.onionIcon width={32} height={32} />
+  const [icon, setIcon] = useState(<Icons.vegetablesIcon width={32} height={32} />);
+  return <HStack borderWidth={1} maxW={250} padding="2">
+    {icon}
     <Select
       shadow={2}
       selectedValue={value.toString()}
@@ -31,7 +33,7 @@ const ThresholdDropDown = ({
       onValueChange={itemValue => setValue(Number(itemValue))}>
       {
         Items.map((item, index) => {
-          return <Select.Item key={index} label={item.label}
+          return <Select.Item key={index} label={item.label} onPress={() => setIcon(<item._icon width={32} height={32} />)}
             endIcon={<Box><Badge>{item.value.humidity + "%"}</Badge></Box>}
             value={String(item.value.humidity)} startIcon={<item._icon width={32} height={32} />} />
         })

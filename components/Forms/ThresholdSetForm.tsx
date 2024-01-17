@@ -121,26 +121,19 @@ const ThresholdSetForm = ({
               borderWidth={0}
               autoFocus={changeState}
             />
-            <HStack space={2} alignItems="center">
-              <Icons.keyboardIcon size={20} color="#A0A0A0" />
-              <Text color="#A0A0A0"> You may type the threshold manually</Text>
-            </HStack>
-            <Divider />
-            <ThresholdDropDown Items={ThresholdValues} value={value} setValue={setValue} />
-          </VStack>
-          <Text style={{
-            position: "absolute",
-            top: "20%",
-            right: "35%",
-            textAlignVertical: "center",
-            color: "#A0A0A0",
-            fontSize: 20
-          }}
-          >
             {
-              type === "temperature" ? "°C" : "%"
+              changeState && (
+                <>
+                  <HStack space={2} alignItems="center">
+                    <Icons.keyboardIcon size={20} color="#A0A0A0" />
+                    <Text color="#A0A0A0"> You may type the threshold manually</Text>
+                  </HStack>
+                  <Divider />
+                  <ThresholdDropDown Items={ThresholdValues} value={value} setValue={setValue} />
+                </>
+              )
             }
-          </Text>
+          </VStack>
         </View>
         <View
           style={{
