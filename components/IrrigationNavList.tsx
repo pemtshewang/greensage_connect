@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Badge } from "native-base";
+import { View, Badge, ScrollView } from "native-base";
 import { useIrrigationControllerStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
@@ -16,8 +16,8 @@ const IrrigationNavList = () => {
     setGreenhouseList(store.irrigationControllers);
   }, [store.irrigationControllers]);
   return (
-    <View >
-      <View flexDirection="row" alignItems="center" justifyContent="space-between" paddingY="5">
+    <View>
+      <View flexDirection="row" alignItems="center" marginBottom="1" justifyContent="space-between">
         <Badge colorScheme="success">Available Added Irrigation</Badge>
         <View bg="green.700" padding="2" borderRadius="full">
           <TouchableOpacity
@@ -31,31 +31,37 @@ const IrrigationNavList = () => {
       </View>
       {
         greenhouses.length > 0 ? (
-          <FlatList
+          <ScrollView
+            borderWidth="1"
             style={{
-              maxHeight: 350,
-              marginBottom: 30,
+              marginBottom: 40
             }}
-            scrollEnabled={true}
-            data={greenhouses}
-            renderItem={({ item }) => (
-              <GreenhouseNavContainer
-                type="irrigation"
-                id={item.id}
-                name={item.name}
-                imageUrl={item.backgroundImage}
-                removeGreenhouse={(id) => {
-                  store.removeIrrigationController(id);
-                }}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
+            padding="1"
+            borderRadius="sm"
+            borderColor="coolGray.400"
+          >
+            {
+              greenhouses.map((item) => {
+                return (
+                  <GreenhouseNavContainer
+                    key={item.id}
+                    type="irrigation"
+                    id={item.id}
+                    name={item.name}
+                    imageUrl={item.backgroundImage}
+                    removeGreenhouse={(id) => {
+                      store.removeIrrigationController(id);
+                    }}
+                  />
+                )
+              })
+            }
+          </ScrollView>
         ) : (
           <View justifyContent="center" alignItems="center">
             <Banner
-              message="No irrigation components, Add one!"
-              icon={<Icons.irrigationAddIcon width={32} height={32} fill="#A0A0A0" />}
+              message="You have no irrigation, Add one!"
+              icon={<Icons.irrigationAddIcon height={32} width={32} fill="#A0A0A0" />}
             />
           </View>
         )

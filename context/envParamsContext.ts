@@ -7,6 +7,7 @@ export interface EnvtParamsContextType {
     soilMoisture: number;
     light: number;
   };
+
   updateValues: (newValues: Partial<EnvtParamsContextType['values']>) => void;
 }
 

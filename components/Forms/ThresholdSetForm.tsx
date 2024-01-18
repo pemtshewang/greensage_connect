@@ -1,4 +1,4 @@
-import { View, Text, Input, Button, Badge, HStack, VStack, Divider } from "native-base";
+import { View, Text, Input, Button, Badge, HStack, VStack } from "native-base";
 import { IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";

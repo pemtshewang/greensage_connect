@@ -12,6 +12,8 @@ import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
+import IDAlertDialog from "../IDAlert";
+import { Spinner } from "native-base";
 
 const GreenHouseAddForm = ({
   type,
@@ -24,12 +26,15 @@ const GreenHouseAddForm = ({
   const irrigationStore = useIrrigationControllerStore();
   const greenhouseStore = useGreenhouseStore();
   const [data, setData] = useState({
-    id: Crypto.randomUUID(),
+    id: Crypto.randomUUID().slice(0, 10),
     name: "",
     ipAddress: "",
     image: imagePath,
   });
+  const [alertIDDialogOpen, setAlertIDDialogOpen] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
+    setLoading(true);
     if (type === "irrigation") {
       irrigationStore.addIrrigationController({
         id: data.id,
@@ -72,7 +77,10 @@ const GreenHouseAddForm = ({
         rollerShutterRightState: false,
       });
     }
-    setModalState(false);
+    setTimeout(() => {
+      setLoading(false);
+      setModalState(false);
+    }, 1500);
   }
   const {
     handleSubmit,
@@ -170,6 +178,7 @@ const GreenHouseAddForm = ({
         </View>
       </View>
       <Pressable
+        disabled={loading}
         onPress={handleSubmit(handleSubmitData)}
         style={{
           width: "100%",
@@ -179,9 +188,15 @@ const GreenHouseAddForm = ({
           flexDirection: "row",
           justifyContent: "center",
           backgroundColor: "#228B29",
+          gap: 5
         }}
       >
-        <Text>Add {type}</Text>
+        {
+          loading ? <Text color="#a0a0a0">Adding {type}</Text> : <Text color="white">Add {type}</Text>
+        }
+        {
+          loading && <Spinner color="white" />
+        }
       </Pressable>
     </VStack>
   );

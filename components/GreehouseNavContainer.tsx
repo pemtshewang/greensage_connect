@@ -1,6 +1,6 @@
 import { Pressable, TouchableOpacity } from "react-native";
-import { View, Image, Text, Badge } from "native-base";
-import { Divider } from "native-base";
+import { View, Image, Text, Badge, HStack, useClipboard, useToast } from "native-base";
+import { Divider, Box } from "native-base";
 import Icons from "../assets/Icons/Icons";
 import { useDisclose } from "native-base";
 import CustomActionSheet from "./ui/ActionSheet";
@@ -10,7 +10,7 @@ import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useRouter } from "expo-router";
 import IrrigationWSTestConnectionForm from "./Forms/WSConnectionIrrigationTest";
-import MQTTTestConnectionForm from "./Forms/MqttConnectionTest";
+import { GreenhouseMQTTTestConnectionForm, IrrigationMQTTConnectionTestForm } from "./Forms/MqttConnectionTest";
 
 const GreenhouseNavContainer = ({
   id,
@@ -31,6 +31,11 @@ const GreenhouseNavContainer = ({
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
   const [showMQTTForm, setShowMQTTForm] = useState<boolean>(false);
+  const {
+    value,
+    onCopy
+  } = useClipboard();
+  const toast = useToast();
 
   useEffect(() => {
     if (removeGreenhouseConfirm) {
@@ -40,7 +45,6 @@ const GreenhouseNavContainer = ({
   return (
     <View
       style={{
-        width: "100%",
         borderRadius: 11,
         backgroundColor: "white", // Card background color
         shadowColor: "#000",
@@ -87,6 +91,31 @@ const GreenhouseNavContainer = ({
       >
         <Icons.action size={32} color="black" />
       </Pressable>
+      <HStack space={1} borderRadius="sm" marginLeft="1" bg="coolGray.300" padding="2" position='absolute' flexDirection="row" colorScheme="info" left="0">
+        <Badge colorScheme="info">{id}</Badge>
+        <Box borderWidth="1" padding="1">
+          <TouchableOpacity style={{
+          }} onPress={() => {
+            onCopy(id)
+            toast.show({
+              render: () => {
+                return (
+                  <Box bg="green.500" px={4} py={3} rounded="sm" mb={5}>
+                    <Text color="black" bold>
+                      Copied to clipboard
+                    </Text>
+                  </Box>
+                )
+              },
+              duration: 1500,
+              placement: 'top',
+            });
+          }
+          }>
+            <Icons.clipboard size={24} color="black" />
+          </TouchableOpacity>
+        </Box>
+      </HStack>
       <Divider height="px" backgroundColor={"black"} />
       <View
         style={{
@@ -103,51 +132,54 @@ const GreenhouseNavContainer = ({
             padding: 10,
           }}
         >
-          <Badge colorScheme="green">{name}</Badge>
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#fff", // Use your desired background color
-            padding: 5,
-            borderRadius: 10,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 8,
-          }}
-            onPress={() => {
-              setShowMQTTForm(true);
+          <Badge minW="20" colorScheme="green">{name}</Badge>
+          <HStack space={2} alignItems="center">
+            <TouchableOpacity style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: "#fff", // Use your desired background color
+              padding: 5,
+              borderRadius: 10,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 8,
             }}
-          >
-            <Icons.mqttIcon width={32} height={32} color="black" />
-            <Text style={{ marginLeft: 10 }}>MQTT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#fff", // Use your desired background color
-            padding: 5,
-            borderRadius: 10,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 8,
-          }}
-            onPress={() => {
-              setShowWSForm(true);
+              onPress={() => {
+                setShowMQTTForm(true);
+              }}
+            >
+              <Icons.mqttIcon width={32} height={32} color="black" />
+              <Text style={{ marginLeft: 10 }}>MQTT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: "#fff", // Use your desired background color
+              padding: 5,
+              borderRadius: 10,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 8,
             }}
-          >
-            <Icons.wifiIcon width={32} height={32} color="black" />
-            <Text style={{ marginLeft: 10 }}>WiFi</Text>
-          </TouchableOpacity>
+              onPress={() => {
+                setShowWSForm(true);
+              }}
+            >
+              <Icons.wifiIcon width={32} height={32} color="black" />
+              <Text style={{ marginLeft: 10 }}>WiFi</Text>
+            </TouchableOpacity>
+          </HStack>
+
         </View>
         {
           type === "greenhouse" ? (
@@ -163,11 +195,21 @@ const GreenhouseNavContainer = ({
             />
           )
         }
-        <MQTTTestConnectionForm
-          id={id}
-          type={type}
-          showForm={showMQTTForm}
-          setShowForm={setShowMQTTForm} />
+        {
+          type === "greenhouse" ? (
+            <GreenhouseMQTTTestConnectionForm
+              id={id}
+              showForm={showMQTTForm}
+              setShowForm={setShowMQTTForm}
+            />
+          ) : (
+            <IrrigationMQTTConnectionTestForm
+              id={id}
+              showForm={showMQTTForm}
+              setShowForm={setShowMQTTForm}
+            />
+          )
+        }
         <CustomActionSheet
           onClose={onClose}
           onOpen={onOpen}

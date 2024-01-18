@@ -83,9 +83,9 @@ export default function HomeLayout() {
     );
   }
   return (
-    <NativeBaseProvider >
+    <NativeBaseProvider>
+      <CustomStatusBar style="auto" />
       <SafeAreaView style={{ flex: 1 }}>
-        <CustomStatusBar style="auto" />
         <Slot />
       </SafeAreaView>
     </NativeBaseProvider>

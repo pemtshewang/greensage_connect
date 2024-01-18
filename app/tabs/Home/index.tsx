@@ -1,10 +1,11 @@
-import { View } from "native-base";
+import { Divider, View } from "native-base";
 import { useState } from "react";
 import GreenhouseList from "../../../components/GreenhouseList";
 import { TouchableOpacity } from "react-native";
 import Icons from "../../../assets/Icons/Icons";
 import { Text } from "native-base";
 import IrrigationNavList from "../../../components/IrrigationNavList";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const IndexPage = () => {
   const [currentList, setCurrentList] = useState<"greenhouse" | "irrigation">("greenhouse");
@@ -12,7 +13,7 @@ const IndexPage = () => {
     setCurrentList(state => state === "greenhouse" ? "irrigation" : "greenhouse");
   }
   return (
-    <View padding="3" bg="white" flex="1">
+    <View padding="2" bg="white" style={{ flex: 1 }} >
       <View
         flexDirection="row"
         justifyContent="space-between"
@@ -45,18 +46,16 @@ const IndexPage = () => {
           }
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          padding: 10,
-        }}
-      >
+      <SafeAreaView style={{
+        flex: 1,
+      }}>
         {
           currentList === "greenhouse" ?
             <GreenhouseList />
             :
             <IrrigationNavList />
         }
-      </View>
+      </SafeAreaView>
     </View >
   );
 };

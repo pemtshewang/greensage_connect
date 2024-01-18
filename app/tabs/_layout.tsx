@@ -2,10 +2,14 @@ import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { View } from "native-base";
 import { Heading } from "native-base";
+import { useRef } from "react";
 
 const TabLayout = () => {
+  const initialRef = useRef(null);
   return (
-    <Tabs>
+    <Tabs ref={initialRef} screenOptions={{
+      tabBarHideOnKeyboard: true
+    }}>
       <Tabs.Screen
         name="Home"
         options={{
@@ -44,7 +48,6 @@ const TabLayout = () => {
               </View>
             );
           }
-          // underlined when focused
         }}
       />
       <Tabs.Screen
@@ -138,5 +141,4 @@ const TabLayout = () => {
     </Tabs>
   );
 };
-
 export default TabLayout;

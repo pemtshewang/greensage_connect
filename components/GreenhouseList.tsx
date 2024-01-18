@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Badge } from "native-base";
+import { View, FlatList, Badge, ScrollView } from "native-base";
 import { useGreenhouseStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
@@ -16,9 +16,9 @@ const GreenhouseList = () => {
     setGreenhouseList(store.greenhouses);
   }, [store.greenhouses]);
   return (
-    <View >
-      <View flexDirection="row" alignItems="center" justifyContent="space-between" paddingY="5">
-        <Badge colorScheme="success">Available Added Greenhouse</Badge>
+    <View>
+      <View flexDirection="row" alignItems="center" marginBottom="1" justifyContent="space-between" >
+        <Badge colorScheme="green">Available Added Greenhouse</Badge>
         <View bg="green.700" padding="2" borderRadius="full">
           <TouchableOpacity
             onPress={() => {
@@ -31,26 +31,32 @@ const GreenhouseList = () => {
       </View>
       {
         greenhouses.length > 0 ? (
-          <FlatList
+          <ScrollView
+            borderWidth="1"
             style={{
-              maxHeight: 350,
-              marginBottom: 30,
+              marginBottom: 40
             }}
-            scrollEnabled={true}
-            data={greenhouses}
-            renderItem={({ item }) => (
-              <GreenhouseNavContainer
-                type="greenhouse"
-                id={item.id}
-                name={item.name}
-                imageUrl={item.backgroundImage}
-                removeGreenhouse={(id) => {
-                  store.removeGreenhouse(id);
-                }}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
+            padding="1"
+            borderRadius="sm"
+            borderColor="coolGray.400"
+          >
+            {
+              greenhouses.map((item) => {
+                return (
+                  <GreenhouseNavContainer
+                    key={item.id}
+                    type="greenhouse"
+                    id={item.id}
+                    name={item.name}
+                    imageUrl={item.backgroundImage}
+                    removeGreenhouse={(id) => {
+                      store.removeGreenhouse(id);
+                    }}
+                  />
+                )
+              })
+            }
+          </ScrollView>
         ) : (
           <View justifyContent="center" alignItems="center">
             <Banner

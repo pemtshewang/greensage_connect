@@ -1,6 +1,7 @@
 
 import React from "react";
 import { View, Text } from "react-native";
+import { Dimensions } from "react-native";
 
 const Banner = ({ message,
   icon
@@ -8,10 +9,11 @@ const Banner = ({ message,
   message: string,
   icon: JSX.Element
 }) => {
+  const { height } = Dimensions.get("window");
   return (
     <View
       style={{
-        backgroundColor: "#f0f0f0",
+        height,
         padding: 16,
         borderRadius: 8,
         margin: 16,
