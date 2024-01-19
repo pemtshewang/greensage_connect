@@ -1,97 +1,84 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState } from "./state";
-// import zustandStorage from "./mmkvWrapper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BrokerConfigType } from "../types";
+import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
 
-// Define your store state
-interface StoreState extends totalGreenhouseState {
-  addGreenhouse: (greenhouse: GreenhouseState) => void;
-  updateGreenhouse: (id: string, data: Partial<GreenhouseState>) => void;
-  removeGreenhouse: (id: string) => void;
-  removeAllGreenhouses: () => void;
+export interface BaseStore<T> {
+  count: number;
+  items: T[];
+  addItem: (item: T) => void;
+  updateItem: (id: string, data: Partial<T>) => void;
+  removeItem: (id: string) => void;
+  removeAllItems: () => void;
 }
 
-interface IrrigationControllerStoreState extends totalIrrigationControllerState {
-  addIrrigationController: (irrigationController: IrrigationControllerState) => void;
-  updateIrrigationController: (id: string, data: Partial<IrrigationControllerState>) => void;
-  removeIrrigationController: (id: string) => void;
-  removeAllIrrigationControllers: () => void;
+interface StoreConfig<T> {
+  name: string;
+  storage: any; // Replace with the actual type of storage
 }
 
-export const useIrrigationControllerStore = create<IrrigationControllerStoreState>(
-  persist(
-    (set) => ({
-      count: 0,
-      irrigationControllers: [],
-      addIrrigationController: (irrigationController) =>
-        set((state) => ({
-          count: state.count + 1,
-          irrigationControllers: [...state.irrigationControllers, irrigationController],
-        })),
-      updateIrrigationController: (id, data) =>
-        set((state) => ({
-          irrigationControllers: state.irrigationControllers.map((irrigationController) =>
-            irrigationController.id === id ? { ...irrigationController, ...data } : irrigationController
-          ),
-        })),
-      removeIrrigationController: (id) =>
-        set((state) => ({
-          count: state.count - 1,
-          irrigationControllers: state.irrigationControllers.filter(
-            (irrigationController) => irrigationController.id !== id
-          ),
-        })),
-      removeAllIrrigationControllers: () =>
-        set(() => ({
-          count: 0,
-          irrigationControllers: [],
-        })),
-    }),
-    {
-      name: "irrigationControllerStore",
-      storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+interface StoreState<T> extends BaseStore<T> { }
+
+export function createStore<T>(
+  config: StoreConfig<T>,
+  initialState: StoreState<T>
+) {
+  return create<BaseStore<T>>(
+    persist(
+      (set) => ({
+        count: initialState.count,
+        items: initialState.items,
+        addItem: (item) =>
+          set((state) => ({
+            count: state.count + 1,
+            items: [...state.items, item],
+          })),
+        updateItem: (id, data) =>
+          set((state) => ({
+            items: state.items.map((item) =>
+              item.id === id ? { ...item, ...data } : item
+            ),
+          })),
+        removeItem: (id) =>
+          set((state) => ({
+            count: state.count - 1,
+            items: state.items.filter((item) => item.id !== id),
+          })),
+        removeAllItems: () =>
+          set(() => ({
+            count: 0,
+            items: [],
+          })),
+      }),
+      config
+    )
+  );
+}
+
+export const useGreenhouseStore = createStore<GreenhouseState>(
+  {
+    name: "greenhouseStore",
+    storage: createJSONStorage(() => AsyncStorage),
+  },
+  {
+    count: 0,
+    items: [],
+  }
 );
 
-export const useGreenhouseStore = create<StoreState>(
-  persist(
-    (set) => ({
-      count: 0,
-      greenhouses: [],
-      addGreenhouse: (greenhouse) =>
-        set((state) => ({
-          count: state.count + 1,
-          greenhouses: [...state.greenhouses, greenhouse],
-        })),
-      updateGreenhouse: (id, data) =>
-        set((state) => ({
-          greenhouses: state.greenhouses.map((greenhouse) =>
-            greenhouse.id === id ? { ...greenhouse, ...data } : greenhouse
-          ),
-        })),
-      removeGreenhouse: (id) =>
-        set((state) => ({
-          count: state.count - 1,
-          greenhouses: state.greenhouses.filter(
-            (greenhouse) => greenhouse.id !== id
-          ),
-        })),
-      removeAllGreenhouses: () =>
-        set(() => ({
-          count: 0,
-          greenhouses: [],
-        })),
-    }),
-    {
-      name: "greenhouseStore",
-      storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+export const useIrrigationControllerStore = createStore<IrrigationControllerState>(
+  {
+    name: "irrigationControllerStore",
+    storage: createJSONStorage(() => AsyncStorage),
+  },
+  {
+    count: 0,
+    items: [],
+  }
 );
-interface BrokerStoreState {
+
+interface BrokerStoreState extends BrokerConfigType {
   brokerUsername: string;
   brokerPassword: string;
   brokerURL: string;

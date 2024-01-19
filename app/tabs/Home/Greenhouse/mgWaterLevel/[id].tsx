@@ -10,27 +10,37 @@ import { useGreenhouseStore } from "../../../../../zustand/store";
 import { useRouter } from "expo-router";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
 import WaterSchedulerForm from "../../../../../components/Forms/WaterScheduleForm";
-import { IWebSocket } from "../../../../../zustand/state";
+import { ConnectionType, IMqttClient, IWebSocket } from "../../../../../zustand/state";
 
 export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
   const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const greenhouse = store.items.find((res) => res.id === id);
   const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
   // session ends 
   const toggleState = () => {
     const updatedState = !state; // Calculate the updated state value
     // Perform actions based on the updatedState
     if (!updatedState) {
-      greenhouse?.ws.sendMessage("waterValve:close");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        const topic = id + "/waterValve";
+        greenhouse?.ws?.sendMessage(topic, "close");
+      } else {
+        greenhouse?.ws?.sendMessage("waterValve:close");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         waterValveState: false
       });
     } else {
-      greenhouse?.ws.sendMessage("waterValve:open");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        const topic = id + "/waterValve";
+        greenhouse?.ws?.sendMessage(topic, "open");
+      } else {
+        greenhouse?.ws?.sendMessage("waterValve:open");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         waterValveState: true
       });
@@ -84,11 +94,11 @@ export default function ParamsContainer() {
           id={id as string}
           type="soil_moisture"
           message="Set the soil moisture threshold"
-          ws={greenhouse?.ws as IWebSocket}
+          ws={greenhouse?.ws as IWebSocket | IMqttClient}
           defaultValue={10} />
         <WaterSchedulerForm
           id={id as string}
-          ws={greenhouse?.ws as IWebSocket}
+          ws={greenhouse?.ws as IWebSocket | IMqttClient}
         />
       </ScrollView>
     </View>

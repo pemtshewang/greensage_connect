@@ -2,12 +2,10 @@ import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { View } from "native-base";
 import { Heading } from "native-base";
-import { useRef } from "react";
 
 const TabLayout = () => {
-  const initialRef = useRef(null);
   return (
-    <Tabs ref={initialRef} screenOptions={{
+    <Tabs screenOptions={{
       tabBarHideOnKeyboard: true
     }}>
       <Tabs.Screen

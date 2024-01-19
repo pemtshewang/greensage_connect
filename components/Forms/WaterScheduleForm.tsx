@@ -1,14 +1,14 @@
 import { View } from "native-base";
 import SlotContainer from "../WaterScheduleSlotContainer";
-import { IWebSocket } from "../../zustand/state";
+import { IMqttClient, IWebSocket } from "../../zustand/state";
 import { useGreenhouseStore } from "../../zustand/store";
 
 const WaterSchedulerForm = ({ ws, id }: {
   id: string,
-  ws: IWebSocket,
+  ws: IWebSocket | IMqttClient,
 }) => {
   const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((greenhouse) => greenhouse.id === id);
+  const greenhouse = store.items.find((greenhouse) => greenhouse.id === id);
   return (
     <View
       margin="2"

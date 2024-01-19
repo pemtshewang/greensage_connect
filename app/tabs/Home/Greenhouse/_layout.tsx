@@ -13,7 +13,7 @@ import { IWebSocket } from "../../../../zustand/state";
 export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const greenhouse = store.items.find((res) => res.id === id);
   const name = greenhouse?.name;
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);

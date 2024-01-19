@@ -1,5 +1,5 @@
 import { View, Text, Input, Button, Badge, HStack, VStack } from "native-base";
-import { IWebSocket } from "../../zustand/state";
+import { ConnectionType, IMqttClient, IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
 import { useToast } from "native-base";
@@ -16,7 +16,7 @@ const ThresholdSetForm = ({
   id: string,
   type: "temperature" | "soil_moisture" | "humidity",
   message: string,
-  ws: IWebSocket,
+  ws: IWebSocket | IMqttClient,
   defaultValue: number
 }) => {
   const [changeState, setChangeState] = useState(false);
@@ -26,35 +26,39 @@ const ThresholdSetForm = ({
   const store = useGreenhouseStore();
   const sendThreshold = () => {
     setValue(value);
-    ws.sendMessage(`threshold:${type}:${value}`);
-    console.log(`Sending ${type} threshold with ${value}`);
+    if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
+      const topic = id + "/threshold/" + type;
+      ws.sendMessage(topic, value.toString());
+    } else {
+      ws.sendMessage(`threshold:${type}:${value}`);
+    }
     toggleChangeState();
     toast.show({
       render: () => {
         return (
-          <View padding="5" bg="green.600">
+          <View borderRadius="sm" padding="5" bg="green.600">
             <Text color="white">
-              The ${type} threshold has been set to ${value}
+              The {type} threshold has been set to {value}
             </Text>
           </View>
         )
       },
-      placement: "bottom",
+      placement: "top",
       duration: 2000,
     });
     if (type === "humidity") {
-      store.updateGreenhouse(id, {
-        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+      store.updateItem(id, {
+        ...store.items.find((greenhouse) => greenhouse.id === id),
         humidityThreshold: value
       });
     } else if (type === "temperature") {
-      store.updateGreenhouse(id, {
-        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+      store.updateItem(id, {
+        ...store.items.find((greenhouse) => greenhouse.id === id),
         temperatureThreshold: value
       });
     } else {
-      store.updateGreenhouse(id, {
-        ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
+      store.updateItem(id, {
+        ...store.items.find((greenhouse) => greenhouse.id === id),
         soilMoistureThreshold: value
       });
     }

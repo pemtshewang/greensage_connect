@@ -8,7 +8,7 @@ import TemperatureControllerContainer from "../../../../../components/Temperatur
 import { useState } from "react";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
-import { IWebSocket } from "../../../../../zustand/state";
+import { ConnectionType, IWebSocket } from "../../../../../zustand/state";
 import RollerShutterController from "../../../../../components/RollerShutterController";
 import { ScrollView } from "native-base";
 
@@ -16,23 +16,33 @@ export default function ParamsContainer() {
   const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const greenhouse = store.items.find((res) => res.id === id);
   const [state, updateFanState] = useState<boolean>(greenhouse?.ventilationFanState as boolean);
   const [rightShutterState, updateRightShutterState] = useState<boolean>(greenhouse?.rollerShutterRightState as boolean);
   const [leftShutterState, updateLeftShutterState] = useState<boolean>(greenhouse?.rollerShutterLeftState as boolean);
+
   const toggleState = () => {
     updateFanState(!state); // Update the state after performing actions
+    const topic = id + "/ventilationFan";
     if (state) {
       console.log("sending message off");
-      greenhouse.ws?.sendMessage("ventilationFan:off");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        greenhouse?.ws?.sendMessage(topic, "off")
+      } else {
+        greenhouse?.ws?.sendMessage("ventilationFan:off");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         ventilationFanState: false
       });
     } else {
       console.log("sending message on");
-      greenhouse.ws?.sendMessage("ventilationFan:on");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        greenhouse?.ws?.sendMessage(topic, "on")
+      } else {
+        greenhouse?.ws?.sendMessage("ventilationFan:on");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         ventilationFanState: true
       });
@@ -41,15 +51,22 @@ export default function ParamsContainer() {
   const toggleRightShutterState = () => {
     updateRightShutterState(!rightShutterState);
     if (rightShutterState) {
-      greenhouse.ws?.sendMessage("rollerShutterRight:down");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        greenhouse?.ws?.sendMessage(id + "/rollerShutterRight", "down")
+      } else {
+        greenhouse?.ws?.sendMessage("rollerShutterRight:down");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         rollerShutterRightState: false
       });
     } else {
-      greenhouse.ws?.sendMessage("rollerShutterRight:up");
-      console.log("rightshutter is up")
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        greenhouse?.ws?.sendMessage(id + "/rollerShutterRight", "up")
+      } else {
+        greenhouse?.ws?.sendMessage("rollerShutterRight:up");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         rollerShutterRightState: true
       });
@@ -58,21 +75,27 @@ export default function ParamsContainer() {
   const toggleLeftShutterState = () => {
     updateLeftShutterState(!leftShutterState);
     if (leftShutterState) {
-      greenhouse.ws?.sendMessage("rollerShutterLeft:down");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        greenhouse?.ws?.sendMessage(id + "/rollerShutterLeft", "down")
+      } else {
+        greenhouse?.ws?.sendMessage("rollerShutterLeft:down");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         rollerShutterLeftState: false
       })
     } else {
-      console.log("leftshutter is up")
-      greenhouse.ws?.sendMessage("rollerShutterLeft:up");
-      store.updateGreenhouse(id as string, {
+      if (greenhouse?.connectionType === ConnectionType.MQTT) {
+        greenhouse?.ws?.sendMessage(id + "/rollerShutterLeft", "up")
+      } else {
+        greenhouse?.ws?.sendMessage("rollerShutterLeft:up");
+      }
+      store.updateItem(id as string, {
         ...greenhouse,
         rollerShutterLeftState: true
       })
     }
   }
-
   return (
     <ScrollView>
       <View style={{

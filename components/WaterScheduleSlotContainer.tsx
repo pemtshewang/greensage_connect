@@ -2,7 +2,7 @@ import { View, Badge, Text, Button, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
-import { IWebSocket } from "../zustand/state"
+import { IMqttClient, IWebSocket } from "../zustand/state"
 import { useGreenhouseStore } from "../zustand/store"
 import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
@@ -17,7 +17,7 @@ const SlotContainer = ({
   repDays
 }: {
   id: string,
-  ws: IWebSocket;
+  ws: IWebSocket | IMqttClient;
   slot: number,
   prevStartTime: string | null,
   prevEndTime: string | null,

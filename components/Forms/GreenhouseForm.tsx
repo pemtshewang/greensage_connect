@@ -36,7 +36,7 @@ const GreenHouseAddForm = ({
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     setLoading(true);
     if (type === "irrigation") {
-      irrigationStore.addIrrigationController({
+      irrigationStore.addItem({
         id: data.id,
         name: data.name,
         ipAddress: data.ipAddress,
@@ -53,7 +53,7 @@ const GreenHouseAddForm = ({
         ws: null
       });
     } else {
-      greenhouseStore.addGreenhouse({
+      greenhouseStore.addItem({
         id: data.id,
         name: data.name,
         ipAddress: data.ipAddress,
@@ -75,6 +75,7 @@ const GreenHouseAddForm = ({
         humidityThreshold: 0,
         rollerShutterLeftState: false,
         rollerShutterRightState: false,
+        connectionType: null
       });
     }
     setTimeout(() => {

@@ -1,11 +1,13 @@
+// WebSocketConnectionTest.tsx
 import React, { useState } from "react";
 import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
 import { Platform } from "react-native";
 import { useRouter } from "expo-router";
-import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import { Text } from "native-base";
+import { BaseStore } from "../../zustand/store";
+import { ConnectionType, GreenhouseState, IrrigationControllerState } from "../../zustand/state";
 import useWebSocket from "../../hooks/wsservice";
 
 type ConnectionMsgTypes =
@@ -14,34 +16,40 @@ type ConnectionMsgTypes =
   | "Connection Failed"
   | "Connecting";
 
-export default function WSTestConnectionForm({
-  id,
-  showForm,
-  setShowForm,
-}: {
+interface WebSocketConnectionTestFormProps {
   id: string;
   showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+  store: BaseStore<GreenhouseState | IrrigationControllerState>; // Replace with the actual type of your store
+  type: "Greenhouse" | "Irrigation";
+}
+
+const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
+  id,
+  showForm,
+  setShowForm,
+  store,
+  type,
+}) => {
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [conMsg, setConMsg] = useState<ConnectionMsgTypes>("Not Connected");
-  const store = useGreenhouseStore();
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const websocketObj = useWebSocket({ id: id, type });
   const router = useRouter();
-  const websocket = useWebSocket({ id: id });
   const testConnection = async () => {
     setConnecting(true);
     setConMsg("Connecting");
     try {
-      await websocket.connect();
-      store.updateGreenhouse(id, {
-        ws: websocket,
+      await websocketObj.connect();
+      store.updateItem(id, {
+        ...store.items.find((res) => res.id === id),
+        ws: websocketObj,
+        connectionType: ConnectionType.MQTT,
+        isConnected: true,
       });
       setConnected(true);
       setConMsg("Connected");
-      store.updateGreenhouse(id, { isConnected: true });
-      router.push(`/tabs/Home/Greenhouse/${id}`);
+      router.push(`/tabs/Home/${type}/${id}`)
     } catch (error) {
       setConnected(false);
       setConMsg("Connection Failed");
@@ -52,7 +60,7 @@ export default function WSTestConnectionForm({
 
   return (
     <CustomModal
-      modalTitle="Local Connection Test"
+      modalTitle={`WebSocket Connection Test`}
       modalVisible={showForm}
       setModalVisible={setShowForm}
     >
@@ -71,7 +79,7 @@ export default function WSTestConnectionForm({
             textAlign: "center"
           }}
         >
-          Testing connection with {greenhouse?.ipAddress as string}
+          Testing connection with {store.items.find((res) => res.id === id)?.ipAddress as string}
         </Text>
         <Pressable
           disabled={connecting || connected}
@@ -144,4 +152,7 @@ export default function WSTestConnectionForm({
       </View>
     </CustomModal>
   );
-}
+};
+
+export default MQTTConnectionTestForm;
+

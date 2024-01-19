@@ -1,4 +1,4 @@
-import { View, FlatList, Badge, ScrollView } from "native-base";
+import { View, Badge, ScrollView } from "native-base";
 import { useGreenhouseStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
@@ -10,11 +10,11 @@ import CustomModal from "./ui/Modal";
 
 const GreenhouseList = () => {
   const store = useGreenhouseStore();
-  const [greenhouses, setGreenhouseList] = useState(store.greenhouses);
+  const [greenhouses, setGreenhouseList] = useState(store.items);
   const [showGreenhouseAddForm, setShowGreenhouseAddForm] = useState<boolean>(false);
   useEffect(() => {
-    setGreenhouseList(store.greenhouses);
-  }, [store.greenhouses]);
+    setGreenhouseList(store.items);
+  }, [store.items]);
   return (
     <View>
       <View flexDirection="row" alignItems="center" marginBottom="1" justifyContent="space-between" >
@@ -45,12 +45,12 @@ const GreenhouseList = () => {
                 return (
                   <GreenhouseNavContainer
                     key={item.id}
-                    type="greenhouse"
+                    type="Greenhouse"
                     id={item.id}
                     name={item.name}
                     imageUrl={item.backgroundImage}
                     removeGreenhouse={(id) => {
-                      store.removeGreenhouse(id);
+                      store.removeItem(id);
                     }}
                   />
                 )

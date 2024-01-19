@@ -37,7 +37,7 @@ const ThresholdDropdown = ({
             {
               ThresholdValues.map((item, index) => {
                 return (
-                  <TouchableOpacity style={{
+                  <TouchableOpacity key={index} style={{
                     flexDirection: "row",
                     justifyContent: "space-between"
                   }}

@@ -1,5 +1,4 @@
 import { View, Badge, ScrollView } from "native-base";
-import { useIrrigationControllerStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
 import { useEffect, useState } from "react";
@@ -7,14 +6,15 @@ import Icons from "../assets/Icons/Icons";
 import { TouchableOpacity } from "react-native";
 import GreenHouseAddForm from "./Forms/GreenhouseForm";
 import CustomModal from "./ui/Modal";
+import { useIrrigationControllerStore } from "../zustand/store";
 
 const IrrigationNavList = () => {
   const store = useIrrigationControllerStore();
-  const [greenhouses, setGreenhouseList] = useState(store.irrigationControllers);
+  const [greenhouses, setGreenhouseList] = useState(store.items);
   const [showGreenhouseAddForm, setShowGreenhouseAddForm] = useState<boolean>(false);
   useEffect(() => {
-    setGreenhouseList(store.irrigationControllers);
-  }, [store.irrigationControllers]);
+    setGreenhouseList(store.items);
+  }, [store.items]);
   return (
     <View>
       <View flexDirection="row" alignItems="center" marginBottom="1" justifyContent="space-between">
@@ -45,12 +45,12 @@ const IrrigationNavList = () => {
                 return (
                   <GreenhouseNavContainer
                     key={item.id}
-                    type="irrigation"
+                    type="Irrigation"
                     id={item.id}
                     name={item.name}
                     imageUrl={item.backgroundImage}
                     removeGreenhouse={(id) => {
-                      store.removeIrrigationController(id);
+                      store.removeItem(id);
                     }}
                   />
                 )

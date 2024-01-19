@@ -8,7 +8,7 @@ import { useGreenhouseStore } from "../../../../zustand/store";
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore()
-  const greenhouse = store.greenhouses.find((res) => res.id === id);
+  const greenhouse = store.items.find((res) => res.id === id);
   return (
     <>
       <ReadingsContainer

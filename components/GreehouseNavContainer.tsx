@@ -10,7 +10,8 @@ import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useRouter } from "expo-router";
 import IrrigationWSTestConnectionForm from "./Forms/WSConnectionIrrigationTest";
-import { GreenhouseMQTTTestConnectionForm, IrrigationMQTTConnectionTestForm } from "./Forms/MqttConnectionTest";
+import MQTTConnectionTestForm from "./Forms/MqttConnectionTest";
+import { useGreenhouseStore, useIrrigationControllerStore } from "../zustand/store";
 
 const GreenhouseNavContainer = ({
   id,
@@ -21,7 +22,7 @@ const GreenhouseNavContainer = ({
 }: {
   id: string;
   name: string;
-  type: "greenhouse" | "irrigation";
+  type: "Greenhouse" | "Irrigation";
   imageUrl: string;
   removeGreenhouse: (id: string) => void;
 }) => {
@@ -181,35 +182,26 @@ const GreenhouseNavContainer = ({
           </HStack>
 
         </View>
-        {
-          type === "greenhouse" ? (
-            <WSTestConnectionForm
-              id={id}
-              showForm={showWSForm}
-              setShowForm={setShowWSForm}
-            />) : (
-            <IrrigationWSTestConnectionForm
-              id={id}
-              showForm={showWSForm}
-              setShowForm={setShowWSForm}
-            />
-          )
-        }
-        {
-          type === "greenhouse" ? (
-            <GreenhouseMQTTTestConnectionForm
-              id={id}
-              showForm={showMQTTForm}
-              setShowForm={setShowMQTTForm}
-            />
-          ) : (
-            <IrrigationMQTTConnectionTestForm
-              id={id}
-              showForm={showMQTTForm}
-              setShowForm={setShowMQTTForm}
-            />
-          )
-        }
+        <WSTestConnectionForm
+          id={id}
+          showForm={showWSForm}
+          setShowForm={setShowWSForm}
+          store={
+            type === "Greenhouse" ?
+              useGreenhouseStore() :
+              useIrrigationControllerStore()} // Use the appropriate store based on the type
+          type={type}
+        />
+        <MQTTConnectionTestForm
+          id={id}
+          showForm={showMQTTForm}
+          setShowForm={setShowMQTTForm}
+          store={
+            type === "Greenhouse" ?
+              useGreenhouseStore() :
+              useIrrigationControllerStore()} // Use the appropriate store based on the type
+          type={type}
+        />
         <CustomActionSheet
           onClose={onClose}
           onOpen={onOpen}
