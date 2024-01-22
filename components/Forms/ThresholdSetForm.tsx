@@ -2,9 +2,9 @@ import { View, Text, Input, Button, Badge, HStack, VStack } from "native-base";
 import { ConnectionType, IMqttClient, IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
 import { useState } from "react";
-import { useToast } from "native-base";
-import { useGreenhouseStore } from "../../zustand/store";
+import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import ThresholdDropDown from "../ThresholdDropDown";
+import createToast from "../../hooks/toast";
 
 const ThresholdSetForm = ({
   id,
@@ -12,18 +12,20 @@ const ThresholdSetForm = ({
   message,
   ws,
   defaultValue,
+  storeType
 }: {
   id: string,
   type: "temperature" | "soil_moisture" | "humidity",
   message: string,
   ws: IWebSocket | IMqttClient,
-  defaultValue: number
+  defaultValue: number,
+  storeType: "Irrigation" | "Greenhouse";
 }) => {
   const [changeState, setChangeState] = useState(false);
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<number>(defaultValue);
   const toggleChangeState = () => setChangeState(!changeState);
-  const toast = useToast();
-  const store = useGreenhouseStore();
+  const { toastMessage } = createToast();
+  const store = storeType === "Irrigation" ? useIrrigationControllerStore() : useGreenhouseStore();
   const sendThreshold = () => {
     setValue(value);
     if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
@@ -32,33 +34,21 @@ const ThresholdSetForm = ({
     } else {
       ws.sendMessage(`threshold:${type}:${value}`);
     }
-    toggleChangeState();
-    toast.show({
-      render: () => {
-        return (
-          <View borderRadius="sm" padding="5" bg="green.600">
-            <Text color="white">
-              The {type} threshold has been set to {value}
-            </Text>
-          </View>
-        )
-      },
-      placement: "top",
-      duration: 2000,
+    toastMessage({
+      message: `Threshold for ${type === "soil_moisture" ? "soil moisture" : type} updated`,
+      type: "success",
     });
+    toggleChangeState();
     if (type === "humidity") {
       store.updateItem(id, {
-        ...store.items.find((greenhouse) => greenhouse.id === id),
         humidityThreshold: value
       });
     } else if (type === "temperature") {
       store.updateItem(id, {
-        ...store.items.find((greenhouse) => greenhouse.id === id),
         temperatureThreshold: value
       });
     } else {
       store.updateItem(id, {
-        ...store.items.find((greenhouse) => greenhouse.id === id),
         soilMoistureThreshold: value
       });
     }

@@ -39,7 +39,6 @@ const BrokerConfigForm = ({
       placement: "bottom",
     });
     setModalState(false);
-    console.log("config ip: ", brokerStore.brokerURL);
   }
   const {
     handleSubmit,

@@ -12,7 +12,6 @@ import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
-import IDAlertDialog from "../IDAlert";
 import { Spinner } from "native-base";
 
 const GreenHouseAddForm = ({
@@ -31,11 +30,16 @@ const GreenHouseAddForm = ({
     ipAddress: "",
     image: imagePath,
   });
-  const [alertIDDialogOpen, setAlertIDDialogOpen] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     setLoading(true);
     if (type === "irrigation") {
+      const defaultSlotValues = {
+        state: false,
+        endTime: null,
+        repDays: 0,
+        startTime: null
+      }
       irrigationStore.addItem({
         id: data.id,
         name: data.name,
@@ -43,14 +47,15 @@ const GreenHouseAddForm = ({
         isConnected: false,
         backgroundImage: imagePath,
         valveStates: {
-          firstSlot: null,
-          secondSlot: null,
-          thirdSlot: null,
-          fourthSlot: null,
-          fifthSlot: null
+          firstSlot: defaultSlotValues,
+          secondSlot: defaultSlotValues,
+          thirdSlot: defaultSlotValues,
+          fourthSlot: defaultSlotValues,
+          fifthSlot: defaultSlotValues
         },
         soil_moisture: 0,
-        ws: null
+        ws: null,
+        connectionType: null
       });
     } else {
       greenhouseStore.addItem({

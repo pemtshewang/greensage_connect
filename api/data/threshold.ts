@@ -30,7 +30,7 @@ const ThresholdValues: {
       label: 'Spinach',
       value: {
         humidity: 80,
-        temperature: 30,
+        temperature: 40,
         soil_moisture: 50,
       },
       _icon: Icons.lettuceIcon

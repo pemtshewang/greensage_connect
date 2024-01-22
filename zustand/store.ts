@@ -13,6 +13,7 @@ export interface BaseStore<T> {
   removeAllItems: () => void;
 }
 
+
 interface StoreConfig<T> {
   name: string;
   storage: any; // Replace with the actual type of storage
@@ -114,6 +115,58 @@ export const useMQTTBrokerStore = create<BrokerStoreState>(
     }),
     {
       name: "mqttBrokerStore",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
+
+export interface Notification {
+  id: string;
+  name: string;
+  title: string;
+  message: string;
+  dateTime: Date;
+  type: "temperature" | "humidity" | "soilMoisture" | "light" | "waterLevel" | "irrigation_schedule";
+  seen: boolean;
+}
+
+interface NotificationStoreState {
+  countOfUnseenNotifications: number;
+  notifications: Notification[];
+  addNotification: (notification: Notification) => void;
+  clearNotifications: () => void;
+  deleteNotification: (id: string) => void;
+  markAllUnseenNotificationsAsSeen: () => void;
+}
+
+export const useNotificationStore = create<NotificationStoreState>(
+  persist(
+    (set) => ({
+      countOfUnseenNotifications: 0,
+      notifications: [],
+      addNotification: (notification) =>
+        set((state) => ({
+          notifications: [...state.notifications, notification],
+          countOfUnseenNotifications: state.countOfUnseenNotifications + 1,
+        })),
+      markAllUnseenNotificationsAsSeen: () =>
+        set((state) => ({
+          notifications: state.notifications.map((notification) =>
+            notification.seen ? notification : { ...notification, seen: true }
+          ),
+          countOfUnseenNotifications: 0,
+        })),
+      clearNotifications: () =>
+        set(() => ({
+          notifications: [],
+        })),
+      deleteNotification: (id) =>
+        set((state) => ({
+          notifications: state.notifications.filter((notification) => notification.id !== id),
+        })),
+    }),
+    {
+      name: "notificationStore",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

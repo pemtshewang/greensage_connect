@@ -1,4 +1,4 @@
-import { Divider, View } from "native-base";
+import { View } from "native-base";
 import { useState } from "react";
 import GreenhouseList from "../../../components/GreenhouseList";
 import { TouchableOpacity } from "react-native";

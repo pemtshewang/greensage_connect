@@ -1,12 +1,14 @@
-import { View, Badge, Text, Button, useToast } from "native-base"
+import { View, Badge, Text, Button } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
-import { IMqttClient, IWebSocket } from "../zustand/state"
+import { ConnectionType, IMqttClient, IWebSocket } from "../zustand/state"
 import { useGreenhouseStore } from "../zustand/store"
 import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { TouchableOpacity } from "react-native"
+import createToast from "../hooks/toast";
+import { useLocalNotification } from "../hooks/notification"
 
 const SlotContainer = ({
   id,
@@ -24,59 +26,21 @@ const SlotContainer = ({
   repDays: number,
 }) => {
   const daysOfWeek = [
-    { name: 'Sun', value: 0b00000001 },
-    { name: 'Mon', value: 0b00000010 },
-    { name: 'Tue', value: 0b00000100 },
-    { name: 'Wed', value: 0b00001000 },
-    { name: 'Thu', value: 0b00010000 },
-    { name: 'Fri', value: 0b00100000 },
-    { name: 'Sat', value: 0b01000000 },
+    { name: 'Sun', value: 0b00000010 },
+    { name: 'Mon', value: 0b00000100 },
+    { name: 'Tue', value: 0b00001000 },
+    { name: 'Wed', value: 0b00010000 },
+    { name: 'Thu', value: 0b00100000 },
+    { name: 'Fri', value: 0b01000000 },
+    { name: 'Sat', value: 0b10000000 }
   ];
-  const slotKeys: {
-    [key: number]: string
-  } = {
+  const slotKeys: Record<number, string> = {
     1: "firstSlot",
     2: "secondSlot",
     3: "thirdSlot",
   };
-  const handleCommitChanges = () => {
-    const formattedStartTime = extractTime(startTime as Date);
-    const formattedEndTime = extractTime(endTime as Date);
-    ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`);
-    toast.show({
-      render: () => {
-        return (
-          <View bg="green.600" padding="5" borderRadius="md">
-            <Text color="white">Scheduled for slot {slot} successfully</Text>
-          </View>
-        )
-      },
-      duration: 2000,
-      placement: "bottom"
-    })
-    store.updateGreenhouse(id, {
-      ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
-      [slotKeys[slot]]: {
-        startTime: startTime,
-        endTime: endTime,
-        repetitionDays: repetitionDays,
-      }
-    });
-  }
-  const handleClearSlot = () => {
-    ws.sendMessage(`scheduleClear|${slot}`);
-    setStartTime(null);
-    setEndTime(null);
-    setRepetitionDays(0);
-    store.updateGreenhouse(id, {
-      ...store.greenhouses.find((greenhouse) => greenhouse.id === id),
-      [slotKeys[slot]]: {
-        startTime: null,
-        endTime: null,
-        repetitionDays: 0,
-      }
-    });
-  }
+  const { toastMessage } = createToast();
+  const { scheduleNotification, clearNotification } = useLocalNotification();
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
   const [err, setErr] = useState<string | null>(null);
@@ -84,10 +48,84 @@ const SlotContainer = ({
   const [clearBtnDisabled, setClearBtnDisabled] = useState<boolean>(false);
   const [repetitionDays, setRepetitionDays] = useState(repDays); // Initialize bitmask
   const store = useGreenhouseStore();
-  const toast = useToast();
   const [startTimePickerVisible, setStartTimePickerVisible] = useState<boolean>(false);
   const [endTimePickerVisible, setEndTimePickerVisible] = useState<boolean>(false);
 
+  const handleCommitChanges = () => {
+    const formattedStartTime = extractTime(startTime as Date);
+    const formattedEndTime = extractTime(endTime as Date);
+    if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
+      const topic = id + "/schedule"
+      const message = `${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`
+      ws.sendMessage(topic, message);
+    } else {
+      ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`);
+    }
+    toastMessage({
+      message: `Schedule for slot ${slot} updated`,
+      type: "success",
+    });
+    store.updateItem(id, {
+      ...store.items.find((greenhouse) => greenhouse.id === id),
+      [slotKeys[slot]]: {
+        startTime: startTime,
+        endTime: endTime,
+        repetitionDays: repetitionDays,
+      }
+    });
+    for (let i = 1; i <= 7; i++) {
+      if (repetitionDays & (1 << i)) {
+        //notify before 5 minutes
+        try {
+          scheduleNotification({
+            content: {
+              title: `Watering Schedule for ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+              subtitle: "Watering Schedule",
+              body: `Watering slot ${slot} is active now`,
+            },
+            trigger: {
+              weekday: i,
+              hour: Number(formattedStartTime.split(":")[0]),
+              minute: Number(formattedStartTime.split(":")[1]),
+              repeats: true,
+            },
+            identifier: `${id}-${slot}-${i}`
+          })
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+  const handleClearSlot = () => {
+    if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
+      const topic = id + "/scheduleClear"
+      ws.sendMessage(topic, slot.toString());
+    } else {
+      ws.sendMessage(`scheduleClear|${slot}`);
+    }
+    setStartTime(null);
+    setEndTime(null);
+    setRepetitionDays(0);
+    toastMessage({
+      message: `Slot ${slot} cleared`,
+      type: "success",
+    })
+    store.updateItem(id, {
+      ...store.items.find((greenhouse) => greenhouse.id === id),
+      [slotKeys[slot]]: {
+        startTime: null,
+        endTime: null,
+        repetitionDays: 0,
+      }
+    });
+    // Clear all notifications for this slot
+    for (let i = 1; i <= 7; i++) {
+      clearNotification({
+        identifier: `${id}-${slot}-${i}`
+      });
+    }
+  }
   useEffect(() => {
     if (repetitionDays === 0) {
       setErr("Please select a valid day(s) for schedule");
@@ -99,7 +137,7 @@ const SlotContainer = ({
   useEffect(() => {
     setDisabled(!(!(isNaN(startTime?.getTime() as number)) && !(isNaN(endTime?.getTime() as number)) && !err && repetitionDays !== 0));
     setClearBtnDisabled(!(!(isNaN(startTime?.getTime() as number)) && !(isNaN(endTime?.getTime() as number)) && !err && repetitionDays !== 0));
-  }, [endTime, startTime, err, repetitionDays]);
+  }, [endTime, startTime, err]);
 
   const toggleDay = (dayValue: number) => {
     const newRepetitionDays = repetitionDays ^ dayValue; // Toggle the selected day in bitmask

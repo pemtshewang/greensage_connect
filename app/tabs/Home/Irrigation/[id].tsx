@@ -3,7 +3,7 @@ import { useIrrigationControllerStore } from "../../../../zustand/store";
 import { useState, useEffect } from "react";
 import IrrigationControllerContainer from "../../../../components/IrrigationControllerContainer";
 import ThresholdSetForm from "../../../../components/Forms/ThresholdSetForm";
-import { IWebSocket } from "../../../../zustand/state";
+import { IMqttClient, IWebSocket } from "../../../../zustand/state";
 import { ScrollView } from "native-base";
 import IrrigationSchedulerContainer from "../../../../components/IrrigationSchedulerContainer";
 
@@ -16,7 +16,7 @@ const Page = () => {
     soil_moisture: 0,
   });
   const store = useIrrigationControllerStore();
-  const irrigation = store.irrigationControllers.find(
+  const irrigation = store.items.find(
     (g) => g.id === id
   );
   useEffect(() => {
@@ -29,9 +29,10 @@ const Page = () => {
       <IrrigationControllerContainer soilMoistureReading={34} />
       <ThresholdSetForm
         id={id as string}
+        storeType="Irrigation"
         message="Set a threshold for water valves"
         type="soil_moisture"
-        ws={irrigation?.ws as IWebSocket}
+        ws={irrigation?.ws as IWebSocket | IMqttClient}
         defaultValue={irrigation?.soil_moisture as number || 0} />
       <IrrigationSchedulerContainer
         prevStartTime={irrigation?.valveStates.firstSlot?.startTime as Date || null}

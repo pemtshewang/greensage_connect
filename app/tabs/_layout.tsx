@@ -2,8 +2,18 @@ import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { View } from "native-base";
 import { Heading } from "native-base";
+import { useNotificationStore } from "../../zustand/store";
+import { useEffect, useState } from "react";
 
 const TabLayout = () => {
+  const [notificationCount, setNotificationCount] = useState(0);
+  const store = useNotificationStore();
+  useEffect(() => {
+    setNotificationCount(store.countOfUnseenNotifications);
+    () => {
+      setNotificationCount(0);
+    }
+  }, [store.notifications]);
   return (
     <Tabs screenOptions={{
       tabBarHideOnKeyboard: true
@@ -52,6 +62,7 @@ const TabLayout = () => {
         name="Notifications"
         options={{
           headerShown: true,
+          tabBarBadge: notificationCount > 0 ? notificationCount : undefined,
           header: () => {
             return (
               <View

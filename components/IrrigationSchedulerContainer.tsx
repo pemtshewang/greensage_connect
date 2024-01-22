@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useIrrigationControllerStore } from "../zustand/store";
 import { Switch } from "react-native";
 import IrrigationSlotContainer from "./IrrigationScheduleSlotContainer";
-import { IWebSocket } from "../zustand/state";
+import { ConnectionType, IWebSocket } from "../zustand/state";
 
 type ValveLabel = "firstSlot" | "secondSlot" | "thirdSlot" | "fourthSlot" | "fifthSlot";
 
@@ -23,23 +23,25 @@ const IrrigationSchedulerContainer = ({
   prevEndTime: Date | null
 }) => {
   const store = useIrrigationControllerStore();
-  const irrigation = store.irrigationControllers.find((g) => g.id === id);
+  const irrigation = store.items.find((g) => g.id === id);
   const [valveState, setValveState] = useState<boolean>(state);
   const toggleValveState = () => {
-    setValveState(!valveState);
-    if (irrigation) {
-      irrigation.ws?.sendMessage(`waterValve:${valveLabel}:${valveState ? "close" : "open"}`);
-      store.updateIrrigationController(id, {
-        ...irrigation,
-        valveStates: {
-          ...irrigation.valveStates,
-          [valveLabel]: {
-            ...irrigation.valveStates[valveLabel],
-            state: valveState,
-          }
-        }
-      });
+    const updatedValveState = !valveState;
+    setValveState(updatedValveState);
+    if (irrigation?.connectionType === ConnectionType.MQTT) {
+      const topic = id + "/waterValve/" + valveLabel.split("S")[0] + "Valve";
+      irrigation?.ws?.sendMessage(topic, valveState ? "close" : "open");
+    } else {
+      irrigation?.ws?.sendMessage(`waterValve:${valveLabel.split("S")[0] + "Valve"}:${valveState ? "close" : "open"}`);
     }
+    store.updateItem(id, {
+      ...irrigation,
+      valveStates: {
+        [valveLabel]: {
+          state: valveState,
+        }
+      }
+    });
   }
   const badge = valveLabel.split('S')[0][0].toUpperCase() + valveLabel.split('S')[0].slice(1,) + " Valve";
   return (

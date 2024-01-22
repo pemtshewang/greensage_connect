@@ -8,7 +8,7 @@ import TemperatureControllerContainer from "../../../../../components/Temperatur
 import { useState } from "react";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
-import { ConnectionType, IWebSocket } from "../../../../../zustand/state";
+import { ConnectionType, IMqttClient, IWebSocket } from "../../../../../zustand/state";
 import RollerShutterController from "../../../../../components/RollerShutterController";
 import { ScrollView } from "native-base";
 
@@ -146,16 +146,18 @@ export default function ParamsContainer() {
         />
         <ThresholdSetForm
           id={id as string}
+          storeType="Greenhouse"
           type="temperature"
           message="Set the temperature threshold"
-          ws={greenhouse?.ws as IWebSocket}
-          defaultValue={greenhouse?.temperatureThreshold || 0} />
+          ws={greenhouse?.ws as IMqttClient | IWebSocket}
+          defaultValue={greenhouse?.temperatureThreshold as number} />
         <ThresholdSetForm
           id={id as string}
+          storeType="Greenhouse"
           type="humidity"
           message="Set the humidity threshold"
-          ws={greenhouse?.ws as IWebSocket}
-          defaultValue={greenhouse?.humidityThreshold || 0} />
+          ws={greenhouse?.ws as IMqttClient | IWebSocket}
+          defaultValue={greenhouse?.humidityThreshold as number} />
       </View>
     </ScrollView>
   )

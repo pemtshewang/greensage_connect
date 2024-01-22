@@ -2,10 +2,12 @@ import { View, Badge, Text, Button, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable, TouchableOpacity } from "react-native"
-import { IWebSocket } from "../zustand/state"
+import { ConnectionType, IMqttClient, IWebSocket } from "../zustand/state"
 import { useIrrigationControllerStore } from "../zustand/store"
 import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
+import createToast from "../hooks/toast"
+import { useLocalNotification } from "../hooks/notification"
 
 const IrrigationSlotContainer = ({
   id,
@@ -16,7 +18,7 @@ const IrrigationSlotContainer = ({
   repDays
 }: {
   id: string,
-  ws: IWebSocket;
+  ws: IWebSocket | IMqttClient;
   valveNumber: "firstSlot" | "secondSlot" | "thirdSlot" | "fourthSlot" | "fifthSlot"
   prevStartTime: Date | null,
   prevEndTime: Date | null,
@@ -32,42 +34,70 @@ const IrrigationSlotContainer = ({
     { name: 'S', value: 0b01000000 },
   ];
   const store = useIrrigationControllerStore();
+  const { toastMessage } = createToast();
+  const { scheduleNotification, clearNotification } = useLocalNotification();
   const handleCommitChanges = () => {
     const formattedStartTime = extractTime(startTime as Date);
     const formattedEndTime = extractTime(endTime as Date);
-    ws.sendMessage(`${valveNumber}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`);
-    toast.show({
-      render: () => {
-        return (
-          <View bg="green.600" padding="5" borderRadius="md">
-            <Text color="white">Scheduled for {valveNumber.split("S")[0]} valve successfully</Text>
-          </View>
-        )
-      },
-      duration: 2000,
-      placement: "bottom"
+    if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
+      const topic = id + "/schedule";
+      const message = `${valveNumber.split("S")[0] + "Valve"}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`;
+      ws.sendMessage(topic, message);
+    } else {
+      ws.sendMessage(`schedule|${valveNumber.split("S")[0] + "Valve"}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`);
+    }
+    toastMessage({
+      type: "success",
+      message: `Scheduled for ${valveNumber.split("S")[0]} valve successfully`
     })
-    store.updateIrrigationController(id, {
-      ...store.irrigationControllers.find((g) => g.id === id),
+    store.updateItem(id, {
+      ...store.items.find((g) => g.id === id),
     })
+    for (let i = 1; i <= 7; i++) {
+      if (repetitionDays & (1 << i)) {
+        //notify before 5 minutes
+        try {
+          scheduleNotification({
+            content: {
+              title: `Irrigation Schedule for ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+              subtitle: "Irrigation Schedule",
+              body: `Irrigation for ${valveNumber} is active now`,
+            },
+            trigger: {
+              weekday: i,
+              hour: Number(formattedStartTime.split(":")[0]),
+              minute: Number(formattedStartTime.split(":")[1]),
+              repeats: true,
+            },
+            identifier: `${id}-${valveNumber}-${i}`
+          })
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   }
   const handleClearSlot = () => {
     ws.sendMessage(`scheduleClear|${valveNumber}`);
     setStartTime(null);
     setEndTime(null);
     setRepetitionDays(0);
-    store.updateIrrigationController(id, {
-      ...store.irrigationControllers.find((g) => g.id === id),
+    store.updateItem(id, {
+      ...store.items.find((g) => g.id === id),
       valveStates: {
-        ...store.irrigationControllers.find((g) => g.id === id)?.valveStates,
+        ...store.items.find((g) => g.id === id)?.valveStates,
         [valveNumber]: {
           state: false,
           startTime: null,
           endTime: null
         }
       }
+    })
+    for (let i = 1; i <= 7; i++) {
+      clearNotification({
+        identifier: `${id}-${valveNumber}-${i}`
+      });
     }
-    )
   }
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
@@ -111,14 +141,16 @@ const IrrigationSlotContainer = ({
                 onPress={() => {
                   toggleDay(day.value);
                 }}
+                style={{
+                  marginLeft: 5,
+                  borderWidth: 1,
+                  borderColor: "#A0A0A0"
+                }}
               >
                 <Badge
                   colorScheme={
                     repetitionDays & day.value ? "green" : "gray"
                   }
-                  style={{
-                    marginLeft: 5,
-                  }}
                 >
                   {day.name}
                 </Badge>
