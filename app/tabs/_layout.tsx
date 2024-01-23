@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
-import { View } from "native-base";
+import { Button, View } from "native-base";
 import { Heading } from "native-base";
 import { useNotificationStore } from "../../zustand/store";
 import { useEffect, useState } from "react";
@@ -60,6 +60,13 @@ const TabLayout = () => {
       />
       <Tabs.Screen
         name="Notifications"
+        listeners={{
+          tabPress: () => {
+            setTimeout(() => {
+              store.markAllUnseenNotificationsAsSeen();
+            }, 2000);
+          }
+        }}
         options={{
           headerShown: true,
           tabBarBadge: notificationCount > 0 ? notificationCount : undefined,

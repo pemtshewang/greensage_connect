@@ -1,27 +1,26 @@
-import { VStack, View, Pressable } from "native-base";
+import { VStack, View, Pressable, Badge } from "native-base";
 import Icons from "../assets/Icons/Icons";
 import React, { useEffect, useState } from "react";
 import { Text, Menu } from "native-base";
 import { useNotificationStore } from "../zustand/store";
 import { format } from "date-fns";
-import { Box } from "lucide-react-native";
 
 const NotificationContainer = ({
   id,
-  name,
   title,
   message,
   dateTime,
   type,
   seen,
+  footer,
 }: {
   id: string;
-  name: string;
   title: string;
   message: string;
   dateTime: Date;
-  type: "temperature" | "humidity" | "soilMoisture" | "light" | "waterLevel" | "irrigation_schedule";
+  type: string;
   seen: boolean;
+  footer: string;
 }) => {
   const [icon, setIcon] = useState<React.ReactNode | null>(null);
   const store = useNotificationStore();
@@ -36,12 +35,20 @@ const NotificationContainer = ({
       case "waterLevel":
         setIcon(<Icons.droplets size={32} color="black" />);
         break;
+      case "waterSchedule":
+        setIcon(<Icons.waterTap height={32} width={32} />);
+        break;
+      case "soil_moisture":
+        setIcon(<Icons.soilMoisture size={32} color="black" />);
+        break;
       default:
     }
   }, [type]);
 
   return (
     <View
+      borderBottomWidth="1"
+      borderColor="gray.100"
       style={{
         flexDirection: "row",
         padding: 5,
@@ -74,15 +81,18 @@ const NotificationContainer = ({
             justifyContent: "space-between",
           }}
         >
-          <Text fontSize="md" fontWeight="bold" width="50%">
+          <Text fontSize="sm" fontWeight="bold" width="100%">
             {title}
           </Text>
         </View>
         <View marginY="2">
-          <Text>{message}</Text>
+          <Text fontSize="sm">{message}</Text>
         </View>
         <Text fontSize="xs" color="gray.500">
           Received on {format(new Date(dateTime), "HH:mm - dd/MM/yyyy")}
+        </Text>
+        <Text fontSize="xs" color="gray.500">
+          {footer}
         </Text>
       </VStack >
     </View >

@@ -122,12 +122,12 @@ export const useMQTTBrokerStore = create<BrokerStoreState>(
 
 export interface Notification {
   id: string;
-  name: string;
   title: string;
   message: string;
   dateTime: Date;
-  type: "temperature" | "humidity" | "soilMoisture" | "light" | "waterLevel" | "irrigation_schedule";
+  type?: string;
   seen: boolean;
+  footer: string;
 }
 
 interface NotificationStoreState {

@@ -5,9 +5,7 @@ const NotificationLayout = () => {
   return (
     <ScrollView
       scrollEnabled={true}
-      style={{
-        marginTop: 10,
-      }}
+      bg="white"
     >
       <Slot />
     </ScrollView>

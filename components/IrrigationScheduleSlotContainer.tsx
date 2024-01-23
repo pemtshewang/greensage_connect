@@ -8,6 +8,8 @@ import { extractTime } from "../utils/dateFormat"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import createToast from "../hooks/toast"
 import { useLocalNotification } from "../hooks/notification"
+import { useNotificationStore } from "../zustand/store"
+import * as Crypto from "expo-crypto"
 
 const IrrigationSlotContainer = ({
   id,
@@ -25,15 +27,17 @@ const IrrigationSlotContainer = ({
   repDays: number,
 }) => {
   const daysOfWeek = [
-    { name: 'S', value: 0b00000001 },
-    { name: 'M', value: 0b00000010 },
-    { name: 'T', value: 0b00000100 },
-    { name: 'W', value: 0b00001000 },
-    { name: 'T', value: 0b00010000 },
-    { name: 'F', value: 0b00100000 },
-    { name: 'S', value: 0b01000000 },
+    { name: 'S', value: 0b00000010 },
+    { name: 'M', value: 0b00000100 },
+    { name: 'T', value: 0b00001000 },
+    { name: 'W', value: 0b00010000 },
+    { name: 'T', value: 0b00100000 },
+    { name: 'F', value: 0b01000000 },
+    { name: 'S', value: 0b10000000 }
   ];
+
   const store = useIrrigationControllerStore();
+  const { addNotification } = useNotificationStore();
   const { toastMessage } = createToast();
   const { scheduleNotification, clearNotification } = useLocalNotification();
   const handleCommitChanges = () => {
@@ -48,7 +52,7 @@ const IrrigationSlotContainer = ({
     }
     toastMessage({
       type: "success",
-      message: `Scheduled for ${valveNumber.split("S")[0]} valve successfully`
+      message: `Scheduled for ${valveNumber.split("S")[0]} valve successful`
     })
     store.updateItem(id, {
       ...store.items.find((g) => g.id === id),
@@ -76,6 +80,15 @@ const IrrigationSlotContainer = ({
         }
       }
     }
+    addNotification({
+      id: Crypto.randomUUID().toString(),
+      seen: false,
+      title: "Irrigation schedule added",
+      message: `Watering schedule for ${valveNumber.split('S')[0]} valve updated to ${formattedStartTime} - ${formattedEndTime}`,
+      footer: `Updated in irrigation ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+      type: "waterSchedule",
+      dateTime: new Date(),
+    });
   }
   const handleClearSlot = () => {
     ws.sendMessage(`scheduleClear|${valveNumber}`);

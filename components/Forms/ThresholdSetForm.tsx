@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import ThresholdDropDown from "../ThresholdDropDown";
 import createToast from "../../hooks/toast";
+import { useNotificationStore } from "../../zustand/store";
+import * as Crypto from "expo-crypto";
 
 const ThresholdSetForm = ({
   id,
@@ -25,6 +27,7 @@ const ThresholdSetForm = ({
   const [value, setValue] = useState<number>(defaultValue);
   const toggleChangeState = () => setChangeState(!changeState);
   const { toastMessage } = createToast();
+  const { addNotification } = useNotificationStore();
   const store = storeType === "Irrigation" ? useIrrigationControllerStore() : useGreenhouseStore();
   const sendThreshold = () => {
     setValue(value);
@@ -52,6 +55,15 @@ const ThresholdSetForm = ({
         soilMoistureThreshold: value
       });
     }
+    addNotification({
+      id: Crypto.randomUUID().toString(),
+      seen: false,
+      title: "Threshold updated",
+      message: `Threshold for ${type === "soil_moisture" ? "soil moisture" : type} updated to ${value}`,
+      footer: `Updated in greenhouse ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+      dateTime: new Date(),
+      type: type,
+    });
   }
   return (
     <View

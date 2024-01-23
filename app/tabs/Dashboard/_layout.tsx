@@ -5,9 +5,7 @@ import { Slot } from "expo-router";
 export default function NewsFeedLayout() {
   return (
     <View>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
-      >
+      <ScrollView>
         <Slot />
       </ScrollView>
     </View >

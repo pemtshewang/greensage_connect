@@ -9,6 +9,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { TouchableOpacity } from "react-native"
 import createToast from "../hooks/toast";
 import { useLocalNotification } from "../hooks/notification"
+import { useNotificationStore } from "../zustand/store"
+import * as Crypto from "expo-crypto";
 
 const SlotContainer = ({
   id,
@@ -50,6 +52,7 @@ const SlotContainer = ({
   const store = useGreenhouseStore();
   const [startTimePickerVisible, setStartTimePickerVisible] = useState<boolean>(false);
   const [endTimePickerVisible, setEndTimePickerVisible] = useState<boolean>(false);
+  const { addNotification } = useNotificationStore();
 
   const handleCommitChanges = () => {
     const formattedStartTime = extractTime(startTime as Date);
@@ -96,6 +99,15 @@ const SlotContainer = ({
         }
       }
     }
+    addNotification({
+      id: Crypto.randomUUID().toString(),
+      seen: false,
+      title: "Watering schedule added",
+      message: `Watering schedule of slot ${slot} updated to ${formattedStartTime} - ${formattedEndTime}`,
+      footer: `Updated in greenhouse ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+      type: "waterSchedule",
+      dateTime: new Date(),
+    });
   }
   const handleClearSlot = () => {
     if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {

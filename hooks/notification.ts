@@ -42,10 +42,14 @@ export function useLocalNotification() {
     await Notifications.cancelScheduledNotificationAsync(identifier);
   }
 
+  const makeInstantNotification = async (notification: Notifications.NotificationContentInput) => {
+    await Notifications.presentNotificationAsync(notification);
+  }
 
   return {
     notification,
     scheduleNotification,
-    clearNotification
+    clearNotification,
+    makeInstantNotification
   };
 }
