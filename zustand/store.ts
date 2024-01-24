@@ -13,13 +13,15 @@ export interface BaseStore<T> {
   removeAllItems: () => void;
 }
 
-
 interface StoreConfig<T> {
   name: string;
   storage: any; // Replace with the actual type of storage
 }
 
 interface StoreState<T> extends BaseStore<T> { }
+
+export interface AnalyticsStore<T> {
+}
 
 export function createStore<T>(
   config: StoreConfig<T>,

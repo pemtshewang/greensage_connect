@@ -116,7 +116,7 @@ const BrokerConfigForm = ({
                 type="text"
                 placeholder="Broker port number (1-65535)"
                 keyboardType="numeric"
-                value={data.brokerPort}
+                value={String(data.brokerPort)}
                 onChangeText={(text: string): void => {
                   setData({ ...data, brokerPort: Number(text) });
                 }}

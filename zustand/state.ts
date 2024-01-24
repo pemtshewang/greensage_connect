@@ -15,6 +15,12 @@ export interface IWebSocket {
     connect: () => Promise<any>;
     disconnect: () => void;
 }
+export interface DataAnalytics {
+    date: Date,
+    data: {
+    }
+}
+
 interface MqttConnectOptions {
     userName: string;
     password: string;
