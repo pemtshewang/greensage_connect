@@ -1,6 +1,8 @@
 import Paho from "paho-mqtt";
 import { BaseStore, useGreenhouseStore, useIrrigationControllerStore, useMQTTBrokerStore } from "../zustand/store";
 import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
+import { getRandomColor } from "./wsservice";
+import { useAnalyticsStore } from "../zustand/store";
 
 const createMqttClient = (id: string) => {
   const store = useMQTTBrokerStore();
@@ -20,6 +22,8 @@ const handleMessage = ({
   type: "Greenhouse" | "Irrigation";
   store: BaseStore<GreenhouseState | IrrigationControllerState>;
 }) => {
+  const analyticsStore = useAnalyticsStore();
+  const device = store.items.find((d) => d.id === id);
   console.log(payloadString)
   const lastTopic = topic.split("/").pop();
   if (lastTopic === "readings") {
@@ -30,12 +34,58 @@ const handleMessage = ({
       switch (dataType) {
         case "temperature":
           store.updateItem(id, { temperature: Number(dataValue) });
+          analyticsStore.addTempHumidData({
+            id,
+            name: device?.name || "",
+            data: {
+              temperature: [
+                { time: new Date().toISOString(), value: Number(dataValue) },
+              ],
+              humidity: [],
+            },
+            legend: {
+              name: device?.name || "",
+              symbol: {
+                fill: getRandomColor(),
+                type: "circle",
+              },
+            },
+          });
           break;
         case "humidity":
           store.updateItem(id, { humidity: Number(dataValue) });
+          analyticsStore.addTempHumidData({
+            id,
+            name: device?.name || "",
+            data: {
+              temperature: [],
+              humidity: [
+                { time: new Date().toISOString(), value: Number(dataValue) },
+              ],
+            },
+            legend: {
+              name: device?.name || "",
+              symbol: {
+                fill: getRandomColor(),
+                type: "circle",
+              },
+            },
+          });
           break;
         case "soilMoisture":
           store.updateItem(id, { soil_moisture: Number(dataValue) });
+          analyticsStore.addSoilMoistureData({
+            id,
+            name: device?.name || "",
+            data: [{ timestamp: new Date().toISOString(), moisture: Number(dataValue) }],
+            legend: {
+              name: device?.name || "",
+              symbol: {
+                fill: getRandomColor(),
+                type: "circle",
+              },
+            },
+          });
           break;
         case "light":
           store.updateItem(id, { ldrReading: Number(dataValue) });

@@ -1,35 +1,45 @@
 import React from "react";
 import { View } from "react-native";
-import { VictoryChart, VictoryLegend, VictoryLine, VictoryTheme } from "victory-native";
+import {
+  VictoryChart,
+  VictoryLegend,
+  VictoryLine,
+  VictoryTheme,
+} from "victory-native";
 import { Text, VStack } from "native-base";
-
 export interface TempHumidDataType {
+  id: string;
   name: string;
   data: {
-    temperature: number[];
-    humidity: number[];
-  }
+    temperature: Array<{ time: string; value: number }>;
+    humidity: Array<{ time: string; value: number }>;
+  };
   legend: {
-    name: string
+    name: string;
     symbol: {
       fill: string;
       type: string;
-    }
-  }
+    };
+  };
 }
 
 const LineGraph = ({
   data,
   title,
 }: {
-  data: TempHumidDataType[],
-  title: string,
-  type: string
+  data: TempHumidDataType[];
+  title: string;
+  type: string;
 }) => {
   return (
     <VStack>
       <View>
-        <Text marginTop="5" style={{ fontSize: 15, fontWeight: "bold", textAlign: "center" }}>{title}</Text>
+        <Text
+          marginTop="5"
+          style={{ fontSize: 15, fontWeight: "bold", textAlign: "center" }}
+        >
+          {title}
+        </Text>
         <VictoryChart
           theme={VictoryTheme.material}
           width={350}
@@ -41,20 +51,22 @@ const LineGraph = ({
           padding={{ top: 10, bottom: 30, left: 40, right: 20 }}
           height={300}
         >
-          {
-            data.map((series) => {
-              return (
-                <VictoryLine
-                  key={series.name}
-                  data={series.data.temperature}
-                  style={{
-                    data: {
-                      stroke: series.legend.symbol.fill,
-                    },
-                  }} />
-              )
-            })
-          }
+          {data.map((series) => {
+            return (
+              <VictoryLine
+                key={series.name}
+                data={series.data.temperature.map((temp) => ({
+                  x: temp.time,
+                  y: temp.value,
+                }))}
+                style={{
+                  data: {
+                    stroke: series.legend.symbol.fill,
+                  },
+                }}
+              />
+            );
+          })}
         </VictoryChart>
         <VictoryLegend
           width={350}
@@ -62,10 +74,11 @@ const LineGraph = ({
           style={{ labels: { fontSize: 11 } }}
           orientation="horizontal"
           gutter={15}
-          data={data.map((series) => series.legend)} />
+          data={data.map((series) => series.legend)}
+        />
       </View>
     </VStack>
   );
-}
+};
 
 export default LineGraph;

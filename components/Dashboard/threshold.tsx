@@ -2,24 +2,19 @@ import React from "react";
 import { View } from "react-native";
 import { VictoryChart, VictoryLegend, VictoryTheme, VictoryLine, VictoryScatter, VictoryArea } from "victory-native";
 import { Text, VStack } from "native-base";
-import { LegendProps } from "./temp_humid";
 
 export interface ThresholdData {
-  index: number;
-  humidity: number;
-  temperature: number;
-  soilMoisture: number;
+  humidity: number[];
+  temperature: number[];
+  soilMoisture: number[];
 }
 
 const ThresholdLineGraph = ({
   data,
   title,
-  legend,
-  type
 }: {
-  data: ThresholdData[],
+  data: ThresholdData,
   title: string,
-  legend: LegendProps[],
   type: string
 }) => {
   return (
@@ -37,17 +32,6 @@ const ThresholdLineGraph = ({
           padding={{ top: 10, bottom: 30, left: 40, right: 20 }}
           height={300}
         >
-          {legend.map((item, index) => (
-            <VictoryLine
-              key={index}
-              data={data}
-              x="index"
-              y={item.name === "humidity" ? "humidity" : item.name === "temperature" ? "temperature" : "soilMoisture"}
-              style={{
-                data: { stroke: item.symbol.fill },
-              }}
-            />
-          ))}
         </VictoryChart>
       </View>
       <VictoryLegend
@@ -56,7 +40,6 @@ const ThresholdLineGraph = ({
         style={{ labels: { fontSize: 11 } }}
         orientation="horizontal"
         gutter={15}
-        data={legend}
       />
     </VStack>
   );

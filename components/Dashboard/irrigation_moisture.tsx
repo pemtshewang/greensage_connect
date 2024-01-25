@@ -4,9 +4,10 @@ import { VictoryChart, VictoryLegend, VictoryLine, VictoryTheme } from "victory-
 import { Text, VStack } from "native-base";
 
 export interface SoilMoistureCombinedProps {
-  channel: string;
+  id: string;
+  name: string;
   data: {
-    timestamp: number;
+    timestamp: string;
     moisture: number;
   }[];
   legend: {

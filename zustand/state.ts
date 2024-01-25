@@ -1,3 +1,7 @@
+import { SoilMoistureCombinedProps } from "../components/Dashboard/irrigation_moisture";
+import { TempHumidDataType } from "../components/Dashboard/temp_humid";
+import { ThresholdData } from "../components/Dashboard/threshold";
+
 export enum ConnectionType {
     WebSocket = 'websocket',
     MQTT = 'mqtt',
@@ -14,11 +18,6 @@ export interface IWebSocket {
     sendMessage: (topic?: string, message?: string) => void;
     connect: () => Promise<any>;
     disconnect: () => void;
-}
-export interface DataAnalytics {
-    date: Date,
-    data: {
-    }
 }
 
 interface MqttConnectOptions {
