@@ -29,6 +29,7 @@ import {
   MenuIcon,
   CrosshairIcon,
   CloudIcon,
+  LogOutIcon
 } from "lucide-react-native";
 import Svg, { G, Rect, Path, Circle } from "react-native-svg"
 
@@ -1029,7 +1030,8 @@ export const Icons = {
       </Svg>
     )
   },
-  wifiIcon: WifiIcon
+  wifiIcon: WifiIcon,
+  logOut: LogOutIcon,
 };
 
 

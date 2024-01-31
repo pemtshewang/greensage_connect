@@ -76,10 +76,9 @@ const LoginStyles = StyleSheet.create({
     flex: 1,
   },
   heading: {
-    fontWeight: "bold",
+    paddingTop:5,
     textAlign: "center",
-    // gradient
-    color: "#fff"
+    color: "#fff",
   },
   icon: {
     borderColor: "#000",
@@ -100,8 +99,8 @@ const LoginStyles = StyleSheet.create({
     // not pressed background color to green
   },
   link: {
-    fontWeight: "bold",
     color: "#fff",
+    textDecorationLine: "underline",
   },
   linkView: {
     display: "flex",

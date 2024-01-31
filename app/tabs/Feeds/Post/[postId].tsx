@@ -1,15 +1,16 @@
 import { View } from "native-base";
-import NewsContainer from "../../../../components/NewsContainer";
 import { useLocalSearchParams } from "expo-router";
-import { Text } from "native-base";
+import { useContext } from "react";
+import NewsFeedContext from "../../../../context/NewsFeedContext";
+import NewsFeedDetail from "../../../../components/NewsFeedDetail";
 
 const PostDetail = () => {
   const { postId } = useLocalSearchParams();
+  const { newsFeed, setNewsFeed } = useContext(NewsFeedContext);
+  const targetNews = newsFeed.find((news) => news.id === postId);
   return (
     <View paddingX="0">
-      <Text>
-        You are viewing {postId?.toString()}
-      </Text>
+      <NewsFeedDetail {...targetNews} />
     </View>
   );
 }

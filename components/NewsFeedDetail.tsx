@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { AspectRatio, View, Box, Image, Stack, Heading, Text, HStack } from "native-base";
-import { Pressable } from "react-native";
 import type { PostType } from "../types";
-import { useRouter } from "expo-router";
 import { format } from "date-fns";
 
-
-const NewsContainer = ({
+const NewsFeedDetail = ({
   id,
   title,
   content,
@@ -14,21 +11,9 @@ const NewsContainer = ({
   image,
   author
 }: PostType) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const router = useRouter();
 
   return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? "green.800" : isHovered ? "green.600" : "green.700",
-          transform: [{ scale: pressed ? 0.96 : 1 }],
-        },
-      ]}
-      onPress={() => {
-        router.push(`/tabs/Feeds/Post/${id}`);
-      }}
-    >
+    <View>
       <Box
         marginTop={3}
         maxW="80"
@@ -70,7 +55,7 @@ const NewsContainer = ({
           </Stack>
           <View paddingTop="5">
             <Text fontWeight="400">
-              {content.slice(0, 200)}...<Text italic>Click to continue reading</Text>
+              {content}
             </Text>
           </View>
           <HStack alignItems="center" space={4} justifyContent="space-between">
@@ -80,8 +65,8 @@ const NewsContainer = ({
           <Text color="coolGray.500">By {author}</Text>
         </Stack>
       </Box>
-    </Pressable >
+    </View >
   );
 };
 
-export default NewsContainer;
+export default NewsFeedDetail;

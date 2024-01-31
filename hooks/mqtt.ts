@@ -1,8 +1,8 @@
 import Paho from "paho-mqtt";
 import { BaseStore, useGreenhouseStore, useIrrigationControllerStore, useMQTTBrokerStore } from "../zustand/store";
 import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
-import { getRandomColor } from "./wsservice";
-import { useAnalyticsStore } from "../zustand/store";
+import { getValueFor } from "../securestore";
+import { useEffect, useState } from "react";
 
 const createMqttClient = (id: string) => {
   const store = useMQTTBrokerStore();
@@ -10,21 +10,21 @@ const createMqttClient = (id: string) => {
   return client;
 };
 
+
 const handleMessage = ({
+  brokerId,
   id,
   topic,
   payloadString,
-  store
+  store,
 }: {
+  brokerId: string,
   id: string;
   topic: string;
   payloadString: string;
   type: "Greenhouse" | "Irrigation";
   store: BaseStore<GreenhouseState | IrrigationControllerState>;
 }) => {
-  const analyticsStore = useAnalyticsStore();
-  const device = store.items.find((d) => d.id === id);
-  console.log(payloadString)
   const lastTopic = topic.split("/").pop();
   if (lastTopic === "readings") {
     const category = payloadString.split("|");
@@ -34,58 +34,12 @@ const handleMessage = ({
       switch (dataType) {
         case "temperature":
           store.updateItem(id, { temperature: Number(dataValue) });
-          analyticsStore.addTempHumidData({
-            id,
-            name: device?.name || "",
-            data: {
-              temperature: [
-                { time: new Date().toISOString(), value: Number(dataValue) },
-              ],
-              humidity: [],
-            },
-            legend: {
-              name: device?.name || "",
-              symbol: {
-                fill: getRandomColor(),
-                type: "circle",
-              },
-            },
-          });
           break;
         case "humidity":
           store.updateItem(id, { humidity: Number(dataValue) });
-          analyticsStore.addTempHumidData({
-            id,
-            name: device?.name || "",
-            data: {
-              temperature: [],
-              humidity: [
-                { time: new Date().toISOString(), value: Number(dataValue) },
-              ],
-            },
-            legend: {
-              name: device?.name || "",
-              symbol: {
-                fill: getRandomColor(),
-                type: "circle",
-              },
-            },
-          });
           break;
         case "soilMoisture":
           store.updateItem(id, { soil_moisture: Number(dataValue) });
-          analyticsStore.addSoilMoistureData({
-            id,
-            name: device?.name || "",
-            data: [{ timestamp: new Date().toISOString(), moisture: Number(dataValue) }],
-            legend: {
-              name: device?.name || "",
-              symbol: {
-                fill: getRandomColor(),
-                type: "circle",
-              },
-            },
-          });
           break;
         case "light":
           store.updateItem(id, { ldrReading: Number(dataValue) });
@@ -99,7 +53,13 @@ const handleMessage = ({
 };
 
 const useMqtt = ({ id, type }: { id: string; type: "Greenhouse" | "Irrigation" }) => {
+  const [brokerId, setBrokerId] = useState("");
   const client = createMqttClient(id);
+  useEffect(() => {
+    getValueFor("token").then((token) => {
+      setBrokerId(JSON.parse(token as string)?.brokerId);
+    })
+  }, [])
   const store = useMQTTBrokerStore();
   const storeType = type === "Greenhouse" ? useGreenhouseStore() : useIrrigationControllerStore();
   const connect = () => {
@@ -113,11 +73,12 @@ const useMqtt = ({ id, type }: { id: string; type: "Greenhouse" | "Irrigation" }
           rej(err);
         },
         onSuccess: (data) => {
-          client.subscribe(id + "/#");
+          client.subscribe(brokerId + "/#");
           client.onMessageArrived = (msg) => {
             console.log("Message has arrived", msg.payloadString)
             try {
               handleMessage({
+                brokerId,
                 id,
                 topic: msg.topic,
                 payloadString: msg.payloadString,

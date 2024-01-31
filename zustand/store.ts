@@ -3,8 +3,6 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BrokerConfigType } from "../types";
 import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
-import { TempHumidDataType } from "../components/Dashboard/temp_humid";
-import { SoilMoistureCombinedProps } from "../components/Dashboard/irrigation_moisture";
 
 export interface BaseStore<T> {
   count: number;
@@ -20,7 +18,7 @@ interface StoreConfig<T> {
   storage: any; // Replace with the actual type of storage
 }
 
-interface StoreState<T> extends BaseStore<T> {}
+interface StoreState<T> extends BaseStore<T> { }
 
 export function createStore<T>(
   config: StoreConfig<T>,
@@ -169,86 +167,7 @@ export const useNotificationStore = create<NotificationStoreState>(
         })),
     }),
     {
-      name: "notificationStore",
-      storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
-);
-
-type AnalyticsStoreState = {
-  lastUpdated: string | null;
-  updatedLastUpdatedDate: () => void;
-  soilMoistureData: SoilMoistureCombinedProps[];
-  addTempHumidData: (data: TempHumidDataType) => void;
-  addSoilMoistureData: (data: SoilMoistureCombinedProps) => void;
-  clearData: () => void;
-  getMinMaxTempHumidData: () => {
-    minTemp: number;
-    minHumid: number;
-    maxTemp: number;
-    maxHumid: number;
-  };
-};
-
-export const useAnalyticsStore = create<AnalyticsStoreState>(
-  persist(
-    (set) => ({
-      tempHumidData: [],
-      soilMoistureData: [],
-      addTempHumidData: (data) =>
-        set((state) => {
-          const index = state.tempHumidData.findIndex(
-            (item) => item.id === data.id
-          );
-          if (index !== -1) {
-            // Update the existing data
-            const updatedData = [...state.tempHumidData];
-            updatedData[index] = data;
-            return { tempHumidData: updatedData };
-          } else {
-            // Add new data
-            return { tempHumidData: [...state.tempHumidData, data] };
-          }
-        }),
-      addSoilMoistureData: (data) =>
-        set((state) => {
-          const index = state.soilMoistureData.findIndex(
-            (item) => item.id === data.id
-          );
-          if (index !== -1) {
-            // Update the existing data
-            const updatedData = [...state.soilMoistureData];
-            updatedData[index] = data;
-            return { soilMoistureData: updatedData };
-          } else {
-            // Add new data
-            return { soilMoistureData: [...state.soilMoistureData, data] };
-          }
-        }),
-      clearData: () => set(() => ({ tempHumidData: [], soilMoistureData: [] })),
-      getMinMaxTempHumidData: () =>
-        get((state) => {
-          let minTemp = Infinity;
-          let minHumid = Infinity;
-          let maxTemp = -Infinity;
-          let maxHumid = -Infinity;
-          state.tempHumidData.forEach((item) => {
-            item.data.temperature.forEach((data) => {
-              minTemp = Math.min(minTemp, data.value);
-              maxTemp = Math.max(maxTemp, data.value);
-            });
-            item.data.humidity.forEach((data) => {
-              minHumid = Math.min(minHumid, data.value);
-              maxHumid = Math.max(maxHumid, data.value);
-            });
-          });
-          return { minTemp, minHumid, maxTemp, maxHumid };
-        }),
-      updatedLastUpdatedDate: () =>
-        set(() => ({ lastUpdated: new Date().toISOString() })),
-    }),
-    {
-      name: "analyticsStore", // unique name
+      name: "notificationstore",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

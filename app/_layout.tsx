@@ -8,7 +8,6 @@ import Entypo from "@expo/vector-icons/Entypo";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import * as Notifications from "expo-notifications";
-import { useAnalyticsStore } from "../zustand/store";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -23,22 +22,6 @@ export default function HomeLayout() {
   const AnimatedImage = Animated.createAnimatedComponent(Image);
 
   const [animValue] = useState(new Animated.Value(0));
-  const analyticsStore = useAnalyticsStore();
-  useEffect(() => {
-    if (analyticsStore) {
-      if (analyticsStore.lastUpdated !== null) {
-        const lastUpdatedDate = new Date(analyticsStore.lastUpdated);
-        lastUpdatedDate.setHours(0, 0, 0, 0);
-
-        const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0);
-
-        if (currentDate > lastUpdatedDate) {
-          analyticsStore.clearData();
-        }
-      }
-    }
-  }, []);
   useEffect(() => {
     Animated.sequence([
       Animated.timing(animValue, {
@@ -73,7 +56,7 @@ export default function HomeLayout() {
     async function prepare() {
       try {
         await Font.loadAsync(Entypo.font);
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate loading
+        await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate loading
       } catch (e) {
         console.warn(e);
       } finally {
@@ -99,7 +82,7 @@ export default function HomeLayout() {
         }}
       >
         <AnimatedImage
-          source={require("../assets/logo.png")}
+          source={require("../assets/logo.gif")}
           width={280}
           height={280}
           style={{

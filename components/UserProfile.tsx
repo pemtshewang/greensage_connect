@@ -1,21 +1,29 @@
 import { Avatar, Box, Button, Center, HStack, Text, VStack, useToast } from "native-base"
 import Icons from "../assets/Icons/Icons";
 import * as Clipboard from 'expo-clipboard';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getValueFor } from "../securestore";
+import { UserProfileType } from "../types";
 
-const UserProfile = ({
-  userName,
-  userId,
-}: {
-  userName: string
-  userId: string
-}) => {
+const getUserDetails = async () => {
+  const user = await getValueFor("token");
+  return user;
+}
+const UserProfile = () => {
   const toast = useToast();
   const [copiedIcon, setCopiedIcon] = useState(<Icons.clipboard color="black" size={20} />);
   const [clipboardBorderColor, setClipboardBorderColor] = useState("coolGray.500");
+  const [values, setValues] = useState<UserProfileType>();
+
+  useEffect(() => {
+    getUserDetails().then((user) => {
+      setValues(JSON.parse(user as string));
+      console.log(user);
+    })
+  }, [])
 
   const handleCopy = async () => {
-    await Clipboard.setStringAsync(userId);
+    await Clipboard.setStringAsync(values?.id);
 
     setCopiedIcon(<Icons.checkCheck color="black" size={20} />);
     setClipboardBorderColor("green.500");
@@ -23,7 +31,7 @@ const UserProfile = ({
     setTimeout(() => {
       setClipboardBorderColor("coolGray.500");
       setCopiedIcon(<Icons.clipboard color="black" size={20} />);
-    }, 2000); // Show the check check icon for 2 seconds
+    }, 1000);
 
     toast.show({
       render: () => (
@@ -43,23 +51,23 @@ const UserProfile = ({
         <Avatar bg="amber.500" source={{
           uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
         }} size="md">
-          {userName.split(" ").map((name) => name[0]).join("")}
+          {values?.username}
           <Avatar.Badge bg="green.500" />
         </Avatar>
       </Center>
       <Box>
         <Text fontSize="lg" fontWeight="bold" textAlign="center">
-          {userName}
+          {values?.username}
         </Text>
       </Box>
       <VStack space={4} padding="3">
         <HStack>
           <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
-            User-ID
+            Broker-ID
           </Box>
           <Box flex="1" flexDirection="row" padding="2" borderWidth="1" borderColor="coolGray.500">
             <Box flex="1">
-              <Text fontWeight="bold">{userId}</Text>
+              <Text >{values?.brokerId}</Text>
             </Box>
             <Button
               _pressed={{
@@ -75,7 +83,9 @@ const UserProfile = ({
             Phone Number
           </Box>
           <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            +975 17 123 456
+            {
+              values?.mobile
+            }
           </Box>
         </HStack>
         <HStack>
@@ -83,7 +93,9 @@ const UserProfile = ({
             Current Location
           </Box>
           <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            Paro, Bhutan
+            <Text>
+              {values?.dzongkhag}, {values?.gewog}
+            </Text>
           </Box>
         </HStack>
         <HStack>
@@ -91,7 +103,7 @@ const UserProfile = ({
             Greenhouses owned
           </Box>
           <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            2
+            {values?.greenhouseCount}
           </Box>
         </HStack>
         <HStack>
@@ -99,7 +111,7 @@ const UserProfile = ({
             Irrigation Systems
           </Box>
           <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            2
+            {values?.irrigationCount}
           </Box>
         </HStack>
       </VStack>

@@ -2,15 +2,7 @@ import { useRef, useEffect } from "react";
 import {
   useGreenhouseStore,
   useIrrigationControllerStore,
-  useAnalyticsStore,
 } from "../zustand/store";
-
-export function getRandomColor() {
-  const r = Math.floor(Math.random() * 256); // Random between 0-255
-  const g = Math.floor(Math.random() * 256); // Random between 0-255
-  const b = Math.floor(Math.random() * 256); // Random between 0-255
-  return "rgb(" + r + "," + g + "," + b + ")";
-}
 
 const useWebSocket = ({
   id,
@@ -23,7 +15,6 @@ const useWebSocket = ({
     type === "Greenhouse"
       ? useGreenhouseStore()
       : useIrrigationControllerStore();
-  const analyticsStore = useAnalyticsStore();
   const device = store.items.find((d) => d.id === id);
   const socket = useRef<WebSocket | null>(null);
   let heartbeatInterval: NodeJS.Timeout | null = null;
@@ -89,58 +80,12 @@ const useWebSocket = ({
     switch (dataType) {
       case "temperature":
         store.updateItem(id, { temperature: Number(dataValue) });
-        analyticsStore.addTempHumidData({
-          id,
-          name: device?.name || "",
-          data: {
-            temperature: [
-              { time: new Date().toISOString(), value: Number(dataValue) },
-            ],
-            humidity: [],
-          },
-          legend: {
-            name: device?.name || "",
-            symbol: {
-              fill: getRandomColor(),
-              type: "circle",
-            },
-          },
-        });
         break;
       case "humidity":
         store.updateItem(id, { humidity: Number(dataValue) });
-        analyticsStore.addTempHumidData({
-          id,
-          name: device?.name || "",
-          data: {
-            temperature: [],
-            humidity: [
-              { time: new Date().toISOString(), value: Number(dataValue) },
-            ],
-          },
-          legend: {
-            name: device?.name || "",
-            symbol: {
-              fill: getRandomColor(),
-              type: "circle",
-            },
-          },
-        });
         break;
       case "soilMoisture":
         store.updateItem(id, { soil_moisture: Number(dataValue) });
-        analyticsStore.addSoilMoistureData({
-          id,
-          name: device?.name || "",
-          data: [{ timestamp: new Date().toISOString(), moisture: Number(dataValue) }],
-          legend: {
-            name: device?.name || "",
-            symbol: {
-              fill: getRandomColor(),
-              type: "circle",
-            },
-          },
-        });
         break;
       case "light":
         store.updateItem(id, { ldrReading: Number(dataValue) });

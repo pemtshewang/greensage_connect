@@ -13,9 +13,9 @@ const BrokerConfigDisplay = ({
   const [showPassword, setShowPassword] = useState(false);
   return (
     <VStack padding="3">
-      <HStack>
+      <HStack paddingBottom="2">
         <Box flex="1">
-          <Text borderRadius={7} padding="2" w="40" bg="coolGray.300" fontSize="md">Broker Configuration</Text>
+          <Text borderRadius={7} fontWeight="bold" padding="2" fontSize="md">Broker Configuration</Text>
         </Box>
         <TouchableOpacity style={{
           padding: 8,
