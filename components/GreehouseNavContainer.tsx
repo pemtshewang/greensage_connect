@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useRouter } from "expo-router";
-import IrrigationWSTestConnectionForm from "./Forms/WSConnectionIrrigationTest";
 import MQTTConnectionTestForm from "./Forms/MqttConnectionTest";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../zustand/store";
 

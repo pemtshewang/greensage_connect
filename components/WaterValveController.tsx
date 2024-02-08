@@ -12,6 +12,7 @@ export default function WaterValveControllerContainer({
   setState: (state: boolean) => void
 }) {
   const [switchState, setSwitchState] = useState<boolean>(state as boolean);
+  const [value, setValue] = useState();
   const toggleSwitchState = () => {
     setSwitchState(!switchState);
     setState(switchState);

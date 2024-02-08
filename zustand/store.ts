@@ -167,7 +167,7 @@ export const useNotificationStore = create<NotificationStoreState>(
         })),
     }),
     {
-      name: "notificationstore",
+      name: "notificationStore",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

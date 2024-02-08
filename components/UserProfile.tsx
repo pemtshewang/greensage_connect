@@ -4,6 +4,7 @@ import * as Clipboard from 'expo-clipboard';
 import { useEffect, useState } from "react";
 import { getValueFor } from "../securestore";
 import { UserProfileType } from "../types";
+import { Skeleton } from "native-base";
 
 const getUserDetails = async () => {
   const user = await getValueFor("token");
@@ -14,11 +15,13 @@ const UserProfile = () => {
   const [copiedIcon, setCopiedIcon] = useState(<Icons.clipboard color="black" size={20} />);
   const [clipboardBorderColor, setClipboardBorderColor] = useState("coolGray.500");
   const [values, setValues] = useState<UserProfileType>();
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     getUserDetails().then((user) => {
       setValues(JSON.parse(user as string));
-      console.log(user);
+      console.log(JSON.parse(user as string));
+      setFetching(false);
     })
   }, [])
 
@@ -55,19 +58,32 @@ const UserProfile = () => {
           <Avatar.Badge bg="green.500" />
         </Avatar>
       </Center>
-      <Box>
-        <Text fontSize="lg" fontWeight="bold" textAlign="center">
-          {values?.username}
-        </Text>
+      <Box alignItems="center" padding="1">
+        {
+          fetching ? (
+            <Skeleton w="1/2" paddingX="1" h="3" />
+          ) : (
+            <Text>
+              {values?.username}
+            </Text>
+          )
+        }
       </Box>
       <VStack space={4} padding="3">
         <HStack>
-          <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+          <Box w="2/5" padding="2" justifyContent="center" borderWidth="1" borderColor="coolGray.500">
             Broker-ID
           </Box>
           <Box flex="1" flexDirection="row" padding="2" borderWidth="1" borderColor="coolGray.500">
-            <Box flex="1">
-              <Text >{values?.brokerId}</Text>
+            <Box flex="1" justifyContent="center">
+              {fetching ? (
+                <Skeleton paddingX="1" h="3" />
+              ) : (
+                <Text>
+                  {values?.brokerId}
+                </Text>
+              )
+              }
             </Box>
             <Button
               _pressed={{
@@ -79,39 +95,67 @@ const UserProfile = () => {
           </Box>
         </HStack>
         <HStack>
-          <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+          <Box justifyContent="center" w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
             Phone Number
           </Box>
-          <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
+          <Box justifyContent="center" flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
             {
-              values?.mobile
+              fetching ? (
+                <Skeleton paddingX="1" h="3" />
+              ) : (
+                <Text>
+                  {values?.mobile}
+                </Text>
+              )
             }
           </Box>
         </HStack>
         <HStack>
-          <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+          <Box justifyContent="center" w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
             Current Location
           </Box>
-          <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            <Text>
-              {values?.dzongkhag}, {values?.gewog}
-            </Text>
+          <Box justifyContent="center" flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
+            {
+              fetching ? (
+                <Skeleton paddingX="1" h="3" />
+              ) : (
+                <Text>
+                  {values?.dzongkhag}, {values?.gewog}
+                </Text>
+              )
+            }
           </Box>
         </HStack>
         <HStack>
-          <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+          <Box w="2/5" justifyContent="center" padding="2" borderWidth="1" borderColor="coolGray.500">
             Greenhouses owned
           </Box>
-          <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            {values?.greenhouseCount}
+          <Box flex="1" justifyContent="center" padding="2" borderWidth="1" borderColor="coolGray.500">
+            {
+              fetching ? (
+                <Skeleton paddingX="1" h="3" />
+              ) : (
+                <Text>
+                  {values?.greenhouseCount}
+                </Text>
+              )
+            }
           </Box>
         </HStack>
         <HStack>
-          <Box w="2/5" padding="2" borderWidth="1" borderColor="coolGray.500">
+          <Box w="2/5" justifyContent="center" padding="2" borderWidth="1" borderColor="coolGray.500">
             Irrigation Systems
           </Box>
-          <Box flex="1" padding="2" borderWidth="1" borderColor="coolGray.500">
-            {values?.irrigationCount}
+          <Box flex="1" justifyContent="center" padding="2" borderWidth="1" borderColor="coolGray.500">
+            {
+              fetching ? (
+                <Skeleton paddingX="1" h="3" />
+              ) : (
+                <Text>
+                  {values?.irrigationCount}
+                </Text>
+              )
+            }
           </Box>
         </HStack>
       </VStack>

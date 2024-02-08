@@ -19,12 +19,11 @@ import { Box } from "native-base";
 import { useRouter } from "expo-router";
 import createToast from "../../hooks/toast";
 import { save } from "../../securestore";
-import { getValueFor } from "../../securestore";
 
 const signIn = async (data: LoginSchemaType) => {
   data.username = data.username.trim();
   data.password = data.password.trim();
-  const res = await fetch("http://192.168.0.143:3000/api/auth/user/signin", {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/user/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

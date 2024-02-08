@@ -4,18 +4,20 @@ import { Icons } from "../../../../assets/Icons/Icons";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
 import { useGreenhouseStore } from "../../../../zustand/store";
+import { useEnvironmentContext } from "../../../../context/envParamsContext";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore()
   const greenhouse = store.items.find((res) => res.id === id);
+  const { environment: envtValues } = useEnvironmentContext();
   return (
     <>
       <ReadingsContainer
-        temperatureReading={greenhouse?.temperature as number}
-        humidityReading={greenhouse?.humidity as number}
-        soilMoistureReading={greenhouse?.soil_moisture as number}
-        ldrReading={greenhouse?.ldrReading as number}
+        ldrReading={envtValues.light}
+        humidityReading={envtValues.humidity}
+        temperatureReading={envtValues.temperature}
+        soilMoistureReading={envtValues.soilMoisture}
       />
       <View style={{
         width: "100%",

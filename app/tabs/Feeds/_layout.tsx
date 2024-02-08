@@ -12,7 +12,6 @@ export default function NewsFeedLayout() {
     <NewsFeedContext.Provider value={{ newsFeed, setNewsFeed }}>
       <View>
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
           padding="2"
           marginTop="3"
         >

@@ -4,13 +4,14 @@ import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
 import WaterValveControllerContainer from "../../../../../components/WaterValveController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 import { useRouter } from "expo-router";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
 import WaterSchedulerForm from "../../../../../components/Forms/WaterScheduleForm";
 import { ConnectionType, IMqttClient, IWebSocket } from "../../../../../zustand/state";
+import { getValueFor } from "../../../../../securestore";
 
 export default function ParamsContainer() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -18,13 +19,20 @@ export default function ParamsContainer() {
   const store = useGreenhouseStore();
   const greenhouse = store.items.find((res) => res.id === id);
   const [state, opState] = useState<boolean>(greenhouse?.ventilationFanState || false);
+  const [value, setValue] = useState();
+  useEffect(() => {
+    getValueFor("token").then((res) => {
+      const parsed = JSON.parse(res as string);
+      setValue(parsed.brokerId)
+    })
+  }, []);
   // session ends 
   const toggleState = () => {
     const updatedState = !state; // Calculate the updated state value
     // Perform actions based on the updatedState
     if (!updatedState) {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        const topic = id + "/waterValve";
+        const topic = value + "/" + id + "/waterValve";
         greenhouse?.ws?.sendMessage(topic, "close");
       } else {
         greenhouse?.ws?.sendMessage("waterValve:close");
@@ -35,7 +43,7 @@ export default function ParamsContainer() {
       });
     } else {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        const topic = id + "/waterValve";
+        const topic = value + "/" + id + "/waterValve";
         greenhouse?.ws?.sendMessage(topic, "open");
       } else {
         greenhouse?.ws?.sendMessage("waterValve:open");

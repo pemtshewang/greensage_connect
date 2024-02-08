@@ -1,5 +1,5 @@
 // MQTTConnectionTestForm.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, View, ActivityIndicator } from "react-native";
 import CustomModal from "../ui/Modal";
 import Icons from "../../assets/Icons/Icons";
@@ -7,8 +7,9 @@ import { Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { Text } from "native-base";
 import { useMqtt } from "../../hooks/mqtt";
-import { BaseStore, useMQTTBrokerStore } from "../../zustand/store";
+import { BaseStore } from "../../zustand/store";
 import { ConnectionType, GreenhouseState, IrrigationControllerState } from "../../zustand/state";
+import { getValueFor } from "../../securestore";
 
 type ConnectionMsgTypes =
   | "Connected"
@@ -34,7 +35,23 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [conMsg, setConMsg] = useState<ConnectionMsgTypes>("Not Connected");
-  const mqttBroker = useMQTTBrokerStore();
+  const [mqttBroker, setMqttBroker] = useState({
+    brokerURL: "",
+    brokerPort: "",
+    brokerUsername: "",
+    brokerPassword: "",
+  });
+  useEffect(() => {
+    getValueFor("token").then((res) => {
+      const token = JSON.parse(res as string);
+      setMqttBroker({
+        brokerURL: token.brokerIp,
+        brokerPort: token.brokerPort,
+        brokerUsername: token.username,
+        brokerPassword: token.password,
+      });
+    });
+  }, [])
   const mqtt = useMqtt({ id: id, type });
   const router = useRouter();
   const testConnection = async () => {
@@ -50,6 +67,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
       });
       setConnected(true);
       setConMsg("Connected");
+      setShowForm(false);
       router.push(`/tabs/Home/${type}/${id}`)
     } catch (error) {
       setConnected(false);

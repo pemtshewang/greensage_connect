@@ -16,7 +16,6 @@ const NewsFeedDetail = ({
     <View>
       <Box
         marginTop={3}
-        maxW="80"
         rounded="lg"
         overflow="hidden"
         background="green.100"

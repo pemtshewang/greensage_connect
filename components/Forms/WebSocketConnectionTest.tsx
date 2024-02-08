@@ -49,6 +49,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
       });
       setConnected(true);
       setConMsg("Connected");
+      setShowForm(false);
       router.push(`/tabs/Home/${type}/${id}`)
     } catch (error) {
       setConnected(false);

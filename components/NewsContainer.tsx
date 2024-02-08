@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { AspectRatio, View, Box, Image, Stack, Heading, Text, HStack } from "native-base";
+import { AspectRatio, View, Box, Image, Stack, Text, HStack } from "native-base";
 import { Pressable } from "react-native";
 import type { PostType } from "../types";
 import { useRouter } from "expo-router";
 import { format } from "date-fns";
-
 
 const NewsContainer = ({
   id,
@@ -31,7 +30,6 @@ const NewsContainer = ({
     >
       <Box
         marginTop={3}
-        maxW="80"
         rounded="lg"
         overflow="hidden"
         background="green.100"
@@ -48,11 +46,11 @@ const NewsContainer = ({
             />
           </AspectRatio>
         </Box>
-        <Stack p="3" space={1}>
+        <Stack space={1}>
           <Stack space={2}>
-            <Heading size="md" ml="-1">
+            <Text fontSize="md" bold padding="2">
               {title}
-            </Heading>
+            </Text>
             <Text
               fontSize="xs"
               _light={{
@@ -62,14 +60,13 @@ const NewsContainer = ({
                 color: "violet.400",
               }}
               fontWeight="500"
-              ml="-0.5"
-              mt="-1"
+              paddingX="2"
             >
               {format(new Date(createdAt), "dd MMM yyyy hh:mm a")}
             </Text>
           </Stack>
           <View paddingTop="5">
-            <Text fontWeight="400">
+            <Text fontWeight="400" paddingX="2">
               {content.slice(0, 200)}...<Text italic>Click to continue reading</Text>
             </Text>
           </View>
@@ -77,7 +74,7 @@ const NewsContainer = ({
             <Text color="red.700" fontWeight="400">
             </Text>
           </HStack>
-          <Text color="coolGray.500">By {author}</Text>
+          <Text color="coolGray.500" paddingX="2">By {author}</Text>
         </Stack>
       </Box>
     </Pressable >

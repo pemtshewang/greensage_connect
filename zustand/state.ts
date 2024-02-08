@@ -1,7 +1,3 @@
-import { SoilMoistureCombinedProps } from "../components/Dashboard/irrigation_moisture";
-import { TempHumidDataType } from "../components/Dashboard/temp_humid";
-import { ThresholdData } from "../components/Dashboard/threshold";
-
 export enum ConnectionType {
     WebSocket = 'websocket',
     MQTT = 'mqtt',
@@ -44,16 +40,13 @@ interface TimeSets {
     endTime: string | null;
 }
 interface GreenhouseState {
+    synced: boolean;
     id: string;
     name: string;
     backgroundImage: string;
     ipAddress: string;
-    ldrReading: number;
     isConnected: boolean;
     //parameters
-    temperature: number;
-    humidity: number;
-    soil_moisture: number;
     temperatureThreshold: number;
     soilMoistureThreshold: number;
     humidityThreshold: number;
@@ -70,13 +63,13 @@ interface GreenhouseState {
     connectionType: ConnectionType | null;
 }
 interface IrrigationControllerState {
+    synced: boolean;
     id: string;
     name: string;
     backgroundImage: string;
     ipAddress: string;
     isConnected: boolean;
     //parameters
-    soil_moisture: number;
     ws: IWebSocket | null;
     connectionType: ConnectionType | null;
     valveStates: {

@@ -76,7 +76,7 @@ const LoginStyles = StyleSheet.create({
     flex: 1,
   },
   heading: {
-    paddingTop:5,
+    paddingTop: 5,
     textAlign: "center",
     color: "#fff",
   },
@@ -86,6 +86,7 @@ const LoginStyles = StyleSheet.create({
     padding: 10,
   },
   input: {
+    textDecorationLine: "underline",
     borderColor: "#000",
     borderWidth: 1,
   },
@@ -144,6 +145,7 @@ const RegisterStyles = StyleSheet.create({
     borderBottomRightRadius: 15
   },
   link: {
+    textDecorationLine: "underline",
     fontWeight: "bold",
     color: "#fff",
   },

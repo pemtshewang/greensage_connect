@@ -11,6 +11,7 @@ import createToast from "../hooks/toast";
 import { useLocalNotification } from "../hooks/notification"
 import { useNotificationStore } from "../zustand/store"
 import * as Crypto from "expo-crypto";
+import { getValueFor } from "../securestore"
 
 const SlotContainer = ({
   id,
@@ -43,6 +44,7 @@ const SlotContainer = ({
   };
   const { toastMessage } = createToast();
   const { scheduleNotification, clearNotification } = useLocalNotification();
+  const [value, setValue] = useState();
   const [startTime, setStartTime] = useState<Date | null>(prevStartTime ? new Date(prevStartTime) : null);
   const [endTime, setEndTime] = useState<Date | null>(prevEndTime ? new Date(prevEndTime) : null);
   const [err, setErr] = useState<string | null>(null);
@@ -58,7 +60,7 @@ const SlotContainer = ({
     const formattedStartTime = extractTime(startTime as Date);
     const formattedEndTime = extractTime(endTime as Date);
     if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
-      const topic = id + "/schedule"
+      const topic = value + "/" + id + "/schedule";
       const message = `${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`
       ws.sendMessage(topic, message);
     } else {
@@ -138,6 +140,12 @@ const SlotContainer = ({
       });
     }
   }
+  useEffect(() => {
+    getValueFor("token").then((data) => {
+      const val = JSON.parse(data as string);
+      setValue(val?.brokerId);
+    })
+  }, [])
   useEffect(() => {
     if (repetitionDays === 0) {
       setErr("Please select a valid day(s) for schedule");

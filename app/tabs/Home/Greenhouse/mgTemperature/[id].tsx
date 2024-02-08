@@ -5,14 +5,22 @@ import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import Icons from "../../../../../assets/Icons/Icons";
 import TemperatureControllerContainer from "../../../../../components/TemperatureController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGreenhouseStore } from "../../../../../zustand/store";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
 import { ConnectionType, IMqttClient, IWebSocket } from "../../../../../zustand/state";
 import RollerShutterController from "../../../../../components/RollerShutterController";
 import { ScrollView } from "native-base";
+import { getValueFor } from "../../../../../securestore";
 
 export default function ParamsContainer() {
+  const [value, setValue] = useState();
+  useEffect(() => {
+    getValueFor("token").then((res) => {
+      const parsed = JSON.parse(res as string);
+      setValue(parsed.brokerId)
+    })
+  })
   const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore();
@@ -23,13 +31,14 @@ export default function ParamsContainer() {
 
   const toggleState = () => {
     updateFanState(!state); // Update the state after performing actions
-    const topic = id + "/ventilationFan";
+    const topic = value + "/" + id + "/light";
+    console.log("publishing in", topic);
     if (state) {
       console.log("sending message off");
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
         greenhouse?.ws?.sendMessage(topic, "off")
       } else {
-        greenhouse?.ws?.sendMessage("ventilationFan:off");
+        greenhouse?.ws?.sendMessage("light:off");
       }
       store.updateItem(id as string, {
         ...greenhouse,
@@ -40,7 +49,7 @@ export default function ParamsContainer() {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
         greenhouse?.ws?.sendMessage(topic, "on")
       } else {
-        greenhouse?.ws?.sendMessage("ventilationFan:on");
+        greenhouse?.ws?.sendMessage("light:off");
       }
       store.updateItem(id as string, {
         ...greenhouse,
@@ -52,7 +61,7 @@ export default function ParamsContainer() {
     updateRightShutterState(!rightShutterState);
     if (rightShutterState) {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(id + "/rollerShutterRight", "down")
+        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterRight", "down")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterRight:down");
       }
@@ -62,7 +71,7 @@ export default function ParamsContainer() {
       });
     } else {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(id + "/rollerShutterRight", "up")
+        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterRight", "up")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterRight:up");
       }
@@ -76,7 +85,7 @@ export default function ParamsContainer() {
     updateLeftShutterState(!leftShutterState);
     if (leftShutterState) {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(id + "/rollerShutterLeft", "down")
+        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterLeft", "down")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterLeft:down");
       }
@@ -86,7 +95,7 @@ export default function ParamsContainer() {
       })
     } else {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(id + "/rollerShutterLeft", "up")
+        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterLeft", "up")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterLeft:up");
       }

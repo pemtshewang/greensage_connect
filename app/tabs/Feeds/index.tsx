@@ -11,7 +11,7 @@ import NewsFeedContext from "../../../context/NewsFeedContext";
 async function getPosts() {
   const value = JSON.parse(await getValueFor("token") as string);
   const token = value?.accessToken?.token;
-  const response = await fetch("http://192.168.0.143:3000/api/feeds", {
+  const response = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/feeds`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -29,13 +29,12 @@ export default function NewsFeedPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const { toastMessage } = createToast();
-  const { newsFeed, setNewsFeed } = useContext(NewsFeedContext);
+  const { setNewsFeed } = useContext(NewsFeedContext);
 
   const fetchData = async () => {
     setRefreshing(true);
     const data = await getPosts();
     setRefreshing(false);
-
     if (data) {
       setPosts([...data]);
       setNewsFeed([...data]);

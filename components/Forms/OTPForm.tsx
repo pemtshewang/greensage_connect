@@ -11,7 +11,7 @@ const verifyUser = async ({ id, code, phoneNumber }: {
   code: string;
   phoneNumber: string;
 }) => {
-  const res = await fetch(`http://192.168.0.143:3000/api/user/verify-user`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/user/verify-user`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

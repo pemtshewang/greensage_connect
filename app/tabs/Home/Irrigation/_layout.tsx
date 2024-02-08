@@ -13,7 +13,7 @@ import { IWebSocket } from "../../../../zustand/state";
 export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const irrigationStore = useIrrigationControllerStore();
-  const irrigationController = irrigationStore.irrigationControllers.find((res) => res.id === id);
+  const irrigationController = irrigationStore.items.find((res) => res.id === id);
   const name = irrigationController?.name || "Irrigation Controller";
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);

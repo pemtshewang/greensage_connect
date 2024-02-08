@@ -1,16 +1,17 @@
-import { createContext } from "react";
+import { createContext, useContext } from 'react';
 
-export interface EnvtParamsContextType {
-  values: {
-    temperature: number;
-    humidity: number;
-    soilMoisture: number;
-    light: number;
-  };
+// Create a context with initial values
+export const EnvironmentContext = createContext({
+  environment: {
+    temperature: 0,
+    humidity: 0,
+    soilMoisture: 0,
+    light: 0
+  },
+  updateEnvironment: (data: any) => { }
+});
 
-  updateValues: (newValues: Partial<EnvtParamsContextType['values']>) => void;
-}
+export const useEnvironmentContext = () => useContext(EnvironmentContext);
 
-export const EnvtParamsContext = createContext<EnvtParamsContextType | undefined>(undefined);
 
 

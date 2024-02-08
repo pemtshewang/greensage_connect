@@ -1,8 +1,10 @@
 import { useRef, useEffect } from "react";
+
 import {
   useGreenhouseStore,
   useIrrigationControllerStore,
 } from "../zustand/store";
+import { useEnvironmentContext } from "../context/envParamsContext";
 
 const useWebSocket = ({
   id,
@@ -17,6 +19,7 @@ const useWebSocket = ({
       : useIrrigationControllerStore();
   const device = store.items.find((d) => d.id === id);
   const socket = useRef<WebSocket | null>(null);
+  const { updateEnvironment } = useEnvironmentContext();
   let heartbeatInterval: NodeJS.Timeout | null = null;
 
   useEffect(() => {
@@ -54,11 +57,12 @@ const useWebSocket = ({
   };
 
   const sendMessage = (message: string) => {
-    console.log("sending message from websocket");
-    if (socket.current && socket.current.readyState === WebSocket.OPEN) {
-      socket.current.send(message);
-    } else {
-      console.warn("WebSocket is not open");
+    try {
+      socket?.current?.send(message);
+    } catch (err) {
+    } finally {
+      connect();
+      socket?.current?.send(message);
     }
   };
 
@@ -79,18 +83,29 @@ const useWebSocket = ({
     const [dataType, dataValue] = e.data.split(":");
     switch (dataType) {
       case "temperature":
-        store.updateItem(id, { temperature: Number(dataValue) });
+        updateEnvironment({
+          temperature: Number(dataValue)
+        })
         break;
       case "humidity":
-        store.updateItem(id, { humidity: Number(dataValue) });
+        updateEnvironment({
+          humidity: Number(dataValue)
+        })
         break;
       case "soilMoisture":
-        store.updateItem(id, { soil_moisture: Number(dataValue) });
+        updateEnvironment({
+          soilMoisture: Number(dataValue)
+        })
         break;
       case "light":
-        store.updateItem(id, { ldrReading: Number(dataValue) });
+        updateEnvironment({
+          light: Number(dataValue)
+        })
         break;
-      default:
+      case "pressure":
+        updateEnvironment({
+          pressure: Number(dataValue)
+        })
         break;
     }
   };

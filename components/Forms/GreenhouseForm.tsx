@@ -1,7 +1,7 @@
 import { VStack, Image } from "native-base";
 import TextInputIcon from "../../components/TextInputIcon";
 import { Icons } from "../../assets/Icons/Icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import zodResolver from "@hookform/resolvers/zod";
 import { View, Text, Box } from "native-base";
@@ -13,6 +13,8 @@ import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
 import { Spinner } from "native-base";
+import { Checkbox } from "native-base";
+import { checkInternetConnection } from "../../utils/internet";
 
 const GreenHouseAddForm = ({
   type,
@@ -22,6 +24,7 @@ const GreenHouseAddForm = ({
   setModalState: (state: boolean) => void;
 }) => {
   const [imagePath, setImage] = useState<string>("");
+  const [synced, setSynced] = useState<boolean>(false);
   const irrigationStore = useIrrigationControllerStore();
   const greenhouseStore = useGreenhouseStore();
   const [data, setData] = useState({
@@ -31,6 +34,15 @@ const GreenHouseAddForm = ({
     image: imagePath,
   });
   const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    checkInternetConnection().then((res) => {
+      if (res) {
+        setSynced(true);
+      } else {
+        setSynced(false);
+      }
+    })
+  }, [])
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     setLoading(true);
     if (type === "irrigation") {
@@ -53,7 +65,7 @@ const GreenHouseAddForm = ({
           fourthSlot: defaultSlotValues,
           fifthSlot: defaultSlotValues
         },
-        soil_moisture: 0,
+        synced: synced,
         ws: null,
         connectionType: null
       });
@@ -64,13 +76,9 @@ const GreenHouseAddForm = ({
         ipAddress: data.ipAddress,
         isConnected: false,
         backgroundImage: imagePath,
-        temperature: 0,
-        humidity: 0,
-        soil_moisture: 0,
         temperatureThreshold: 0,
         soilMoistureThreshold: 0,
         ws: null,
-        ldrReading: 0,
         ventilationFanState: false,
         lightState: false,
         waterValveState: false,
@@ -80,7 +88,8 @@ const GreenHouseAddForm = ({
         humidityThreshold: 0,
         rollerShutterLeftState: false,
         rollerShutterRightState: false,
-        connectionType: null
+        connectionType: null,
+        synced: synced,
       });
     }
     setTimeout(() => {
@@ -111,9 +120,22 @@ const GreenHouseAddForm = ({
       setData((prevData) => ({ ...prevData, image: newImagePath }));
     }
   };
-
   return (
     <VStack space={2} alignItems="start" h="full">
+      <View marginBottom="3">
+        <Checkbox
+          shadow={2}
+          value="sync"
+          accessibilityLabel="This is a sync checkbox"
+          _checked={{ bg: "green.500" }}
+          isChecked={synced}
+          onChange={() => {
+            setSynced(!synced);
+          }}
+        >
+          Sync it for remote access
+        </Checkbox>
+      </View>
       <View>
         <TextInputIcon
           type="text"
@@ -204,7 +226,7 @@ const GreenHouseAddForm = ({
           loading && <Spinner color="white" />
         }
       </Pressable>
-    </VStack>
+    </VStack >
   );
 }
 

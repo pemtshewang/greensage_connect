@@ -56,19 +56,6 @@ const NotificationContainer = ({
         backgroundColor: seen ? "white" : "lightgray", // Adjust background color based on seen state
       }}
     >
-      <Menu w="24" placement="bottom right" trigger={triggerProps => {
-        return <Pressable padding="2" position="absolute" right="0" accessibilityLabel="More options menu" {...triggerProps}>
-          <Icons.options size={24} color="black" />
-        </Pressable>;
-      }}>
-        <Menu.Item accessibilityLabel="delete"
-          _pressed={{
-            backgroundColor: "coolGray.100"
-          }}
-          onPress={() => {
-            store.deleteNotification(id);
-          }}>Delete</Menu.Item>
-      </Menu>
       <View alignItems="center" alignSelf="center" padding="2">
         <View borderWidth="1" padding="1" borderRadius="full">
           {icon}
@@ -95,6 +82,19 @@ const NotificationContainer = ({
           {footer}
         </Text>
       </VStack >
+      <Menu w="24" placement="right bottom" trigger={triggerProps => {
+        return <Pressable marginRight="6" {...triggerProps}>
+          <Icons.options size={24} color="black" />
+        </Pressable>;
+      }}>
+        <Menu.Item accessibilityLabel="delete"
+          _pressed={{
+            backgroundColor: "coolGray.100"
+          }}
+          onPress={() => {
+            store.deleteNotification(id);
+          }}>Delete</Menu.Item>
+      </Menu>
     </View >
   );
 };
