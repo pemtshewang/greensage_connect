@@ -15,6 +15,8 @@ import * as Crypto from "expo-crypto";
 import { Spinner } from "native-base";
 import { Checkbox } from "native-base";
 import { checkInternetConnection } from "../../utils/internet";
+import { syncToCloud } from "../../utils/sync";
+import createToast from "../../hooks/toast";
 
 const GreenHouseAddForm = ({
   type,
@@ -27,6 +29,8 @@ const GreenHouseAddForm = ({
   const [synced, setSynced] = useState<boolean>(false);
   const irrigationStore = useIrrigationControllerStore();
   const greenhouseStore = useGreenhouseStore();
+  const { toastMessage } = createToast();
+  const [loadingMsg, setLoadingMsg] = useState<string>("Adding" + type);
   const [data, setData] = useState({
     id: Crypto.randomUUID().slice(0, 10),
     name: "",
@@ -45,57 +49,90 @@ const GreenHouseAddForm = ({
   }, [])
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     setLoading(true);
-    if (type === "irrigation") {
-      const defaultSlotValues = {
-        state: false,
-        endTime: null,
-        repDays: 0,
-        startTime: null
+
+    try {
+      if (synced) {
+        setLoadingMsg("Syncing with cloud");
+        checkInternetConnection().then((res) => {
+          if (res) {
+            syncToCloud({
+              controllerId: data.id,
+              name: data.name,
+              type: type
+            }).then((res) => {
+              if (res) {
+                toastMessage({
+                  type: "success",
+                  message: res as string
+                })
+              } else {
+                toastMessage({
+                  type: "error",
+                  message: "Failed to sync data to cloud"
+                })
+              }
+            })
+          } else {
+            toastMessage({
+              type: "error",
+              message: "No internet connection"
+            })
+          }
+        })
       }
-      irrigationStore.addItem({
-        id: data.id,
-        name: data.name,
-        ipAddress: data.ipAddress,
-        isConnected: false,
-        backgroundImage: imagePath,
-        valveStates: {
-          firstSlot: defaultSlotValues,
-          secondSlot: defaultSlotValues,
-          thirdSlot: defaultSlotValues,
-          fourthSlot: defaultSlotValues,
-          fifthSlot: defaultSlotValues
-        },
-        synced: synced,
-        ws: null,
-        connectionType: null
-      });
-    } else {
-      greenhouseStore.addItem({
-        id: data.id,
-        name: data.name,
-        ipAddress: data.ipAddress,
-        isConnected: false,
-        backgroundImage: imagePath,
-        temperatureThreshold: 0,
-        soilMoistureThreshold: 0,
-        ws: null,
-        ventilationFanState: false,
-        lightState: false,
-        waterValveState: false,
-        firstSlot: null,
-        secondSlot: null,
-        thirdSlot: null,
-        humidityThreshold: 0,
-        rollerShutterLeftState: false,
-        rollerShutterRightState: false,
-        connectionType: null,
-        synced: synced,
-      });
-    }
-    setTimeout(() => {
+      if (type === "irrigation") {
+        const defaultSlotValues = {
+          state: false,
+          endTime: null,
+          repDays: 0,
+          startTime: null
+        }
+        irrigationStore.addItem({
+          id: data.id,
+          name: data.name,
+          ipAddress: data.ipAddress,
+          isConnected: false,
+          backgroundImage: imagePath,
+          valveStates: {
+            firstSlot: defaultSlotValues,
+            secondSlot: defaultSlotValues,
+            thirdSlot: defaultSlotValues,
+            fourthSlot: defaultSlotValues,
+            fifthSlot: defaultSlotValues
+          },
+          synced: synced,
+          ws: null,
+          connectionType: null
+        });
+      } else {
+        greenhouseStore.addItem({
+          id: data.id,
+          name: data.name,
+          ipAddress: data.ipAddress,
+          isConnected: false,
+          backgroundImage: imagePath,
+          temperatureThreshold: 0,
+          soilMoistureThreshold: 0,
+          ws: null,
+          ventilationFanState: false,
+          lightState: false,
+          waterValveState: false,
+          firstSlot: null,
+          secondSlot: null,
+          thirdSlot: null,
+          humidityThreshold: 0,
+          rollerShutterLeftState: false,
+          rollerShutterRightState: false,
+          connectionType: null,
+          synced: synced,
+        });
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
       setLoading(false);
       setModalState(false);
-    }, 1500);
+    }
   }
   const {
     handleSubmit,
@@ -220,7 +257,7 @@ const GreenHouseAddForm = ({
         }}
       >
         {
-          loading ? <Text color="#a0a0a0">Adding {type}</Text> : <Text color="white">Add {type}</Text>
+          loading ? <Text color="#a0a0a0">{loadingMsg}</Text> : <Text color="white">Add {type}</Text>
         }
         {
           loading && <Spinner color="white" />

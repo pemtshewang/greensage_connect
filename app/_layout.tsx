@@ -8,6 +8,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import * as Notifications from "expo-notifications";
+import { removeValueFor } from "../securestore";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

@@ -1,4 +1,4 @@
-import { ArrowBigRightIcon, ArrowDown10, ArrowDown10Icon, AtSignIcon, CheckCheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, KeyboardIcon, LinkIcon, LinkedinIcon, MailIcon, MailXIcon, Mailbox, MoreHorizontalIcon, PowerCircleIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, WifiIcon, XIcon, XOctagonIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, ArrowDown10, ArrowDown10Icon, AtSignIcon, BanIcon, CheckCheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, KeyboardIcon, LinkIcon, LinkedinIcon, MailIcon, MailXIcon, Mailbox, MoreHorizontalIcon, PowerCircleIcon, RefreshCwIcon, RefreshCwOffIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, WifiIcon, XIcon, XOctagonIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -31,7 +31,7 @@ import {
   CloudIcon,
   LogOutIcon
 } from "lucide-react-native";
-import Svg, { G, Rect, Path, Circle } from "react-native-svg"
+import Svg, { G, Rect, Path, Circle, Defs } from "react-native-svg"
 
 // export the icons by naming yourself
 export const Icons = {
@@ -1032,6 +1032,71 @@ export const Icons = {
   },
   wifiIcon: WifiIcon,
   logOut: LogOutIcon,
+  banIcon: BanIcon,
+  syncedIcon: (props) => {
+    return (
+      <Svg
+        viewBox="0 0 15 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+      >
+        <G id="SVGRepo_bgCarrier" strokeWidth={0} />
+        <G
+          id="SVGRepo_tracerCarrier"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <G id="SVGRepo_iconCarrier">
+          <Path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M0 7.5C0 3.35786 3.35786 0 7.5 0C11.6421 0 15 3.35786 15 7.5C15 11.6421 11.6421 15 7.5 15C3.35786 15 0 11.6421 0 7.5ZM7.0718 10.7106L11.3905 5.31232L10.6096 4.68762L6.92825 9.2893L4.32012 7.11586L3.67993 7.88408L7.0718 10.7106Z"
+            fill="#04d739"
+          />
+        </G>
+      </Svg>
+    )
+  },
+  syncArrow: RefreshCwIcon,
+  notSynced: (props) => {
+    return (
+      <Svg
+        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        fill="#000000"
+        {...props}
+      >
+        <G id="SVGRepo_bgCarrier" strokeWidth={0} />
+        <G
+          id="SVGRepo_tracerCarrier"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <G id="SVGRepo_iconCarrier">
+          <Defs />
+          <G
+            id="Page-1"
+            stroke="none"
+            strokeWidth={1}
+            fill="none"
+            fillRule="evenodd"
+          >
+            <G
+              id="Icon-Set-Filled"
+              transform="translate(-570.000000, -1089.000000)"
+              fill="#fd1717"
+            >
+              <Path
+                d="M591.657,1109.24 C592.048,1109.63 592.048,1110.27 591.657,1110.66 C591.267,1111.05 590.633,1111.05 590.242,1110.66 L586.006,1106.42 L581.74,1110.69 C581.346,1111.08 580.708,1111.08 580.314,1110.69 C579.921,1110.29 579.921,1109.65 580.314,1109.26 L584.58,1104.99 L580.344,1100.76 C579.953,1100.37 579.953,1099.73 580.344,1099.34 C580.733,1098.95 581.367,1098.95 581.758,1099.34 L585.994,1103.58 L590.292,1099.28 C590.686,1098.89 591.323,1098.89 591.717,1099.28 C592.11,1099.68 592.11,1100.31 591.717,1100.71 L587.42,1105.01 L591.657,1109.24 L591.657,1109.24 Z M586,1089 C577.163,1089 570,1096.16 570,1105 C570,1113.84 577.163,1121 586,1121 C594.837,1121 602,1113.84 602,1105 C602,1096.16 594.837,1089 586,1089 L586,1089 Z"
+                id="cross-circle"
+              />
+            </G>
+          </G>
+        </G>
+      </Svg>)
+  }
 };
 
 

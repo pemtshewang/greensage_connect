@@ -11,6 +11,10 @@ import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useRouter } from "expo-router";
 import MQTTConnectionTestForm from "./Forms/MqttConnectionTest";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../zustand/store";
+import { Alert } from "react-native";
+import { Animated } from "react-native";
+import { syncToCloud } from "../utils/sync";
+import createToast from "../hooks/toast";
 
 const GreenhouseNavContainer = ({
   id,
@@ -26,15 +30,17 @@ const GreenhouseNavContainer = ({
   removeGreenhouse: (id: string) => void;
 }) => {
   const router = useRouter();
+  const store = type === "Greenhouse" ? useGreenhouseStore() : useIrrigationControllerStore();
+  const { toastMessage } = createToast();
+  const controller = store.items.find((item) => item.id === id);
+  const [synced, setSynced] = useState<boolean>(controller?.synced as boolean);
   const { isOpen, onOpen, onClose } = useDisclose();
   const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
   const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
   const [showMQTTForm, setShowMQTTForm] = useState<boolean>(false);
-  const {
-    value,
-    onCopy
-  } = useClipboard();
+  const [loading, setLoading] = useState<boolean>(false); // Set loading to false initially
+  const { onCopy } = useClipboard();
   const toast = useToast();
 
   useEffect(() => {
@@ -42,11 +48,54 @@ const GreenhouseNavContainer = ({
       removeGreenhouse(id);
     }
   }, [removeGreenhouseConfirm]);
+
+  const handleSync = async () => {
+    setLoading(true); // Set loading to true when starting sync
+    try {
+      const res = await syncToCloud({
+        controllerId: controller?.id as string,
+        name: controller?.name as string,
+        type: type === "Greenhouse" ? "greenhouse" : "irrigation",
+      });
+      if (res) {
+        setSynced(true);
+        toastMessage({
+          type: "success",
+          message: "Synchronized to the server"
+        })
+        store.updateItem(controller?.id as string, {
+          synced: true
+        })
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false); // Set loading to false when sync completes
+    }
+  }
+
+  const spinValue = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(
+        spinValue,
+        {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true
+        }
+      )
+    ).start();
+  }, []);
+
+  const LoadingIcon = Animated.createAnimatedComponent(Icons.syncArrow);
+
   return (
     <View
       style={{
         borderRadius: 11,
-        backgroundColor: "white", // Card background color
+        backgroundColor: "white",
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -94,8 +143,7 @@ const GreenhouseNavContainer = ({
       <HStack space={1} borderRadius="sm" marginLeft="1" bg="coolGray.300" padding="2" position='absolute' flexDirection="row" colorScheme="info" left="0">
         <Badge colorScheme="info">{id}</Badge>
         <Box borderWidth="1" padding="1">
-          <TouchableOpacity style={{
-          }} onPress={() => {
+          <TouchableOpacity style={{}} onPress={() => {
             onCopy(id)
             toast.show({
               render: () => {
@@ -135,9 +183,10 @@ const GreenhouseNavContainer = ({
           <Badge minW="20" colorScheme="green">{name}</Badge>
           <HStack space={2} alignItems="center">
             <TouchableOpacity style={{
+              position: "relative",
               flexDirection: "row",
               alignItems: "center",
-              backgroundColor: "#fff", // Use your desired background color
+              backgroundColor: synced ? "#fff" : "#A0A0A0",
               padding: 5,
               borderRadius: 10,
               shadowColor: "#000",
@@ -149,17 +198,34 @@ const GreenhouseNavContainer = ({
               shadowRadius: 3.84,
               elevation: 8,
             }}
+              aria-disabled={!synced}
+              disabled={!synced}
               onPress={() => {
                 setShowMQTTForm(true);
               }}
             >
+              {!synced && (
+                <Pressable
+                  style={{
+                    position: "absolute",
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center"
+                  }}
+                  onPress={() => {
+                    Alert.alert("Synchronization not registered", "The controller has not been synchronized to any of the remote servers, You can still synchronize it through settings")
+                  }}
+                >
+                  <Icons.banIcon width={34} height={34} color="red" />
+                </Pressable>
+              )}
               <Icons.mqttIcon width={32} height={32} color="black" />
               <Text style={{ marginLeft: 10 }}>MQTT</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{
               flexDirection: "row",
               alignItems: "center",
-              backgroundColor: "#fff", // Use your desired background color
+              backgroundColor: "#fff",
               padding: 5,
               borderRadius: 10,
               shadowColor: "#000",
@@ -185,20 +251,14 @@ const GreenhouseNavContainer = ({
           id={id}
           showForm={showWSForm}
           setShowForm={setShowWSForm}
-          store={
-            type === "Greenhouse" ?
-              useGreenhouseStore() :
-              useIrrigationControllerStore()} // Use the appropriate store based on the type
+          store={store}
           type={type}
         />
         <MQTTConnectionTestForm
           id={id}
           showForm={showMQTTForm}
           setShowForm={setShowMQTTForm}
-          store={
-            type === "Greenhouse" ?
-              useGreenhouseStore() :
-              useIrrigationControllerStore()} // Use the appropriate store based on the type
+          store={store}
           type={type}
         />
         <CustomActionSheet
@@ -219,6 +279,53 @@ const GreenhouseNavContainer = ({
           >
             Remove
           </Actionsheet.Item>
+          <Actionsheet.Item
+            onPress={handleSync}
+            startIcon={
+              loading ? (
+                <LoadingIcon
+                  width={32}
+                  height={32}
+                  color="black"
+                  style={{
+                    transform: [
+                      {
+                        rotate: spinValue.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: ['0deg', '360deg']
+                        })
+                      }
+                    ]
+                  }}
+                />
+              ) :
+                synced ? (
+                  <Box position="relative">
+                    <Icons.syncedIcon width={23} height={23} />
+                    <Icons.syncArrow width={32} height={32} style={{
+                      position: "absolute",
+                      top: -4,
+                      left: -4
+                    }} color="black" />
+                  </Box>
+                ) : (
+                  <Box position="relative">
+                    <Icons.notSynced width={23} height={23} />
+                    <Icons.syncArrow width={32} height={32} style={{
+                      position: "absolute",
+                      top: -4,
+                      left: -4
+                    }} color="black" />
+                  </Box>
+                )
+            }
+          >
+            {
+              loading ? "Syncing to the server" :
+                synced ? "Synchronized to the server"
+                  : "Not Synced, Press to sync it to server"
+            }
+          </Actionsheet.Item>
         </CustomActionSheet>
         <CustomAlertDialog
           title={`Remove ${type}`}
@@ -228,7 +335,8 @@ const GreenhouseNavContainer = ({
           setDeleteGreenhouse={setRemoveGreenhouseConfirm}
         />
       </View>
-    </View>
+    </View >
   );
 };
+
 export default GreenhouseNavContainer;

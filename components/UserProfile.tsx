@@ -23,7 +23,7 @@ const UserProfile = () => {
       console.log(JSON.parse(user as string));
       setFetching(false);
     })
-  }, [])
+  }, [fetching])
 
   const handleCopy = async () => {
     await Clipboard.setStringAsync(values?.id);

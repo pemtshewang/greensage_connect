@@ -10,6 +10,7 @@ export async function getValueFor(key) {
     return result;
   }
 }
+
 export async function removeValueFor(key) {
   let result = await SecureStore.deleteItemAsync(key);
   if (result) {
