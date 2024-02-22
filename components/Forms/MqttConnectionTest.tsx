@@ -42,6 +42,9 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
     brokerPassword: "",
   });
   useEffect(() => {
+    if (connected) {
+      router.push(`/tabs/Home/${type}/${id}`)
+    }
     getValueFor("token").then((res) => {
       const token = JSON.parse(res as string);
       setMqttBroker({
@@ -51,7 +54,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
         brokerPassword: token.password,
       });
     });
-  }, [])
+  }, [connected]);
   const mqtt = useMqtt({ id: id, type });
   const router = useRouter();
   const testConnection = async () => {

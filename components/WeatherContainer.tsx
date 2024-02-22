@@ -100,47 +100,54 @@ const WeatherContainer = () => {
   }
 
   return (
-    <View
-      bg="teal.50"
-      padding="2"
-      style={{
-        flexDirection: 'row',
-      }}
-    >
-      {weatherIcon}
-      <VStack padding="4" space={2}>
-        {
-          locationName.village === "" ?
-            <HStack space="2">
-              <Skeleton height="2" width="12" />
-              <Skeleton height="2" width="10" />
-              <Skeleton height="2" width="10" />
+    <View bg="white">
+      <View
+        bg="teal.100"
+        padding="2"
+        style={{
+          borderRadius: 50, flexDirection: 'row',
+          shadowColor: "#000",
+          elevation: 8,
+        }}
+      >
+        {weatherIcon}
+        <VStack padding="4" space={2}>
+          {
+            locationName.village === "" ?
+              <HStack space="2">
+                <Skeleton height="2" width="12" />
+                <Skeleton height="2" width="10" />
+                <Skeleton height="2" width="10" />
+              </HStack>
+              :
+              <Text>{locationName.village}, {locationName.county}, {locationName.state}</Text>
+          }
+          <Text>{format(new Date(), "EEEE")}, {format(new Date(), "dd")} {format(new Date(), "MMMM")}</Text>
+          <HStack space="3">
+            <HStack>
+              <Icons.thermometer width={25} height={25} color="black" />
+              {
+                readings.temperature_2m ?
+                  <Badge colorScheme="tertiary">{readings.temperature_2m}</Badge>
+                  :
+                  <Skeleton colorScheme="trueGray" height="2" width="9" />
+              }
             </HStack>
-            :
-            <Text>{locationName.village}, {locationName.county}, {locationName.state}</Text>
-        }
-        <Text>{format(new Date(), "EEEE")}, {format(new Date(), "dd")} {format(new Date(), "MMMM")}</Text>
-        <HStack space="3">
-          <HStack>
-            <Icons.thermometer width={25} height={25} color="black" />
-            {
-              readings.temperature_2m ?
-                <Badge colorScheme="tertiary">{readings.temperature_2m}</Badge>
-                :
-                <Skeleton colorScheme="trueGray" height="2" width="9" />
-            }
+            <HStack>
+              <Icons.droplets width={25} height={25} color="black" />
+              {
+                readings.relative_humidity_2m ?
+                  <Badge colorScheme="tertiary">{readings.relative_humidity_2m}</Badge>
+                  :
+                  <Skeleton colorScheme="trueGray" height="2" width="9" />
+              }
+            </HStack>
           </HStack>
-          <HStack>
-            <Icons.droplets width={25} height={25} color="black" />
-            {
-              readings.relative_humidity_2m ?
-                <Badge colorScheme="tertiary">{readings.relative_humidity_2m}</Badge>
-                :
-                <Skeleton colorScheme="trueGray" height="2" width="9" />
-            }
-          </HStack>
-        </HStack>
-      </VStack>
+          <View flexDirection="row-reverse" >
+            <Text color="#A0A0A0" fontSize={10}>Powered by @OpenMeteo</Text>
+          </View>
+        </VStack>
+      </View>
     </View>
   );
 };

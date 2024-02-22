@@ -1,12 +1,13 @@
 import { View, Text, Input, Button, Badge, HStack, VStack } from "native-base";
 import { ConnectionType, IMqttClient, IWebSocket } from "../../zustand/state";
 import Icons from "../../assets/Icons/Icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
 import ThresholdDropDown from "../ThresholdDropDown";
 import createToast from "../../hooks/toast";
 import { useNotificationStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
+import { getValueFor } from "../../securestore";
 
 const ThresholdSetForm = ({
   id,
@@ -28,11 +29,18 @@ const ThresholdSetForm = ({
   const toggleChangeState = () => setChangeState(!changeState);
   const { toastMessage } = createToast();
   const { addNotification } = useNotificationStore();
+  const [userId, setUserId] = useState();
   const store = storeType === "Irrigation" ? useIrrigationControllerStore() : useGreenhouseStore();
+  useEffect(() => {
+    getValueFor("token").then((data) => {
+      const val = JSON.parse(data as string);
+      setUserId(val?.brokerId);
+    })
+  }, [])
   const sendThreshold = () => {
     setValue(value);
     if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
-      const topic = id + "/threshold/" + type;
+      const topic = "user/" + userId + '/' + id + "/threshold/" + type;
       ws.sendMessage(topic, value.toString());
     } else {
       ws.sendMessage(`threshold:${type}:${value}`);

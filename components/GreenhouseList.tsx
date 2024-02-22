@@ -32,7 +32,6 @@ const GreenhouseList = () => {
       {
         greenhouses.length > 0 ? (
           <ScrollView
-            borderWidth="1"
             style={{
               marginBottom: 40
             }}

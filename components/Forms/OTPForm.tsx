@@ -1,4 +1,4 @@
-import { Input, VStack, Button } from "native-base"
+import { Input, VStack, Button, Text } from "native-base"
 import { useState } from "react";
 import createToast from "../../hooks/toast";
 import { useRouter } from "expo-router";
@@ -8,7 +8,7 @@ import OTPContext from "../../context/OTPContext";
 
 const verifyUser = async ({ id, code, phoneNumber }: {
   id: string;
-  code: string;
+  code: number;
   phoneNumber: string;
 }) => {
   const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/user/verify-user`, {
@@ -27,15 +27,18 @@ const verifyUser = async ({ id, code, phoneNumber }: {
   }
   return false;
 }
+
 const OTPForm = ({
+  generatedOTP,
   mobile,
   setModalVisible
 }: {
+  generatedOTP: number;
   mobile: string;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const [loading, setLoading] = useState(false);
-  const [otp, setOTP] = useState("");
+  const [otp, setOTP] = useState<number>(generatedOTP);
   const { toastMessage } = createToast();
   const router = useRouter();
   const { id } = useContext(OTPContext);
@@ -48,11 +51,18 @@ const OTPForm = ({
         phoneNumber: mobile
       });
       setModalVisible(false);
-      toastMessage({
-        type: "success",
-        message: "Account Verification Successfully, you may login"
-      });
-      router.push("/Auth/login");
+      if (res) {
+        toastMessage({
+          type: "success",
+          message: "Account Verification Successfully, you may login"
+        });
+        router.push("/Auth/login");
+      } else {
+        toastMessage({
+          type: "error",
+          message: "Account Verification Failed"
+        });
+      }
     } catch (err) {
       toastMessage({
         type: "error",
@@ -65,7 +75,8 @@ const OTPForm = ({
   }
   return (
     <VStack padding="2" space="2">
-      <Input w="full" onChangeText={(text) => setOTP(text)} placeholder="Enter the OTP Code" />
+      <Text fontSize={12}>Enter OTP that was sent to {mobile} </Text>
+      <Input w="full" onChangeText={(text) => Number(text)} defaultValue={generatedOTP.toString()} placeholder="Enter the OTP Code" />
       <Button disabled={loading} bg="green.600" onPress={handleSubmit}>
         {
           loading ? <ActivityIndicator color="white" /> : "Verify"

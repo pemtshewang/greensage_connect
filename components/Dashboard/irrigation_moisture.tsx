@@ -18,6 +18,7 @@ export interface SoilMoistureCombinedProps {
     };
   };
 }
+
 const SoilMoistureGraph = ({
   data,
   title,

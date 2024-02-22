@@ -5,12 +5,13 @@ import { useEnvironmentContext } from "../context/envParamsContext";
 
 const getBrokerValues = async () => {
   const val = await getValueFor("token");
+  const brokerPassword = await getValueFor("brokerPassword");
   const parsedValues = JSON.parse(val as string);
   const brokerConfigs = {
     brokerURL: parsedValues.brokerIp,
     brokerPort: parsedValues.brokerPort,
     brokerUsername: parsedValues.username,
-    brokerPassword: parsedValues.password,
+    brokerPassword: brokerPassword
   };
   return brokerConfigs;
 }
@@ -22,8 +23,6 @@ const createMqttClient = ({ brokerURL, brokerPort, id }: {
   const client = new Paho.Client(brokerURL, brokerPort, id);
   return client;
 };
-
-
 
 const useMqtt = ({ id, type }: { id: string; type: "Greenhouse" | "Irrigation" }) => {
   const [brokerId, setBrokerId] = useState("");
@@ -56,7 +55,7 @@ const useMqtt = ({ id, type }: { id: string; type: "Greenhouse" | "Irrigation" }
           rej(err);
         },
         onSuccess: (data) => {
-          client.subscribe(brokerId + "/#");
+          client.subscribe("user/" + brokerId + "/#");
           client.onMessageArrived = (msg) => {
             try {
               handleMessage({
@@ -94,9 +93,11 @@ const useMqtt = ({ id, type }: { id: string; type: "Greenhouse" | "Irrigation" }
     topic: string;
     payloadString: string;
   }) => {
+    console.log(topic);
     const lastTopic = topic.split("/").pop();
     if (lastTopic === "readings") {
       const category = payloadString.split("|");
+      console.log("Category", category)
       category.forEach(item => {
         const [dataType, dataValue] = item.split(":");
         switch (dataType) {

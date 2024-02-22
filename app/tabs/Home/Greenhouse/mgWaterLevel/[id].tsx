@@ -32,7 +32,7 @@ export default function ParamsContainer() {
     // Perform actions based on the updatedState
     if (!updatedState) {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        const topic = value + "/" + id + "/waterValve";
+        const topic = "user/" + value + "/" + id + "/actuator" + "/waterValve";
         greenhouse?.ws?.sendMessage(topic, "close");
       } else {
         greenhouse?.ws?.sendMessage("waterValve:close");
@@ -43,7 +43,7 @@ export default function ParamsContainer() {
       });
     } else {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        const topic = value + "/" + id + "/waterValve";
+        const topic = "user/" + value + "/" + id + "/actuator" + "/waterValve";
         greenhouse?.ws?.sendMessage(topic, "open");
       } else {
         greenhouse?.ws?.sendMessage("waterValve:open");

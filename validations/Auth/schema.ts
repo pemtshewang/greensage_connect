@@ -17,7 +17,11 @@ const SignUpSchema = z.object({
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }), // Corrected min length to 8
   confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters long" }), // Corrected min length to 8
   dzongkhag: z.string().min(1, { message: "Select a dzongkhag" }), // Corrected min length to 1
-  gewog: z.string().min(1, { message: "Select a gewog" }) // Corrected min length to 1
+  gewog: z.string().min(1, { message: "Select a gewog" }), // Corrected min length to 1
+  coords: z.object({
+    latitude: z.string(),
+    longitude: z.string()
+  }).optional(),
 }).superRefine((data, ctx) => {
   if (data.password !== data.confirmPassword) {
     //use ctx and code to throw error

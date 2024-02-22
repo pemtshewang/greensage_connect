@@ -31,7 +31,7 @@ export default function ParamsContainer() {
 
   const toggleState = () => {
     updateFanState(!state); // Update the state after performing actions
-    const topic = value + "/" + id + "/light";
+    const topic = "user/" + value + "/" + id + "/actuator" + "/light";
     console.log("publishing in", topic);
     if (state) {
       console.log("sending message off");
@@ -61,7 +61,7 @@ export default function ParamsContainer() {
     updateRightShutterState(!rightShutterState);
     if (rightShutterState) {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterRight", "down")
+        greenhouse?.ws?.sendMessage("user/" + value + "/" + id + "/actuator" + "/rollerShutterRight", "down")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterRight:down");
       }
@@ -71,7 +71,7 @@ export default function ParamsContainer() {
       });
     } else {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterRight", "up")
+        greenhouse?.ws?.sendMessage("user/" + value + "/" + id + "/actuator" + "/rollerShutterRight", "up")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterRight:up");
       }
@@ -85,7 +85,7 @@ export default function ParamsContainer() {
     updateLeftShutterState(!leftShutterState);
     if (leftShutterState) {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterLeft", "down")
+        greenhouse?.ws?.sendMessage("user/" + value + "/" + id + "/actuator" + "/rollerShutterLeft", "down")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterLeft:down");
       }
@@ -95,7 +95,7 @@ export default function ParamsContainer() {
       })
     } else {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
-        greenhouse?.ws?.sendMessage(value + "/" + id + "/rollerShutterLeft", "up")
+        greenhouse?.ws?.sendMessage("user/" + value + "/" + id + "/actuator" + "/rollerShutterLeft", "up")
       } else {
         greenhouse?.ws?.sendMessage("rollerShutterLeft:up");
       }

@@ -35,7 +35,10 @@ const IndexPage = () => {
             padding: 5,
             borderRadius: 50,
             alignItems: "center",
-            marginRight: 10
+            marginRight: 10,
+            shadowColor: "#000",
+            shadowOffset: 10,
+            elevation: 8
           }}
         >
           {

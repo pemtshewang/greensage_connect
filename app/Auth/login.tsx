@@ -31,10 +31,11 @@ const signIn = async (data: LoginSchemaType) => {
     body: JSON.stringify(data),
   })
   if (res.ok) {
-    const data = await res.json();
-    return data;
+    await save("brokerPassword", data.password.trim())
+    const result = await res.json();
+    return result;
   }
-  return false;
+  return null;
 }
 
 function Login() {

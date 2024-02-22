@@ -29,13 +29,13 @@ const SlotContainer = ({
   repDays: number,
 }) => {
   const daysOfWeek = [
-    { name: 'Sun', value: 0b00000010 },
-    { name: 'Mon', value: 0b00000100 },
-    { name: 'Tue', value: 0b00001000 },
-    { name: 'Wed', value: 0b00010000 },
-    { name: 'Thu', value: 0b00100000 },
-    { name: 'Fri', value: 0b01000000 },
-    { name: 'Sat', value: 0b10000000 }
+    { name: 'Sun', value: 0b00000001 },
+    { name: 'Mon', value: 0b00000010 },
+    { name: 'Tue', value: 0b00000100 },
+    { name: 'Wed', value: 0b00001000 },
+    { name: 'Thu', value: 0b00010000 },
+    { name: 'Fri', value: 0b00100000 },
+    { name: 'Sat', value: 0b01000000 }
   ];
   const slotKeys: Record<number, string> = {
     1: "firstSlot",
@@ -60,8 +60,8 @@ const SlotContainer = ({
     const formattedStartTime = extractTime(startTime as Date);
     const formattedEndTime = extractTime(endTime as Date);
     if (store.items.find((greenhouse) => greenhouse.id === id)?.connectionType === ConnectionType.MQTT) {
-      const topic = value + "/" + id + "/schedule";
-      const message = `${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`
+      const topic = "user/" + value + "/" + id + "/wschedule/" + slot;
+      const message = `${formattedStartTime}|${formattedEndTime}|${repetitionDays}`
       ws.sendMessage(topic, message);
     } else {
       ws.sendMessage(`schedule|${slot}|${formattedStartTime}|${formattedEndTime}|${repetitionDays}`);
