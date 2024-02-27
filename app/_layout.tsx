@@ -77,7 +77,7 @@ export default function HomeLayout() {
         }}
       >
         <AnimatedImage
-          source={require("../assets/logo.gif")}
+          source={require("../assets/splashscreenlogo.gif")}
           width={280}
           height={280}
           style={{
