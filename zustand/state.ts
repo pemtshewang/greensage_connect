@@ -103,6 +103,7 @@ interface IrrigationControllerState {
             endTime: Date | null;
             repDays: number;
         } | null,
+        S
     }
 }
 export { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState };

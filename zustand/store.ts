@@ -129,7 +129,7 @@ export interface Notification {
   footer: string;
 }
 
-interface NotificationStoreState {
+export interface NotificationStoreState {
   countOfUnseenNotifications: number;
   notifications: Notification[];
   addNotification: (notification: Notification) => void;

@@ -17,7 +17,6 @@ import { categories, subCategories } from "../../api/data/dzongkhag";
 import { SelectList } from "react-native-dropdown-select-list";
 import getLocation from "../../utils/getlocation";
 import { Pressable } from "react-native";
-import { TCModal } from "../../components/TermsAndCondition";
 
 function Register() {
   const [category, setCategory] = React.useState("");
@@ -29,10 +28,6 @@ function Register() {
   const [otp, setOtp] = useState<number>();
   const [id, setID] = useState("");
   const [tcFormVisible, settcFormVisible] = useState(false);
-  const [location, setLocation] = useState<{
-    latitude: string,
-    longitude: string
-  } | null>(null);
   const { toastMessage } = createToast();
   const [data, handleData] = useState<{
     username: string;
@@ -53,28 +48,22 @@ function Register() {
   });
 
   const handleSubmitButton = async (data: SignUpSchemaType) => {
-    setLoading(true);
+    // setLoading(false);
+    const formData = new FormData();
     if (locationPermission) {
       const location = await getLocation();
-      setLocation({
-        longitude: location?.coords.longitude.toString() as string,
-        latitude: location?.coords.latitude.toString() as string,
-      });
+      formData.append("lat", location?.lat as string);
+      formData.append("long", location?.long as string)
     }
+    formData.append("username", data.username);
+    formData.append("password", data.password);
+    formData.append("mobile", data.phoneNumber);
+    formData.append("cid", data.idNumber);
+    formData.append("dzongkhag", data.idNumber);
+    formData.append("gewog", data.gewog);
     const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/user`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: data.username,
-        password: data.password,
-        mobile: `${data.phoneNumber}`,
-        cid: data.idNumber,
-        dzongkhag: data.dzongkhag,
-        gewog: data.gewog,
-        location: location
-      }),
+      body: formData
     });
     if (res.ok) {
       const data = await res.json();
@@ -253,7 +242,7 @@ function Register() {
                   isChecked={termsAccepted}
                   onChange={() => setTermsAccepted(!termsAccepted)}
                 >
-                  I accept the <Pressable onPress={() => settcFormVisible(true)}><Text underline color="white">terms & conditions</Text></Pressable>
+                  I accept the <Pressable onPress={() => settcFormVisible(true)} ><Text underline color="white">terms & conditions</Text></Pressable>
                 </Checkbox>
               </HStack>
               <HStack space={6}>
@@ -314,7 +303,6 @@ function Register() {
             </View>
           </VStack>
         </ScrollView>
-        <TCModal modalVisible={tcFormVisible} setModalVisible={settcFormVisible} />
       </LinearGradient>
     </OTPContext.Provider>
   );

@@ -28,9 +28,41 @@ interface DzongkhagCategory {
   key: string;
   value: string;
 }
+
 interface DzongkhagSubCategory {
   [key: string]: DzongkhagCategory[];
 }
+
+// interface for graphs
+export interface IReadings {
+  temperature: number;
+  humidity: number;
+  Pressure: number;
+  soilMoisture: number;
+  recordedAt: Date;
+}
+
+export interface IWaterScheduleRecords {
+  startTime: string
+  endTime: string
+  repetitionDays: number
+}
+
+export interface IHumidityThresholdRecord {
+  recordedAt: Date
+  value: number
+}
+
+export interface ITemperatureThresholdRecord {
+  recordedAt: Date,
+  value: number,
+}
+
+export interface ISoilMoistureThresholdRecords {
+  recordedAt: Date
+  value: number
+}
+
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 type SignUpSchemaType = z.infer<typeof SignUpSchema>;

@@ -1,4 +1,4 @@
-import { ArrowBigRightIcon, ArrowDown10, ArrowDown10Icon, AtSignIcon, BanIcon, CheckCheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, KeyboardIcon, LinkIcon, LinkedinIcon, MailIcon, MailXIcon, Mailbox, MoreHorizontalIcon, PowerCircleIcon, RefreshCwIcon, RefreshCwOffIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, WifiIcon, XIcon, XOctagonIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, ArrowDown10Icon, AtSignIcon, BanIcon, CheckCheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, KeyboardIcon, LinkIcon, LinkedinIcon, MoreHorizontalIcon, PowerCircleIcon, RefreshCwIcon, RefreshCwOffIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, UnplugIcon, WavesIcon, WifiIcon, XIcon, XOctagonIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -31,6 +31,7 @@ import {
   CloudIcon,
   LogOutIcon
 } from "lucide-react-native";
+import { QuestionIcon } from "native-base";
 import Svg, { G, Rect, Path, Circle, Defs } from "react-native-svg"
 
 // export the icons by naming yourself
@@ -1058,6 +1059,7 @@ export const Icons = {
       </Svg>
     )
   },
+  question: QuestionIcon,
   syncArrow: RefreshCwIcon,
   notSynced: (props) => {
     return (

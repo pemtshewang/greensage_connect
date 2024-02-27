@@ -2,7 +2,6 @@ import { View, Heading } from "native-base";
 import { ScrollView } from "native-base";
 import { Slot } from "expo-router";
 import NewsFeedContext from "../../../context/NewsFeedContext";
-import { useContext } from "react";
 import { useState } from "react";
 import { PostType } from "../../../types";
 

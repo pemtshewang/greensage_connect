@@ -81,8 +81,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
   };
 
   return (
-    <CustomModal
-      modalTitle={`MQTT Connection Test`}
+    <CustomModal modalTitle={`MQTT Connection Test`}
       modalVisible={showForm}
       setModalVisible={setShowForm}
     >

@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import { Platform, Text, View, StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 
 export default async function getLocation() {
@@ -7,8 +5,12 @@ export default async function getLocation() {
   if (status !== 'granted') {
     return null;
   }
-  let location = await Location.getCurrentPositionAsync({});
-  return location;
+  let location = await Location.getCurrentPositionAsync();
+  const exLocation = {
+    lat: location.coords.latitude.toString(),
+    long: location.coords.longitude.toString(),
+  }
+  return exLocation;
 };
 
 

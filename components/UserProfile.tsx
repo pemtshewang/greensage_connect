@@ -20,7 +20,6 @@ const UserProfile = () => {
   useEffect(() => {
     getUserDetails().then((user) => {
       setValues(JSON.parse(user as string));
-      console.log(JSON.parse(user as string));
       setFetching(false);
     })
   }, [fetching])
@@ -50,21 +49,13 @@ const UserProfile = () => {
   };
   return (
     <VStack>
-      <Center>
-        <Avatar bg="amber.500" source={{
-          uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-        }} size="md">
-          {values?.username}
-          <Avatar.Badge bg="green.500" />
-        </Avatar>
-      </Center>
       <Box alignItems="center" padding="1">
         {
           fetching ? (
             <Skeleton w="1/2" paddingX="1" h="3" />
           ) : (
             <Text>
-              {values?.username}
+              Session for user: {values?.username}
             </Text>
           )
         }

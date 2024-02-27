@@ -33,6 +33,7 @@ const IndexPage = () => {
             backgroundColor: "green",
             borderWidth: 2,
             padding: 5,
+            marginEnd: 10,
             borderRadius: 50,
             alignItems: "center",
             marginRight: 10,

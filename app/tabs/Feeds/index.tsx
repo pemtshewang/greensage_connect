@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { VStack } from "native-base";
+import { VStack, View, Text } from "native-base";
 import { RefreshControl } from "react-native";
 import CardSkeleton from "../../../components/CardSkeleton";
 import { getValueFor } from "../../../securestore";
@@ -7,6 +7,7 @@ import createToast from "../../../hooks/toast";
 import NewsContainer from "../../../components/NewsContainer";
 import { PostType } from "../../../types";
 import NewsFeedContext from "../../../context/NewsFeedContext";
+import Icons from "../../../assets/Icons/Icons";
 
 async function getPosts() {
   const value = JSON.parse(await getValueFor("token") as string);
@@ -60,19 +61,28 @@ export default function NewsFeedPage() {
           <CardSkeleton />
           <CardSkeleton />
         </>
-      ) : (
-        posts.map((post, index) => (
-          <NewsContainer
-            key={index}
-            id={post.id}
-            title={post.title}
-            content={post.content}
-            createdAt={post.createdAt}
-            image={post.image}
-            author={post.author}
-          />
-        ))
-      )}
+      ) :
+        posts.length > 0 ? (
+          posts.map((post, index) => (
+            <NewsContainer
+              key={index}
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              createdAt={post.createdAt}
+              image={post.image}
+              author={post.author}
+            />
+          ))
+        ) : (
+          <View flex="1" alignItems="center" justifyContent="center" mt="48" style={{
+            gap: 4
+          }}>
+            <Icons.question color="#a0a0a0" size={5} />
+            <Text color="#a0a0a0">No posts have been posted by admin</Text>
+          </View>
+        )
+      }
     </VStack>
   );
 }

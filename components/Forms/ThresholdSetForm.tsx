@@ -95,7 +95,7 @@ const ThresholdSetForm = ({
         flexDirection: "row",
         justifyContent: "space-between"
       }}>
-        <Badge colorScheme="info">{message}</Badge>
+        <Badge colorScheme="info" marginBottom="3">{message}</Badge>
         <View style={{
           flexDirection: "row",
           justifyContent: "space-around",
@@ -127,9 +127,9 @@ const ThresholdSetForm = ({
               }}
               inputMode="numeric"
               onChangeText={(text: string) => setValue(parseInt(text))}
-              value={value.toString()}
+              value={value as unknown as string}
               isDisabled={!changeState}
-              w={60}
+              w={70}
               borderWidth={0}
               autoFocus={changeState}
             />

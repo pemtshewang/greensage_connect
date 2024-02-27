@@ -1,66 +1,112 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { VictoryScatter, VictoryTooltip, VictoryChart, VictoryAxis, VictoryLegend } from 'victory-native';
-import { format } from 'date-fns';
+import { View } from "react-native";
+import { CartesianChart, Line } from "victory-native";
+import { SharedValue } from "react-native-reanimated";
+import { Circle } from "@shopify/react-native-skia";
+import { useChartPressState } from "victory-native";
+import { useFont, Text as CText, Box } from "@shopify/react-native-skia";
+import inter from "../../../assets/fonts/Inter-Regular.ttf";
+import { IHumidityThresholdRecord, ITemperatureThresholdRecord, ISoilMoistureThresholdRecords } from "../../../types";
+import { Text, VStack } from "native-base";
+import { format } from "date-fns";
 
-const formatDateTime = (isoDate) => {
-  const date = new Date(isoDate);
-  return format(date, 'dd/MM/yy@HH:mm'); // Format the date and time as desired
-};
+type CombinedInterface = IHumidityThresholdRecord[] | ITemperatureThresholdRecord[] | ISoilMoistureThresholdRecords[]
 
-const CustomTooltip = ({ datum }) => (
-  <VictoryTooltip datum={datum} />
-);
+export default function ThresholdChart({
+  data,
+  type,
+  title
+}: {
+  data: Record<string, unknown>[] | CombinedInterface
+  type: "humidity" | "temperature" | "soilMoisture",
+  title: string
+}) {
+  const INIT_STATE = { x: Number(new Date().getTime()), y: { value: 0 } } as const;
+  const { state, isActive } = useChartPressState(INIT_STATE);
+  const fontSize = 12;
+  const font = useFont(inter, fontSize);
 
-const ThresholdRecordGraph = ({ data }) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 20, margin: 10 }}>
-        Threshold Records Readings
-      </Text>
-      <VictoryChart height={400}>
-        <VictoryAxis />
-        <VictoryAxis dependentAxis />
-        <VictoryScatter
-          data={data.TemperatureThresholdRecord}
-          x="recordedAt"
-          y="value"
-          size={4}
-          labels={(d) => d.x}
-          style={{ data: { fill: 'red' } }}
-          labelComponent={<CustomTooltip />}
-        />
-        <VictoryScatter
-          data={data.HumidityThresholdRecord}
-          x="recordedAt"
-          y="value"
-          size={4}
-          style={{ data: { fill: 'blue' } }}
-          labelComponent={<CustomTooltip />}
-        />
-        <VictoryScatter
-          data={data.SoilMoistureThresholdRecord}
-          x="recordedAt"
-          y="value"
-          size={4}
-          style={{ data: { fill: 'yellow' } }}
-          labelComponent={<CustomTooltip />}
-        />
-        <VictoryLegend
-          x={50}
-          y={50}
-          orientation="vertical"
-          gutter={20}
-          style={{ title: { fontSize: 20 }, labels: { fontSize: 15 } }}
-          data={[
-            { name: 'Temperature', symbol: { fill: 'red' } },
-            { name: 'Humidity', symbol: { fill: 'blue' } },
-            { name: 'Soil Moisture', symbol: { fill: 'yellow' } },
+  function ToolTip({ x, y }: {
+    x: { value: SharedValue<number>; position: SharedValue<number>; },
+    y: { value: SharedValue<number>; }
+  }) {
+    return (
+      <>
+        <CText
+          transform={[
+            {
+              translateY: -20
+            }
           ]}
+          x={x.position.value}
+          y={y.value.position}
+          text={y.value.value?.value.toString() + `${type === "temperature" ? "°C" : "%"}|${format(new Date(x.value.value.toString()), "dd/MM/yyyy hh:mm aa")}`}
+          font={font}
         />
-      </VictoryChart>
-    </View>
-  );
-};
+        <Circle cx={x.position.value} cy={y.value.position} r={8} color="black" />
+      </>
+    );
+  }
 
-export default ThresholdRecordGraph;
+  return (
+    <View style={{
+      height: data.length > 1 ? 300 : 150, marginTop: 20
+    }}>
+      <Text textAlign="center" bold>{title}</Text>
+      {
+        data.length > 1 ? (
+          <CartesianChart
+            domainPadding={{
+              right: 15,
+              top: 15,
+            }}
+            padding={5}
+            data={data}
+            xKey={"recordedAt"}
+            yKeys={["value"]}
+            domain={{
+              y: [0, 100]
+            }}
+            axisOptions={{
+              font: font,
+              isNumericalData: false,
+              formatYLabel: (label) => `${label}${type === "temperature" ? "°C" : "%"}`,
+              formatXLabel: (label) => ""
+            }}
+            chartPressState={state}
+          >
+            {({ points }) => (
+              <>
+                <Line points={points.value} connectMissingData={true} curveType="cardinal50" color="blue" strokeWidth={3} strokeCap="butt" blendMode="color" animate={{ type: "timing", duration: 300 }} />
+                {isActive ? (
+                  <ToolTip x={state.x} y={state.y} />
+                ) : null}
+              </>
+            )}
+          </CartesianChart>
+        ) : (
+          <View style={{
+            marginTop: 20,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <Text color="#A0A0A0">
+              No data has been recorded for {type}
+            </Text>
+            <VStack space={2} justifyContent="center" alignItems="center" padding={2}>
+              <Text color="#A0A0A0">
+                The chart will be generated when the data has been recorded
+              </Text>
+              <Text color="#A0A0A0">
+                Or
+              </Text>
+              <Text color="#A0A0A0">
+                It has enough data to be visualized
+              </Text>
+            </VStack>
+          </View>
+        )
+      }
+    </View >
+  )
+}

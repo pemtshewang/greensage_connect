@@ -42,6 +42,12 @@ const AboutPage = ({
         <Text>Pem Tshewang</Text>
       </Box>
       <Box>
+        <Text bold>Developer and UI Designers:</Text>
+        <Text>Sonam Dema</Text>
+        <Text>Thinley Choden</Text>
+        <Text>Deki Wangmo</Text>
+      </Box>
+      <Box>
         <Text bold>Collaborator:</Text>
         <Text>Agriculture Technology and Machinery Centre</Text>
         <Text>Bondey, Paro</Text>

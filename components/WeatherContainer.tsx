@@ -105,7 +105,9 @@ const WeatherContainer = () => {
         bg="teal.100"
         padding="2"
         style={{
-          borderRadius: 50, flexDirection: 'row',
+          borderBottomRightRadius: 50,
+          borderBottomLeftRadius: 50,
+          flexDirection: 'row',
           shadowColor: "#000",
           elevation: 8,
         }}

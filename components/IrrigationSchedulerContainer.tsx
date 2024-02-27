@@ -29,7 +29,7 @@ const IrrigationSchedulerContainer = ({
     const updatedValveState = !valveState;
     setValveState(updatedValveState);
     if (irrigation?.connectionType === ConnectionType.MQTT) {
-      const topic = id + "/waterValve/" + valveLabel.split("S")[0] + "Valve";
+      const topic = "user/" + id + "/waterValve/" + valveLabel.split("S")[0] + "Valve";
       irrigation?.ws?.sendMessage(topic, valveState ? "close" : "open");
     } else {
       irrigation?.ws?.sendMessage(`waterValve:${valveLabel.split("S")[0] + "Valve"}:${valveState ? "close" : "open"}`);
