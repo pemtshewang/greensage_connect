@@ -49,7 +49,7 @@ export default function ParamsContainer() {
       if (greenhouse?.connectionType === ConnectionType.MQTT) {
         greenhouse?.ws?.sendMessage(topic, "on")
       } else {
-        greenhouse?.ws?.sendMessage("light:off");
+        greenhouse?.ws?.sendMessage("light:on");
       }
       store.updateItem(id as string, {
         ...greenhouse,

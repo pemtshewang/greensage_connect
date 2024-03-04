@@ -43,8 +43,7 @@ const useWebSocket = ({
       };
       ws.onmessage = (e) => {
         handleMessage(e);
-      };
-      ws.onclose = () => {
+      }; ws.onclose = () => {
         handleDisconnect("WebSocket successfully disconnected");
       };
     });
@@ -60,7 +59,7 @@ const useWebSocket = ({
     try {
       socket?.current?.send(message);
     } catch (err) {
-    } finally {
+      console.log(err);
       connect();
       socket?.current?.send(message);
     }
@@ -111,7 +110,6 @@ const useWebSocket = ({
   };
 
   const handleDisconnect = (message: string) => {
-    console.log(message);
     store.updateItem(id, { isConnected: false });
     socket.current = null;
     clearInterval(heartbeatInterval!);

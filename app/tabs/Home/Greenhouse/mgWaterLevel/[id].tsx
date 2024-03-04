@@ -7,7 +7,6 @@ import WaterValveControllerContainer from "../../../../../components/WaterValveC
 import { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useGreenhouseStore } from "../../../../../zustand/store";
-import { useRouter } from "expo-router";
 import ThresholdSetForm from "../../../../../components/Forms/ThresholdSetForm";
 import WaterSchedulerForm from "../../../../../components/Forms/WaterScheduleForm";
 import { ConnectionType, IMqttClient, IWebSocket } from "../../../../../zustand/state";
@@ -100,6 +99,7 @@ export default function ParamsContainer() {
           setState={toggleState} />
         <ThresholdSetForm
           id={id as string}
+          storeType="Greenhouse"
           type="soil_moisture"
           message="Set the soil moisture threshold"
           ws={greenhouse?.ws as IWebSocket | IMqttClient}

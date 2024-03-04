@@ -44,7 +44,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
       store.updateItem(id, {
         ...store.items.find((res) => res.id === id),
         ws: websocketObj,
-        connectionType: ConnectionType.MQTT,
+        connectionType: ConnectionType.WebSocket,
         isConnected: true,
       });
       setConnected(true);
