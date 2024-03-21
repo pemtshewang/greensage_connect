@@ -2,43 +2,58 @@ import { Tabs } from "expo-router";
 import { Icons } from "../../assets/Icons/Icons";
 import { Text, View, Button, HStack } from "native-base";
 import { Heading } from "native-base";
-import { NotificationStoreState, useNotificationStore } from "../../zustand/store";
+import {
+  NotificationStoreState,
+  useNotificationStore,
+} from "../../zustand/store";
 import { useEffect, useState } from "react";
 import { Pressable, TouchableOpacity } from "react-native";
 import SessionContext from "../../context/SessionContext";
 import { EnvironmentContext } from "../../context/envParamsContext";
 import CustomModal from "../../components/ui/Modal";
+import { BlurView } from "expo-blur";
 
 const DeleteAllNotificationPrompt = ({
   isDeletePromptVisible,
   setIsDeletePromptVisible,
-  store
+  store,
 }: {
   isDeletePromptVisible: boolean;
-  setIsDeletePromptVisible: (bool: boolean) => void
-  store: NotificationStoreState
+  setIsDeletePromptVisible: (bool: boolean) => void;
+  store: NotificationStoreState;
 }) => {
-  return <CustomModal setModalVisible={setIsDeletePromptVisible} modalVisible={isDeletePromptVisible} modalTitle="Delete all notifications?">
-    <Text>Are you sure you want to delete all notifications? (the operation is permananent)</Text>
-    <HStack space={2} paddingY={5} justifyContent="flex-end">
-      <Button bg="green.500" onPress={
-        () => {
-          store.clearNotifications();
-          setIsDeletePromptVisible(false);
-        }
-      }>
-        Delete
-      </Button>
-      <Button bg="red.500" onPress={
-        () => {
-          setIsDeletePromptVisible(false);
-        }
-      }>
-        Cancel
-      </Button>
-    </HStack>
-  </CustomModal>
-}
+  return (
+    <CustomModal
+      setModalVisible={setIsDeletePromptVisible}
+      modalVisible={isDeletePromptVisible}
+      modalTitle="Delete all notifications?"
+    >
+      <Text>
+        Are you sure you want to delete all notifications? (the operation is
+        permananent)
+      </Text>
+      <HStack space={2} paddingY={5} justifyContent="flex-end">
+        <Button
+          bg="green.500"
+          onPress={() => {
+            store.clearNotifications();
+            setIsDeletePromptVisible(false);
+          }}
+        >
+          Delete
+        </Button>
+        <Button
+          bg="red.500"
+          onPress={() => {
+            setIsDeletePromptVisible(false);
+          }}
+        >
+          Cancel
+        </Button>
+      </HStack>
+    </CustomModal>
+  );
+};
 
 const TabLayout = () => {
   const [notificationCount, setNotificationCount] = useState(0);
@@ -68,14 +83,21 @@ const TabLayout = () => {
     setNotificationCount(store.countOfUnseenNotifications);
     () => {
       setNotificationCount(0);
-    }
+    };
   }, [store.notifications]);
   return (
-    <SessionContext.Provider value={{ modalVisible: showModal, setModalVisible: setShowModal }}>
+    <SessionContext.Provider
+      value={{ modalVisible: showModal, setModalVisible: setShowModal }}
+    >
       <EnvironmentContext.Provider value={{ environment, updateEnvironment }}>
-        <Tabs screenOptions={{
-          tabBarHideOnKeyboard: true
-        }}>
+        <Tabs
+          screenOptions={{
+            tabBarHideOnKeyboard: true,
+            tabBarBackground: () => {
+              return <BlurView intensity={80} />;
+            },
+          }}
+        >
           <Tabs.Screen
             name="Home"
             options={{
@@ -113,7 +135,7 @@ const TabLayout = () => {
                     </Heading>
                   </View>
                 );
-              }
+              },
             }}
           />
           <Tabs.Screen
@@ -123,11 +145,12 @@ const TabLayout = () => {
                 setTimeout(() => {
                   store.markAllUnseenNotificationsAsSeen();
                 }, 2000);
-              }
+              },
             }}
             options={{
               headerShown: true,
-              tabBarBadge: notificationCount > 0 ? notificationCount : undefined,
+              tabBarBadge:
+                notificationCount > 0 ? notificationCount : undefined,
               header: () => {
                 return (
                   <View
@@ -135,7 +158,7 @@ const TabLayout = () => {
                       backgroundColor: "green",
                       padding: 10,
                       flexDirection: "row",
-                      justifyContent: "space-between"
+                      justifyContent: "space-between",
                     }}
                   >
                     <Heading
@@ -145,16 +168,17 @@ const TabLayout = () => {
                     >
                       Notifications
                     </Heading>
-                    <Pressable style={{
-                      borderWidth: 1,
-                      width: 35,
-                      height: 35,
-                      borderRadius: 99,
-                      padding: 1,
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
+                    <Pressable
+                      style={{
+                        borderWidth: 1,
+                        width: 35,
+                        height: 35,
+                        borderRadius: 99,
+                        padding: 1,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
                       onPress={() => {
                         setIsDeletePromptVisible(true);
                       }}
@@ -214,7 +238,7 @@ const TabLayout = () => {
                       padding: 10,
                       flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "space-between"
+                      justifyContent: "space-between",
                     }}
                   >
                     <Heading
@@ -224,12 +248,13 @@ const TabLayout = () => {
                     >
                       Settings
                     </Heading>
-                    <TouchableOpacity style={{
-                      borderRadius: 100,
-                      borderWidth: 1,
-                      borderColor: "white",
-                      padding: 7
-                    }}
+                    <TouchableOpacity
+                      style={{
+                        borderRadius: 100,
+                        borderWidth: 1,
+                        borderColor: "white",
+                        padding: 7,
+                      }}
                       onPress={() => {
                         setShowModal(true);
                       }}
@@ -237,16 +262,23 @@ const TabLayout = () => {
                       <Icons.logOut color="white" size={20} />
                     </TouchableOpacity>
                   </View>
-                )
+                );
               },
               tabBarIcon: ({ focused, color, size }) => (
-                <Icons.settings color={focused ? "green" : "#6b7280"} size={size} />
+                <Icons.settings
+                  color={focused ? "green" : "#6b7280"}
+                  size={size}
+                />
               ),
               tabBarActiveTintColor: "green",
             }}
           />
         </Tabs>
-        <DeleteAllNotificationPrompt isDeletePromptVisible={isDeletePromptVisible} setIsDeletePromptVisible={setIsDeletePromptVisible} store={store} />
+        <DeleteAllNotificationPrompt
+          isDeletePromptVisible={isDeletePromptVisible}
+          setIsDeletePromptVisible={setIsDeletePromptVisible}
+          store={store}
+        />
       </EnvironmentContext.Provider>
     </SessionContext.Provider>
   );

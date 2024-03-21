@@ -14,7 +14,7 @@ const WeatherContainer = () => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [weatherIcon, setWeatherIcon] = useState(
-    <Icons.sunnyWeather width={55} height={55} color="black" />
+    <Icons.sunnyWeather width={55} height={55} color="black" />,
   );
   const [readings, setReadings] = useState<any>([]);
   const [locationName, setLocationName] = useState<{
@@ -28,7 +28,6 @@ const WeatherContainer = () => {
   });
   useEffect(() => {
     (async () => {
-
       if (isInternetReachable) {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
@@ -61,8 +60,7 @@ const WeatherContainer = () => {
     })();
   }, [isInternetReachable]);
   useEffect(() => {
-    (async () => {
-    })();
+    (async () => { })();
   }, []);
   const getWeatherIcon = () => {
     if (wData) {
@@ -102,53 +100,70 @@ const WeatherContainer = () => {
   return (
     <View bg="white">
       <View
-        bg="teal.100"
-        padding="2"
+        bg="teal.50"
+        paddingX="5"
+        paddingY="3"
         style={{
           borderBottomRightRadius: 50,
           borderBottomLeftRadius: 50,
-          flexDirection: 'row',
+          flexDirection: "row",
           shadowColor: "#000",
           elevation: 8,
         }}
       >
         {weatherIcon}
         <VStack padding="4" space={2}>
-          {
-            locationName.village === "" ?
-              <HStack space="2">
-                <Skeleton height="2" width="12" />
-                <Skeleton height="2" width="10" />
-                <Skeleton height="2" width="10" />
-              </HStack>
-              :
-              <Text>{locationName.village}, {locationName.county}, {locationName.state}</Text>
-          }
-          <Text>{format(new Date(), "EEEE")}, {format(new Date(), "dd")} {format(new Date(), "MMMM")}</Text>
+          {locationName.village === "" ? (
+            <HStack space="2">
+              <Skeleton height="2" width="12" />
+              <Skeleton height="2" width="10" />
+              <Skeleton height="2" width="10" />
+            </HStack>
+          ) : (
+            <Text fontFamily="OpenSans">
+              {locationName.village && locationName.village}
+              {locationName.village && " "}
+              {locationName.county && locationName.county.split(" ")[0]}
+              {locationName.county && " "}
+              {locationName.state}
+            </Text>
+          )}
+          <Text fontFamily="OpenSans">
+            {format(new Date(), "EEEE")}, {format(new Date(), "dd")}{" "}
+            {format(new Date(), "MMMM")} {format(new Date(), "yyyy")}
+          </Text>
           <HStack space="3">
             <HStack>
-              <Icons.thermometer width={25} height={25} color="black" />
-              {
-                readings.temperature_2m ?
-                  <Badge colorScheme="tertiary">{readings.temperature_2m}</Badge>
-                  :
-                  <Skeleton colorScheme="trueGray" height="2" width="9" />
-              }
+              <Icons.thermometer width={25} height={25} color="#003" />
+              {readings.temperature_2m ? (
+                <Badge colorScheme="teal">{readings.temperature_2m}</Badge>
+              ) : (
+                <Skeleton colorScheme="trueGray" height="2" width="9" />
+              )}
             </HStack>
             <HStack>
               <Icons.droplets width={25} height={25} color="black" />
-              {
-                readings.relative_humidity_2m ?
-                  <Badge colorScheme="tertiary">{readings.relative_humidity_2m}</Badge>
-                  :
-                  <Skeleton colorScheme="trueGray" height="2" width="9" />
-              }
+              {readings.relative_humidity_2m ? (
+                <Badge colorScheme="teal">
+                  {readings.relative_humidity_2m}
+                </Badge>
+              ) : (
+                <Skeleton colorScheme="trueGray" height="2" width="9" />
+              )}
             </HStack>
           </HStack>
-          <View flexDirection="row-reverse" >
-            <Text color="#A0A0A0" fontSize={10}>Powered by @OpenMeteo</Text>
-          </View>
         </VStack>
+        <Text
+          color="#A0A0A0"
+          fontSize={10}
+          position="absolute"
+          right="9"
+          bottom="0"
+          fontFamily="OpenSans"
+          padding="1"
+        >
+          Powered by @OpenMeteo
+        </Text>
       </View>
     </View>
   );

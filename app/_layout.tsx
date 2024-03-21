@@ -2,12 +2,12 @@ import { Slot } from "expo-router";
 import { NativeBaseProvider } from "native-base";
 import CustomStatusBar from "../components/Statusbar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Animated, Image, View } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
-import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import * as Notifications from "expo-notifications";
+import { useFonts } from "expo-font";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -20,7 +20,9 @@ Notifications.setNotificationHandler({
 export default function HomeLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const AnimatedImage = Animated.createAnimatedComponent(Image);
-
+  const [fontsLoaded, fontError] = useFonts({
+    OpenSans: require("../assets/OpenSans.ttf"),
+  });
   const [animValue] = useState(new Animated.Value(0));
   useEffect(() => {
     Animated.sequence([
@@ -66,8 +68,7 @@ export default function HomeLayout() {
     prepare();
   }, []);
 
-
-  if (!appIsReady) {
+  if (!appIsReady && !fontsLoaded) {
     return (
       <View
         style={{

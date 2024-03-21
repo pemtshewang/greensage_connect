@@ -23,54 +23,58 @@ import { save } from "../../securestore";
 const signIn = async (data: LoginSchemaType) => {
   data.username = data.username.trim();
   data.password = data.password.trim();
-  const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/user/signin`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `${process.env.EXPO_PUBLIC_BASE_URL}/api/auth/user/signin`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     },
-    body: JSON.stringify(data),
-  })
+  );
   if (res.ok) {
-    await save("brokerPassword", data.password.trim())
+    await save("brokerPassword", data.password.trim());
     const result = await res.json();
     return result;
   }
   return null;
-}
+};
 
 function Login() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toastMessage } = createToast();
   const handleSubmitButton = async (data: LoginSchemaType) => {
-    setLoading(true);
-    try {
-      const res = await signIn(data);
-      if (res) {
-        toastMessage({
-          type: "success",
-          message: "Login Successful",
-        });
-        save("token", JSON.stringify(res));
-        setTimeout(() => {
-          setLoading(false);
-          router.push("/tabs/Home");
-        }, 1000);
-      } else {
-        setLoading(false);
-        toastMessage({
-          type: "error",
-          message: "Invalid Username or Password",
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-      toastMessage({
-        type: "error",
-        message: "Something went wrong",
-      });
-    }
+    router.push("/tabs/Home");
+    // setLoading(true);
+    // try {
+    //   const res = await signIn(data);
+    //   if (res) {
+    //     toastMessage({
+    //       type: "success",
+    //       message: "Login Successful",
+    //     });
+    //     save("token", JSON.stringify(res));
+    //     setTimeout(() => {
+    //       setLoading(false);
+    //       router.push("/tabs/Home");
+    //     }, 1000);
+    //   } else {
+    //     setLoading(false);
+    //     toastMessage({
+    //       type: "error",
+    //       message: "Invalid Username or Password",
+    //     });
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    //   setLoading(false);
+    //   toastMessage({
+    //     type: "error",
+    //     message: "Something went wrong",
+    //   });
+    // }
   };
   // Form Validation
   const [data, handleData] = useState<LoginSchemaType>({
@@ -87,24 +91,26 @@ function Login() {
   });
   //
   return (
-    <LinearGradient colors={["#228B29", "#6A9"]} style={LoginStyles.container} >
-      <VStack space={3} alignItems="start">
-        <View bg="white" padding="1" alignItems="center" borderBottomRadius={50}>
-          <Image
-            style={{
-              width: 300,
-              height: 280,
-            }}
-            alt="image"
-            source={require("../../assets/logo.png")}
-          />
+    <LinearGradient colors={["#228B29", "#6A9"]} style={LoginStyles.container}>
+      <VStack flex={1} space={3} alignItems="start">
+        <View
+          bg="white"
+          padding="8"
+          alignItems="center"
+          borderBottomRadius={99}
+        >
+          <Image alt="image" source={require("../../assets/logo.png")} />
         </View>
         <View>
-          <Text fontSize="xl" style={LoginStyles.heading}>
+          <Text
+            fontSize="xl"
+            fontWeight="extraBlack"
+            style={LoginStyles.heading}
+          >
             GreenSage Connect Login
           </Text>
         </View>
-        <View>
+        <View marginTop="6">
           <TextInputIcon
             type="text"
             placeholder="Username/Phone Number"
@@ -150,30 +156,50 @@ function Login() {
         >
           <Button
             style={RegisterStyles.button}
-            backgroundColor="#228B29"
-            // pressed animation
-            _pressed={{
-              backgroundColor: "#6A9",
-              _text: {
-                color: "black",
-              },
-            }}
+            fontFamily="OpenSans"
             disabled={loading}
             onPress={handleSubmit(handleSubmitButton)}
           >
-            {loading && <Spinner color="white" />}
-            {loading ? "Signing in" : "Login"}
+            {loading ? (
+              <Spinner color="white" />
+            ) : (
+              <Text
+                color="white"
+                fontFamily="OpenSans"
+                letterSpacing={1}
+                fontWeight="300"
+              >
+                Login
+              </Text>
+            )}
           </Button>
         </View>
-        <Divider width="70%" mx="auto" bgColor="black" />
+        <Divider width="70%" mx="auto" bgColor="black" marginY="4" />
         <View style={LoginStyles.linkView}>
-          <Text>Don't have an account?</Text>
+          <Text
+            style={{
+              fontFamily: "OpenSans",
+              fontSize: 15,
+            }}
+          >
+            Don't have an account?
+          </Text>
           <Link href="/Auth/register" style={LoginStyles.link}>
             Register
           </Link>
         </View>
+        <View
+          marginBottom={5}
+          flexDirection="column-reverse"
+          alignItems="center"
+          flex={1}
+        >
+          <Text fontFamily="OpenSans" fontSize={11} color="coolGray.700">
+            Greensage Connect @{new Date().getFullYear()}
+          </Text>
+        </View>
       </VStack>
-    </LinearGradient >
+    </LinearGradient>
   );
 }
 export default Login;

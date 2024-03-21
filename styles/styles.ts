@@ -1,12 +1,9 @@
-import { AlignCenter } from "lucide-react-native";
-import { Center } from "native-base";
 import { StyleSheet } from "react-native";
-import GreenHouse from '../app/GreenHouse/data';
 
 const HomeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 10,
   },
 });
@@ -17,60 +14,57 @@ const PasswordInputStyles = StyleSheet.create({
     margin: 12,
     borderWidth: 3,
     borderColor: "#000",
-  }
+  },
 });
 
 const notification = StyleSheet.create({
   testStyle: {
     padding: 15,
-    width: '100%',
-    color: '#000',
+    width: "100%",
+    color: "#000",
     fontSize: 30,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    paddingLeft: 100
+    textAlign: "center",
+    fontWeight: "bold",
+    paddingLeft: 100,
   },
   itemstyle: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     padding: 15,
-    backgroundColor: '#AA9B9B',
+    backgroundColor: "#AA9B9B",
     marginBottom: 2,
     marginLeft: 5,
     marginEnd: 5,
     borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 20
-
+    borderColor: "black",
+    borderRadius: 20,
   },
   imagestyle: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 50,
   },
   imageView: {
     width: 60,
     height: 60,
     borderRadius: 20 / 2,
-
-
-  }
-})
+  },
+});
 const ButtonStyle = StyleSheet.create({
   register: {
     height: "auto",
     margin: 12,
     borderWidth: 3,
-    borderColor: '#f00',
-    color: '#f00'
-  }
-})
+    borderColor: "#f00",
+    color: "#f00",
+  },
+});
 const inputText = StyleSheet.create({
   input: {
-    borderRadius: 15
-  }
-})
+    borderRadius: 15,
+  },
+});
 const LoginStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -79,6 +73,9 @@ const LoginStyles = StyleSheet.create({
     paddingTop: 5,
     textAlign: "center",
     color: "#fff",
+    fontFamily: "OpenSans",
+    letterSpacing: 1,
+    fontWeight: "500",
   },
   icon: {
     borderColor: "#000",
@@ -86,7 +83,6 @@ const LoginStyles = StyleSheet.create({
     padding: 10,
   },
   input: {
-    textDecorationLine: "underline",
     borderColor: "#000",
     borderWidth: 1,
   },
@@ -94,20 +90,24 @@ const LoginStyles = StyleSheet.create({
     width: 150, // Set width as needed
     height: 50, // Set height as needed
     borderWidth: 1, // Border width
-    borderColor: '#000', // Border color
+    borderColor: "#000", // Border color
     borderBottomLeftRadius: 20, // Border radius
     borderBottomRightRadius: 20, // Border radius
     // not pressed background color to green
   },
   link: {
+    fontFamily: "OpenSans",
     color: "#fff",
     textDecorationLine: "underline",
+    fontSize: 15,
+    fontWeight: "bold",
   },
   linkView: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
+    borderColor: "black",
     gap: 7,
   },
   inputField: {
@@ -115,7 +115,7 @@ const LoginStyles = StyleSheet.create({
     paddingBottom: 20,
     flexDirection: "column",
     rowGap: 10,
-  }
+  },
 });
 const RegisterStyles = StyleSheet.create({
   container: {
@@ -125,7 +125,7 @@ const RegisterStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     // gradient
-    color: "#fff"
+    color: "#fff",
   },
   icon: {
     borderColor: "#000",
@@ -137,12 +137,13 @@ const RegisterStyles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    borderColor: '#000',
+    flexDirection: "row",
+    borderColor: "#000",
     borderWidth: 1,
-    // backgroundColor: '#10670F',
+    backgroundColor: "#228B29",
     width: 150,
     borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15
+    borderBottomRightRadius: 15,
   },
   link: {
     textDecorationLine: "underline",
@@ -150,6 +151,7 @@ const RegisterStyles = StyleSheet.create({
     color: "#fff",
   },
   linkView: {
+    marginTop: 5,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
@@ -157,16 +159,24 @@ const RegisterStyles = StyleSheet.create({
     gap: 7,
   },
   selecStyle: {
-    borderColor: '#000',
+    borderColor: "#000",
     borderWidth: 1.7,
     borderRadius: 5,
-  }
+  },
 });
 
 const GreenHouseContainerStyles = StyleSheet.create({
   addButton: {
-    paddingEnd: 10
-  }
+    paddingEnd: 10,
+  },
 });
 
-export { HomeStyles, PasswordInputStyles, ButtonStyle, LoginStyles, RegisterStyles, notification, GreenHouseContainerStyles };
+export {
+  HomeStyles,
+  PasswordInputStyles,
+  ButtonStyle,
+  LoginStyles,
+  RegisterStyles,
+  notification,
+  GreenHouseContainerStyles,
+};

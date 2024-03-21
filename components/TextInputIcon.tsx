@@ -9,7 +9,15 @@ export default function TextInputIcon(props: IInputComponentType) {
         style={LoginStyles.input}
         borderColor={"black"}
         {...props}
+        fontFamily="OpenSans"
+        letterSpacing="1"
+        placeholderTextColor="coolGray.200"
+        _focus={{
+          borderWidth: 2,
+          borderColor: "black",
+          focusOutlineColor: "text.200",
+        }}
       />
     </Box>
-  )
+  );
 }

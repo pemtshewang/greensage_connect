@@ -1,4 +1,15 @@
-import { Button, View, Text, Box, VStack, HStack, Checkbox, Divider, Spinner, ScrollView, } from "native-base";
+import {
+  Button,
+  View,
+  Text,
+  Box,
+  VStack,
+  HStack,
+  Checkbox,
+  Divider,
+  Spinner,
+  ScrollView,
+} from "native-base";
 import { RegisterStyles } from "../../styles/styles";
 import React, { useState } from "react";
 import createToast from "../../hooks/toast";
@@ -53,7 +64,7 @@ function Register() {
     if (locationPermission) {
       const location = await getLocation();
       formData.append("lat", location?.lat as string);
-      formData.append("long", location?.long as string)
+      formData.append("long", location?.long as string);
     }
     formData.append("username", data.username);
     formData.append("password", data.password);
@@ -63,7 +74,7 @@ function Register() {
     formData.append("gewog", data.gewog);
     const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/user`, {
       method: "POST",
-      body: formData
+      body: formData,
     });
     if (res.ok) {
       const data = await res.json();
@@ -73,7 +84,7 @@ function Register() {
     } else {
       toastMessage({
         type: "error",
-        message: "Registration Failed"
+        message: "Registration Failed",
       });
     }
     setLoading(false);
@@ -91,11 +102,21 @@ function Register() {
   return (
     <OTPContext.Provider value={{ id, setID }}>
       <LinearGradient colors={["#228929", "#6A9"]} style={{ flex: 1 }}>
-        <OTPModal mobile={data.phoneNumber} otp={Number(otp)} modalVisible={isOTPModalVisible} setModalVisible={setOTPModalVisible} />
+        <OTPModal
+          mobile={data.phoneNumber}
+          otp={Number(otp)}
+          modalVisible={isOTPModalVisible}
+          setModalVisible={setOTPModalVisible}
+        />
         <ScrollView>
           <VStack space={1} paddingX={10}>
             <View mb="3" paddingTop="5">
-              <Text textAlign="center" fontSize="xl" style={{ color: '#fff' }}>
+              <Text
+                fontFamily="OpenSans"
+                textAlign="center"
+                fontSize="xl"
+                style={{ color: "#fff" }}
+              >
                 Register to GreenSage Connect
               </Text>
             </View>
@@ -158,9 +179,10 @@ function Register() {
                   borderWidth: 2,
                   borderColor: "#000",
                 }}
+                fontFamily="OpenSans"
                 searchPlaceholder={"Search Dzongkhag"}
                 notFoundText={"Dzongkhag Not found"}
-                inputStyles={{ color: `${category ? "#000" : "#A0A0A0"}` }}
+                inputStyles={{ color: `${category ? "#000" : "#f5efdf"}` }}
                 dropdownTextStyles={{ color: "#E5E5E5" }}
                 setSelected={setCategory}
                 onSelect={() => {
@@ -168,6 +190,7 @@ function Register() {
                 }}
                 data={categories}
                 placeholder={"Select Dzongkhag"}
+                save="value"
               />
               <Text style={{ color: "#f55" }}>
                 {errors.dzongkhag?.message?.toString()}
@@ -180,18 +203,25 @@ function Register() {
                   borderWidth: 2,
                   borderColor: "#000",
                 }}
+                dropdownStyles={{
+                  borderColor: "black",
+                }}
                 searchPlaceholder={"Search Geog"}
                 notFoundText={"Gewog Not found"}
-                inputStyles={{ color: `${subcategory ? "#000" : "#A0A0A0"}` }}
+                inputStyles={{ color: `${subcategory ? "#000" : "#f5efdf"}` }}
+                data={subCategories[category]}
                 dropdownTextStyles={{ color: "#E5E5E5" }}
+                setSelected={(val) => {
+                  console.log(val);
+                  setSubCategory(val);
+                }}
+                save="value"
                 onSelect={() => {
                   handleData({
                     ...data,
-                    gewog: subCategories[data.dzongkhag][subcategory].value,
+                    gewog: subCategories[category][subcategory],
                   });
                 }}
-                setSelected={setSubCategory}
-                data={subCategories[category]}
                 placeholder={"Select Gewog"}
               />
               <Text style={{ color: "#f55" }}>
@@ -242,11 +272,24 @@ function Register() {
                   isChecked={termsAccepted}
                   onChange={() => setTermsAccepted(!termsAccepted)}
                 >
-                  I accept the <Pressable onPress={() => settcFormVisible(true)} ><Text underline color="white">terms & conditions</Text></Pressable>
+                  <Text fontFamily="OpenSans" fontSize={15}>
+                    I accept the
+                  </Text>
+                  <Pressable onPress={() => settcFormVisible(true)}>
+                    <Text
+                      fontSize={15}
+                      underline
+                      fontFamily="OpenSans"
+                      color="white"
+                    >
+                      terms & conditions
+                    </Text>
+                  </Pressable>
                 </Checkbox>
               </HStack>
               <HStack space={6}>
                 <Checkbox
+                  fontFamily="OpenSans"
                   shadow={2}
                   value="locationPermission"
                   accessibilityLabel="location"
@@ -256,14 +299,18 @@ function Register() {
                     setLocationPermission(!locationPermission);
                   }}
                 >
-                  Provide location for admin analytics
+                  <Text fontSize={15} fontFamily="OpenSans">
+                    Provide location for admin analytics
+                  </Text>
                 </Checkbox>
               </HStack>
             </VStack>
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: "center" }} marginY="5">
               <Button
                 style={RegisterStyles.button}
-                backgroundColor={(loading || !termsAccepted) ? "#a0a0a0" : "#228B29"}
+                backgroundColor={
+                  loading || !termsAccepted ? "#a0a0a0" : "#228B29"
+                }
                 // pressed animation
                 _pressed={{
                   backgroundColor: "#6A9",
@@ -282,23 +329,32 @@ function Register() {
                     />
                     <Text color="#fff">Registering</Text>
                   </Box>
+                ) : loading || !termsAccepted ? (
+                  <>
+                    <Icons.banIcon color="#fff" />
+                  </>
                 ) : (
-                  (loading || !termsAccepted) ? (
-                    <>
-                      <Icons.banIcon color="#fff" />
-                    </>
-                  ) :
-                    <Text textAlign="center" color="#fff">
-                      Register
-                    </Text>
+                  <Text textAlign="center" color="#fff">
+                    Register
+                  </Text>
                 )}
               </Button>
             </View>
             <Divider width="70%" mx="auto" bgColor="black" />
             <View style={RegisterStyles.linkView}>
-              <Text>Already have an account?</Text>
+              <Text fontSize={15} fontFamily="OpenSans">
+                Already have an account?
+              </Text>
               <Link href="/Auth/login" style={RegisterStyles.link}>
-                Login
+                <Text
+                  color="#fff"
+                  fontWeight="800"
+                  letterSpacing={1}
+                  fontSize={15}
+                  fontFamily="OpenSans"
+                >
+                  Login
+                </Text>
               </Link>
             </View>
           </VStack>
