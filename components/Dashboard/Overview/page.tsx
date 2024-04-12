@@ -105,7 +105,7 @@ const OverviewChart = () => {
                       stopSpinAnimation();
                     });
                 }}>
-                <Text fontSize={11}>Refresh Chart</Text>
+                <Text fontSize={11} fontFamily="OpenSans">Refresh Chart</Text>
                 <Animated.View style={{ transform: [{ rotate: spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] }) }] }}>
                   <Icons.syncArrow color="black" />
                 </Animated.View>

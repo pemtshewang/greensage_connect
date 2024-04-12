@@ -140,30 +140,27 @@ const IrrigationSlotContainer = ({
     setRepetitionDays(newRepetitionDays);
   };
   return (
-    <View flexDirection="column" alignItems="center">
-      <View flexDirection="row" alignItems="center">
-        <Badge colorScheme="info">Scheduler</Badge>
+    <View flexDirection="column">
+      <View flexDirection="row" justifyContent="center">
+        <Badge colorScheme="green">Scheduler</Badge>
         <Icons.timer size={32} color="black" />
       </View>
-      <View flexDirection="row" alignItems="center" justifyContent="center" padding="5">
+      <View flexDirection="row" justifyContent="space-between" paddingY="5">
         {
           daysOfWeek.map((day) => {
             return (
               <TouchableOpacity
                 key={day.value}
-                onPress={() => {
-                  toggleDay(day.value);
-                }}
+                onPress={() => toggleDay(day.value)}
                 style={{
-                  marginLeft: 5,
-                  borderWidth: 1,
-                  borderColor: "#A0A0A0"
+                  borderRadius: 5,
                 }}
               >
                 <Badge
-                  colorScheme={
-                    repetitionDays & day.value ? "green" : "gray"
-                  }
+                  colorScheme={`${repetitionDays & day.value ? "green" : "gray"}`}
+                  marginLeft={1}
+                  borderWidth={1}
+                  borderColor={"black"}
                 >
                   {day.name}
                 </Badge>
@@ -173,7 +170,7 @@ const IrrigationSlotContainer = ({
         }
       </View>
       {repetitionDays === 0 && (
-        <Text color="red.500">
+        <Text textAlign="center" color="red.500">
           Please select a valid day(s)
         </Text>
       )
@@ -238,7 +235,7 @@ const IrrigationSlotContainer = ({
           </Pressable>
         </View>
       </View>
-      <View padding="5" flexDirection="column" justifyContent="center" style={{
+      <View padding="5" flexDirection="column" alignItems="center" justifyContent="center" style={{
         gap: 5
       }}>
         <Button
@@ -252,9 +249,9 @@ const IrrigationSlotContainer = ({
       </View>
       {
         err && (
-          <View flexDirection="row">
+          <View flexDirection="row" justifyContent="center">
             <Icons.danger size={20} color="red" />
-            <Text marginRight="3" color="red.500">{err}</Text>
+            <Text textAlign="center" marginRight="3" color="red.500">{err}</Text>
           </View>
         )
       }

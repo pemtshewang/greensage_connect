@@ -8,7 +8,6 @@ export default function TextInputIcon(props: IInputComponentType) {
       <Input
         style={LoginStyles.input}
         borderColor={"black"}
-        {...props}
         fontFamily="OpenSans"
         letterSpacing="1"
         placeholderTextColor="coolGray.200"
@@ -17,6 +16,7 @@ export default function TextInputIcon(props: IInputComponentType) {
           borderColor: "black",
           focusOutlineColor: "text.200",
         }}
+        {...props}
       />
     </Box>
   );

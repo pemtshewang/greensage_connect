@@ -15,12 +15,14 @@ const SettingsIndex = () => {
       <Divider />
       <BrokerConfigDisplay />
       <Divider />
-      <Box flex="1" marginX="3" marginY="5">
-        <Text borderRadius={7} padding="2" fontWeight="bold" fontSize="md">About the application</Text>
+      <Box marginX="3" marginY="2">
+        <Text borderRadius={7} fontWeight="bold" fontSize="md">
+          About the application
+        </Text>
       </Box>
       <AboutPage />
     </View>
-  )
-}
+  );
+};
 
 export default SettingsIndex;

@@ -54,8 +54,8 @@ const UserProfile = () => {
           fetching ? (
             <Skeleton w="1/2" paddingX="1" h="3" />
           ) : (
-            <Text>
-              Session for user: {values?.username}
+            <Text bold>
+              User: {values?.username}
             </Text>
           )
         }

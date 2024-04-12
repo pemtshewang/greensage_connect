@@ -31,10 +31,10 @@ const signIn = async (data: LoginSchemaType) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      cache: "no-store",
     },
   );
   if (res.ok) {
-    await save("brokerPassword", data.password.trim());
     const result = await res.json();
     return result;
   }
@@ -46,35 +46,34 @@ function Login() {
   const router = useRouter();
   const { toastMessage } = createToast();
   const handleSubmitButton = async (data: LoginSchemaType) => {
-    router.push("/tabs/Home");
-    // setLoading(true);
-    // try {
-    //   const res = await signIn(data);
-    //   if (res) {
-    //     toastMessage({
-    //       type: "success",
-    //       message: "Login Successful",
-    //     });
-    //     save("token", JSON.stringify(res));
-    //     setTimeout(() => {
-    //       setLoading(false);
-    //       router.push("/tabs/Home");
-    //     }, 1000);
-    //   } else {
-    //     setLoading(false);
-    //     toastMessage({
-    //       type: "error",
-    //       message: "Invalid Username or Password",
-    //     });
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    //   setLoading(false);
-    //   toastMessage({
-    //     type: "error",
-    //     message: "Something went wrong",
-    //   });
-    // }
+    setLoading(true);
+    try {
+      const res = await signIn(data);
+      if (res) {
+        toastMessage({
+          type: "success",
+          message: "Login Successful",
+        });
+        save("token", JSON.stringify(res));
+        setTimeout(() => {
+          setLoading(false);
+          router.push("/tabs/Home");
+        }, 1000);
+      } else {
+        setLoading(false);
+        toastMessage({
+          type: "error",
+          message: "Invalid Username or Password",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      toastMessage({
+        type: "error",
+        message: "Something went wrong",
+      });
+    }
   };
   // Form Validation
   const [data, handleData] = useState<LoginSchemaType>({
@@ -95,11 +94,18 @@ function Login() {
       <VStack flex={1} space={3} alignItems="start">
         <View
           bg="white"
-          padding="8"
-          alignItems="center"
+          padding="3"
+          flexDirection="row-reverse"
+          justifyContent="center"
           borderBottomRadius={99}
         >
-          <Image alt="image" source={require("../../assets/logo.png")} />
+          <Image
+            marginLeft="6"
+            alt="image"
+            width={280}
+            height={280}
+            source={require("../../assets/logo.png")}
+          />
         </View>
         <View>
           <Text
@@ -125,7 +131,7 @@ function Login() {
               handleData({ ...data, username: text })
             }
           />
-          <Text style={{ color: "#f77" }} textAlign="center">
+          <Text style={{ color: "#f22" }} textAlign="center">
             {errors.username?.message?.toString()}
           </Text>
         </View>
@@ -144,7 +150,7 @@ function Login() {
               handleData({ ...data, password: text })
             }
           />
-          <Text style={{ color: "#f77" }} textAlign="center">
+          <Text style={{ color: "#f22" }} textAlign="center">
             {errors.password?.message?.toString()}
           </Text>
         </View>

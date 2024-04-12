@@ -7,7 +7,6 @@ import {
   HStack,
   Checkbox,
   Divider,
-  Spinner,
   ScrollView,
 } from "native-base";
 import { RegisterStyles } from "../../styles/styles";
@@ -27,7 +26,8 @@ import Icons from "../../assets/Icons/Icons";
 import { categories, subCategories } from "../../api/data/dzongkhag";
 import { SelectList } from "react-native-dropdown-select-list";
 import getLocation from "../../utils/getlocation";
-import { Pressable } from "react-native";
+import { ActivityIndicator, Pressable } from "react-native";
+import { TCModal } from "../../components/TermsAndCondition";
 
 function Register() {
   const [category, setCategory] = React.useState("");
@@ -36,7 +36,6 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [isOTPModalVisible, setOTPModalVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false); //
-  const [otp, setOtp] = useState<number>();
   const [id, setID] = useState("");
   const [tcFormVisible, settcFormVisible] = useState(false);
   const { toastMessage } = createToast();
@@ -59,7 +58,7 @@ function Register() {
   });
 
   const handleSubmitButton = async (data: SignUpSchemaType) => {
-    // setLoading(false);
+    setLoading(true);
     const formData = new FormData();
     if (locationPermission) {
       const location = await getLocation();
@@ -70,7 +69,7 @@ function Register() {
     formData.append("password", data.password);
     formData.append("mobile", data.phoneNumber);
     formData.append("cid", data.idNumber);
-    formData.append("dzongkhag", data.idNumber);
+    formData.append("dzongkhag", data.dzongkhag);
     formData.append("gewog", data.gewog);
     const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}/api/user`, {
       method: "POST",
@@ -79,7 +78,6 @@ function Register() {
     if (res.ok) {
       const data = await res.json();
       setID(data?.id);
-      setOtp(data?.code);
       setOTPModalVisible(true);
     } else {
       toastMessage({
@@ -104,7 +102,6 @@ function Register() {
       <LinearGradient colors={["#228929", "#6A9"]} style={{ flex: 1 }}>
         <OTPModal
           mobile={data.phoneNumber}
-          otp={Number(otp)}
           modalVisible={isOTPModalVisible}
           setModalVisible={setOTPModalVisible}
         />
@@ -212,16 +209,19 @@ function Register() {
                 data={subCategories[category]}
                 dropdownTextStyles={{ color: "#E5E5E5" }}
                 setSelected={(val) => {
-                  console.log(val);
                   setSubCategory(val);
-                }}
-                save="value"
-                onSelect={() => {
                   handleData({
                     ...data,
-                    gewog: subCategories[category][subcategory],
+                    gewog: val,
                   });
                 }}
+                save="value"
+                // onSelect={() => {
+                //   handleData({
+                //     ...data,
+                //     gewog: subCategories[category][subcategory],
+                //   });
+                // }}
                 placeholder={"Select Gewog"}
               />
               <Text style={{ color: "#f55" }}>
@@ -322,12 +322,8 @@ function Register() {
                 onPress={handleSubmit(handleSubmitButton)}
               >
                 {loading ? (
-                  <Box flexDirection="row">
-                    <Spinner
-                      accessibilityLabel="Loading posts"
-                      color="emerald.500"
-                    />
-                    <Text color="#fff">Registering</Text>
+                  <Box flexDirection="row" justifyContent="center">
+                    <ActivityIndicator color="white" />
                   </Box>
                 ) : loading || !termsAccepted ? (
                   <>
@@ -359,6 +355,10 @@ function Register() {
             </View>
           </VStack>
         </ScrollView>
+        <TCModal
+          modalVisible={tcFormVisible}
+          setModalVisible={settcFormVisible}
+        />
       </LinearGradient>
     </OTPContext.Provider>
   );

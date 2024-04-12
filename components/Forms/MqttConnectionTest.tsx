@@ -8,7 +8,11 @@ import { useRouter } from "expo-router";
 import { Text } from "native-base";
 import { useMqtt } from "../../hooks/mqtt";
 import { BaseStore } from "../../zustand/store";
-import { ConnectionType, GreenhouseState, IrrigationControllerState } from "../../zustand/state";
+import {
+  ConnectionType,
+  GreenhouseState,
+  IrrigationControllerState,
+} from "../../zustand/state";
 import { getValueFor } from "../../securestore";
 
 type ConnectionMsgTypes =
@@ -43,10 +47,11 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
   });
   useEffect(() => {
     if (connected) {
-      router.push(`/tabs/Home/${type}/${id}`)
+      router.push(`/tabs/Home/${type}/${id}`);
     }
     getValueFor("token").then((res) => {
       const token = JSON.parse(res as string);
+      console.log(token);
       setMqttBroker({
         brokerURL: token.brokerIp,
         brokerPort: token.brokerPort,
@@ -55,7 +60,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
       });
     });
   }, [connected]);
-  const mqtt = useMqtt({ id: id, type });
+  const mqtt = useMqtt({ id: id });
   const router = useRouter();
   const testConnection = async () => {
     setConnecting(true);
@@ -71,7 +76,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
       setConnected(true);
       setConMsg("Connected");
       setShowForm(false);
-      router.push(`/tabs/Home/${type}/${id}`)
+      router.push(`/tabs/Home/${type}/${id}`);
     } catch (error) {
       setConnected(false);
       setConMsg("Connection Failed");
@@ -81,7 +86,8 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
   };
 
   return (
-    <CustomModal modalTitle={`MQTT Connection Test`}
+    <CustomModal
+      modalTitle={`MQTT Connection Test`}
       modalVisible={showForm}
       setModalVisible={setShowForm}
     >
@@ -97,10 +103,10 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
         <Text
           style={{
             width: "100%",
-            textAlign: "center"
+            textAlign: "center",
           }}
         >
-          Testing connection with {mqttBroker.brokerURL}
+          Connection Test for {mqttBroker.brokerURL}
         </Text>
         <Pressable
           disabled={connecting || connected}
@@ -121,14 +127,14 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
             },
             Platform.OS === "ios"
               ? {
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 4,
-                  height: 9,
-                },
-                shadowOpacity: 1,
-                shadowRadius: 3,
-              }
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 4,
+                    height: 9,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 3,
+                }
               : {}, // Android might not need these shadow properties if elevation is set
           ]}
         >

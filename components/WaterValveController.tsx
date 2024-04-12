@@ -1,22 +1,21 @@
-import { View, Badge, Text } from "native-base"
-import Icons from "../assets/Icons/Icons"
+import { View, Badge, Text } from "native-base";
+import Icons from "../assets/Icons/Icons";
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
 import { useEffect, useRef, useState } from "react";
 
 export default function WaterValveControllerContainer({
   state,
-  setState
+  setState,
 }: {
-  state: boolean,
-  setState: (state: boolean) => void
+  state: boolean;
+  setState: (state: boolean) => void;
 }) {
   const [switchState, setSwitchState] = useState<boolean>(state as boolean);
-  const [value, setValue] = useState();
   const toggleSwitchState = () => {
     setSwitchState(!switchState);
     setState(switchState);
-  }
+  };
   const translation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function WaterValveControllerContainer({
       } else {
         stopDropletAnimation();
       }
-    }
+    };
     const animationFrameId = requestAnimationFrame(handleAnimation);
     return () => cancelAnimationFrame(animationFrameId);
   }, [state]);
@@ -39,8 +38,8 @@ export default function WaterValveControllerContainer({
         duration: 1000,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
-    ).start()
+      }),
+    ).start();
   };
 
   const stopDropletAnimation = () => {
@@ -51,16 +50,14 @@ export default function WaterValveControllerContainer({
 
   return (
     <View
-      padding="1"
       style={{
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
-        width: "100%",
-      }}>
+      }}
+    >
       <View
-        w="100%"
         style={{
           flexDirection: "row",
           gap: 4,
@@ -70,14 +67,18 @@ export default function WaterValveControllerContainer({
             width: 0,
             height: 4,
           },
+          position: "relative",
           shadowOpacity: 0.3,
           shadowRadius: 4,
           elevation: 8, // Required for Android
           backgroundColor: "#fff", // Add a background color if not already specified
-          padding: 10, // Adjust padding as needed
-          borderRadius: 20
-
-        }}>
+          borderRadius: 20,
+          padding: 10,
+          marginTop: 10,
+          marginLeft: 10,
+          marginRight: 10,
+        }}
+      >
         <View
           w="10"
           marginRight="5"
@@ -85,30 +86,30 @@ export default function WaterValveControllerContainer({
           justifyContent="center"
           alignItems="center"
           style={{
-            gap: 4
+            gap: 4,
+            position: "absolute",
           }}
         >
-          <Icons.powerState color={state ? "green" : "red"} />
-          <View style={{
-            position: "relative"
-          }}
+          <View
+            style={{
+              position: "relative",
+            }}
           >
-            <Icons.waterTap
-              width={32}
-              height={32}
-            />
-            {
-              state ? (
-                <Animated.View style={{
+            <Icons.waterTap width={32} height={32} />
+            {state ? (
+              <Animated.View
+                style={{
                   position: "absolute",
                   bottom: -5,
                   left: -2,
-                  transform: [{ translateY: translation }]
-                }}>
-                  <Icons.droplets width={16} height={16} fill="lightblue" />
-                </Animated.View>
-              ) : (<></>)
-            }
+                  transform: [{ translateY: translation }],
+                }}
+              >
+                <Icons.droplets width={16} height={16} fill="lightblue" />
+              </Animated.View>
+            ) : (
+              <></>
+            )}
           </View>
         </View>
         <View
@@ -116,24 +117,23 @@ export default function WaterValveControllerContainer({
             flexDirection: "column",
             flex: 1,
             alignItems: "center",
-            justifyContent: "center"
-          }}>
-          <Badge
-            colorScheme="info"
+            justifyContent: "center",
+          }}
+        >
+          <Badge colorScheme="green">Water Valve Regulator</Badge>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 20,
+            }}
           >
-            Manual On and Off
-          </Badge>
-          <View style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 20
-          }}>
             <Switch
               style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
               }}
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={state ? 'green' : '#f33'}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={state ? "green" : "#f33"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitchState}
               value={switchState}
@@ -142,5 +142,5 @@ export default function WaterValveControllerContainer({
         </View>
       </View>
     </View>
-  )
+  );
 }

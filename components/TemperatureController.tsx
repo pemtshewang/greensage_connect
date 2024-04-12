@@ -1,5 +1,5 @@
-import { View, Badge } from "native-base"
-import Icons from "../assets/Icons/Icons"
+import { View, Badge } from "native-base";
+import Icons from "../assets/Icons/Icons";
 import { Easing, Switch } from "react-native";
 import { Animated } from "react-native";
 import { useEffect, useRef, useState } from "react";
@@ -8,14 +8,14 @@ export default function TemperatureControllerContainer({
   state,
   setState,
 }: {
-  state: boolean | undefined,
-  setState: () => void,
+  state: boolean | undefined;
+  setState: () => void;
 }) {
   const [switchState, setSwitchState] = useState<boolean>(state as boolean);
   const toggleSwitchState = () => {
     setSwitchState(!switchState);
     setState();
-  }
+  };
   const rotation = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     const handleAnimation = () => {
@@ -24,7 +24,7 @@ export default function TemperatureControllerContainer({
       } else {
         stopRotationAnimation();
       }
-    }
+    };
     const animationFrameId = requestAnimationFrame(handleAnimation);
     return () => cancelAnimationFrame(animationFrameId);
   }, [state]);
@@ -37,7 +37,7 @@ export default function TemperatureControllerContainer({
         duration: 1000,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     ).start();
   };
 
@@ -49,7 +49,7 @@ export default function TemperatureControllerContainer({
 
   const spin = rotation.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
   return (
     <View
@@ -59,7 +59,8 @@ export default function TemperatureControllerContainer({
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
-      }}>
+      }}
+    >
       <View
         w="100%"
         style={{
@@ -76,8 +77,10 @@ export default function TemperatureControllerContainer({
           elevation: 8, // Required for Android
           backgroundColor: "#fff", // Add a background color if not already specified
           padding: 10, // Adjust padding as needed
-          borderRadius: 20
-        }}>
+          borderRadius: 20,
+          position: "relative"
+        }}
+      >
         <View
           w="10"
           marginRight="5"
@@ -85,10 +88,12 @@ export default function TemperatureControllerContainer({
           justifyContent="center"
           alignItems="center"
           style={{
-            gap: 4
+            gap: 4,
+            position: "absolute",
+            right: 5,
+            bottom: "40%"
           }}
         >
-          <Icons.powerState color={state ? "green" : "red"} />
           <View
             style={{
               borderColor: "black",
@@ -106,21 +111,24 @@ export default function TemperatureControllerContainer({
             flexDirection: "column",
             flex: 1,
             alignItems: "center",
-            justifyContent: "center"
-          }}>
-          <Badge colorScheme="info">Manual On and Off</Badge>
-          <View style={{
-            flexDirection: "row",
-            alignItems: "center",
             justifyContent: "center",
-            gap: 20
-          }}>
+          }}
+        >
+          <Badge colorScheme="green">Circulation Fan</Badge>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 20,
+            }}
+          >
             <Switch
               style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
               }}
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={state ? 'green' : '#f33'}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={state ? "green" : "#f33"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitchState}
               value={switchState}
@@ -128,6 +136,6 @@ export default function TemperatureControllerContainer({
           </View>
         </View>
       </View>
-    </View >
-  )
+    </View>
+  );
 }

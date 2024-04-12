@@ -12,7 +12,6 @@ const CustomModal = ({
   modalTitle: string;
   children: React.ReactNode;
 }) => {
-
   return (
     <Modal
       isOpen={modalVisible}

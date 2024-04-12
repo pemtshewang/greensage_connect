@@ -1,30 +1,28 @@
-import React from 'react';
-import { Box, VStack } from 'native-base';
-import { View, TouchableOpacity, Linking } from 'react-native';
-import { Text } from 'native-base';
-import { CopyrightIcon } from 'lucide-react-native';
-import { HStack } from 'native-base';
-import Icons from '../assets/Icons/Icons';
+import React from "react";
+import { Box, VStack } from "native-base";
+import { View, TouchableOpacity, Linking } from "react-native";
+import { Text } from "native-base";
+import { CopyrightIcon } from "lucide-react-native";
+import { HStack } from "native-base";
+import Icons from "../assets/Icons/Icons";
 
-const AboutPage = ({
-}: {
-  }) => {
+const AboutPage = ({ }: {}) => {
   const handleContactPress = (contactType: string) => {
     switch (contactType) {
-      case 'email':
-        Linking.openURL('mailto:pemtshewang500@gmail.com');
+      case "email":
+        Linking.openURL("mailto:pemtshewang500@gmail.com");
         break;
-      case 'linkedin':
+      case "linkedin":
         // Replace 'your-linkedin-profile' with your actual LinkedIn profile URL
-        Linking.openURL('https://www.linkedin.com/in/pemtshewang');
+        Linking.openURL("https://www.linkedin.com/in/pemtshewang");
         break;
-      case 'github':
+      case "github":
         // Replace 'your-github-profile' with your actual GitHub profile URL
-        Linking.openURL('https://github.com/pemtshewang');
+        Linking.openURL("https://github.com/pemtshewang");
         break;
-      case 'x':
+      case "x":
         // Replace 'your-custom-link' with the actual URL you want to open
-        Linking.openURL('https://x.com/pemtshewang_4');
+        Linking.openURL("https://x.com/pemtshewang_4");
         break;
       default:
         break;
@@ -33,16 +31,21 @@ const AboutPage = ({
 
   return (
     <VStack space={5} padding="3">
-      <Text bold>
-        GreenSage Connect is a cutting-edge IoT application that leverages MQTT and WebSocket technologies to provide seamless connectivity and control for smart agriculture automation.
-      </Text>
+      <View>
+        <Text selectable fontWeight="medium" italic>
+          GreenSage Connect is a cutting-edge IoT application that leverages
+          MQTT and WebSocket technologies to provide seamless connectivity and
+          control for smart agriculture automation. To know more, visit
+        </Text>
+        <Text underline selectable>https://greensage-connect-nine.vercel.app</Text>
+      </View>
       {/* Additional information */}
       <Box>
-        <Text bold>Lead Developer and Tester:</Text>
+        <Text bold>Lead Developer:</Text>
         <Text>Pem Tshewang</Text>
       </Box>
       <Box>
-        <Text bold>Developer and UI Designers:</Text>
+        <Text bold>Contributors:</Text>
         <Text>Sonam Dema</Text>
         <Text>Thinley Choden</Text>
         <Text>Deki Wangmo</Text>
@@ -55,16 +58,16 @@ const AboutPage = ({
       <Box>
         <Text bold>Reach Me At:</Text>
         <HStack space="5" padding="2">
-          <TouchableOpacity onPress={() => handleContactPress('email')}>
+          <TouchableOpacity onPress={() => handleContactPress("email")}>
             <Icons.gmail size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleContactPress('linkedin')}>
+          <TouchableOpacity onPress={() => handleContactPress("linkedin")}>
             <Icons.linkedIn size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleContactPress('github')}>
+          <TouchableOpacity onPress={() => handleContactPress("github")}>
             <Icons.github size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleContactPress('x')}>
+          <TouchableOpacity onPress={() => handleContactPress("x")}>
             <Icons.XIcon width={24} height={24} color="black" />
           </TouchableOpacity>
         </HStack>
@@ -72,14 +75,16 @@ const AboutPage = ({
       {/* Your existing content here... */}
 
       {/* Add your information */}
-      <View >
+      <View>
         <Text bold>For support and bug reporting, please contact:</Text>
         <TouchableOpacity onPress={handleContactPress}>
-          <Text underline color="blue.600">pemtshewang500@gmail.com</Text>
+          <Text underline color="blue.600">
+            pemtshewang500@gmail.com
+          </Text>
         </TouchableOpacity>
       </View>
       <HStack space="2">
-        <CopyrightIcon color='black' />
+        <CopyrightIcon color="black" />
         <Text>2023 GreenSage Connect</Text>
       </HStack>
     </VStack>

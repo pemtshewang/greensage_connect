@@ -10,7 +10,10 @@ import * as ImagePicker from "expo-image-picker";
 import { Pressable } from "react-native";
 import type { GreenhouseAddFormSchemaType } from "../../types";
 import GreenhouseAddFormSchema from "../../validations/GreenhouseAddFormSchema";
-import { useGreenhouseStore, useIrrigationControllerStore } from "../../zustand/store";
+import {
+  useGreenhouseStore,
+  useIrrigationControllerStore,
+} from "../../zustand/store";
 import * as Crypto from "expo-crypto";
 import { Spinner } from "native-base";
 import { Checkbox } from "native-base";
@@ -22,7 +25,7 @@ const GreenHouseAddForm = ({
   type,
   setModalState,
 }: {
-  type: "irrigation" | "greenhouse"
+  type: "irrigation" | "greenhouse";
   setModalState: (state: boolean) => void;
 }) => {
   const [imagePath, setImage] = useState<string>("");
@@ -34,7 +37,7 @@ const GreenHouseAddForm = ({
   const [data, setData] = useState({
     id: Crypto.randomUUID().slice(0, 10),
     name: "",
-    ipAddress: "",
+    ipAddress: "192.168.4.1",
     image: imagePath,
   });
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,8 +48,8 @@ const GreenHouseAddForm = ({
       } else {
         setSynced(false);
       }
-    })
-  }, [])
+    });
+  }, []);
   const handleSubmitData = (data: GreenhouseAddFormSchemaType) => {
     setLoading(true);
 
@@ -58,35 +61,35 @@ const GreenHouseAddForm = ({
             syncToCloud({
               controllerId: data.id,
               name: data.name,
-              type: type
+              type: type,
             }).then((res) => {
               if (res) {
                 toastMessage({
                   type: "success",
-                  message: res as string
-                })
+                  message: res as string,
+                });
               } else {
                 toastMessage({
                   type: "error",
-                  message: "Failed to sync data to cloud"
-                })
+                  message: "Failed to sync data to cloud",
+                });
               }
-            })
+            });
           } else {
             toastMessage({
               type: "error",
-              message: "No internet connection"
-            })
+              message: "No internet connection",
+            });
           }
-        })
+        });
       }
       if (type === "irrigation") {
         const defaultSlotValues = {
           state: false,
           endTime: null,
           repDays: 0,
-          startTime: null
-        }
+          startTime: null,
+        };
         irrigationStore.addItem({
           id: data.id,
           name: data.name,
@@ -98,11 +101,11 @@ const GreenHouseAddForm = ({
             secondSlot: defaultSlotValues,
             thirdSlot: defaultSlotValues,
             fourthSlot: defaultSlotValues,
-            fifthSlot: defaultSlotValues
+            fifthSlot: defaultSlotValues,
           },
           synced: synced,
           ws: null,
-          connectionType: null
+          connectionType: null,
         });
       } else {
         greenhouseStore.addItem({
@@ -128,12 +131,12 @@ const GreenHouseAddForm = ({
         });
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     } finally {
       setLoading(false);
       setModalState(false);
     }
-  }
+  };
   const {
     handleSubmit,
     formState: { errors },
@@ -169,6 +172,7 @@ const GreenHouseAddForm = ({
           onChange={() => {
             setSynced(!synced);
           }}
+          fontFamily="OpenSans"
         >
           Sync it for remote access
         </Checkbox>
@@ -177,6 +181,8 @@ const GreenHouseAddForm = ({
         <TextInputIcon
           type="text"
           placeholder={`Keep a name for your ${type}`}
+          placeholderTextColor="coolGray.400"
+          letterSpacing="0"
           value={data.name}
           onChangeText={(text: string) => {
             setData({ ...data, name: text });
@@ -193,6 +199,8 @@ const GreenHouseAddForm = ({
         <TextInputIcon
           type="text"
           placeholder="Enter IP address of the controller"
+          placeholderTextColor="coolGray.400"
+          letterSpacing="0"
           value={data.ipAddress}
           onChangeText={(text: string): void => {
             setData({ ...data, ipAddress: text });
@@ -221,9 +229,7 @@ const GreenHouseAddForm = ({
           <Text>Choose an image for greenhouse</Text>
           <Icons.camera color="black" />
         </Pressable>
-        <Text color="#f00">
-          {errors.image && String(errors.image.message)}
-        </Text>
+        <Text color="#f00">{errors.image && String(errors.image.message)}</Text>
       </View>
       <View>
         <View
@@ -253,18 +259,22 @@ const GreenHouseAddForm = ({
           flexDirection: "row",
           justifyContent: "center",
           backgroundColor: "#228B29",
-          gap: 5
+          gap: 5,
         }}
       >
-        {
-          loading ? <Text color="#a0a0a0">{loadingMsg}</Text> : <Text color="white">Add {type}</Text>
-        }
-        {
-          loading && <Spinner color="white" />
-        }
+        {loading ? (
+          <Text fontFamily="OpenSans" color="#a0a0a0">
+            {loadingMsg}
+          </Text>
+        ) : (
+          <Text fontFamily="OpenSans" letterSpacing="1" color="white">
+            Add {type}
+          </Text>
+        )}
+        {loading && <Spinner color="white" />}
       </Pressable>
-    </VStack >
+    </VStack>
   );
-}
+};
 
 export default GreenHouseAddForm;

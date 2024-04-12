@@ -11,7 +11,6 @@ import { Pressable, TouchableOpacity } from "react-native";
 import SessionContext from "../../context/SessionContext";
 import { EnvironmentContext } from "../../context/envParamsContext";
 import CustomModal from "../../components/ui/Modal";
-import { BlurView } from "expo-blur";
 
 const DeleteAllNotificationPrompt = ({
   isDeletePromptVisible,
@@ -28,17 +27,18 @@ const DeleteAllNotificationPrompt = ({
       modalVisible={isDeletePromptVisible}
       modalTitle="Delete all notifications?"
     >
-      <Text>
+      <Text fontFamily="OpenSans" w="full">
         Are you sure you want to delete all notifications? (the operation is
         permananent)
       </Text>
       <HStack space={2} paddingY={5} justifyContent="flex-end">
         <Button
-          bg="green.500"
+          bg="green.600"
           onPress={() => {
             store.clearNotifications();
             setIsDeletePromptVisible(false);
           }}
+          fontFamily="OpenSans"
         >
           Delete
         </Button>
@@ -93,17 +93,36 @@ const TabLayout = () => {
         <Tabs
           screenOptions={{
             tabBarHideOnKeyboard: true,
-            tabBarBackground: () => {
-              return <BlurView intensity={80} />;
+            tabBarStyle: {
+              marginStart: 3,
+              marginEnd: 3,
+              elevation: 8,
             },
+            tabBarActiveBackgroundColor: "#F5F5F5",
           }}
         >
           <Tabs.Screen
             name="Home"
             options={{
               headerShown: false,
+              tabBarLabelStyle: {
+                fontFamily: "OpenSans",
+              },
               tabBarIcon: ({ focused, color, size }) => (
-                <Icons.home color={focused ? "green" : "#6b7280"} size={size} />
+                <View
+                  style={{
+                    borderTopWidth: focused ? 2 : 0,
+                    padding: 4,
+                    width: "100%",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icons.home
+                    color={focused ? "green" : "#6b7280"}
+                    size={size}
+                  />
+                </View>
               ),
               tabBarActiveTintColor: "green",
             }}
@@ -111,11 +130,24 @@ const TabLayout = () => {
           <Tabs.Screen
             name="Dashboard"
             options={{
+              tabBarLabelStyle: {
+                fontFamily: "OpenSans",
+              },
               tabBarIcon: ({ focused, color, size }) => (
-                <Icons.dashboard
-                  color={focused ? "green" : "#6b7280"}
-                  size={size}
-                />
+                <View
+                  style={{
+                    borderTopWidth: focused ? 2 : 0,
+                    padding: 4,
+                    width: "100%",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icons.dashboard
+                    color={focused ? "green" : "#6b7280"}
+                    size={size}
+                  />
+                </View>
               ),
               tabBarActiveTintColor: "green",
               header: () => {
@@ -148,6 +180,9 @@ const TabLayout = () => {
               },
             }}
             options={{
+              tabBarLabelStyle: {
+                fontFamily: "OpenSans",
+              },
               headerShown: true,
               tabBarBadge:
                 notificationCount > 0 ? notificationCount : undefined,
@@ -189,11 +224,20 @@ const TabLayout = () => {
                 );
               },
               tabBarIcon: ({ focused, color, size }) => (
-                <Icons.notification
-                  color={focused ? "green" : "#6b7280"}
-                  size={size}
-                  fill={focused ? "green" : "transparent"}
-                />
+                <View
+                  style={{
+                    borderTopWidth: focused ? 2 : 0,
+                    padding: 4,
+                    width: "100%",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icons.notification
+                    color={focused ? "green" : "#6b7280"}
+                    size={size}
+                  />
+                </View>
               ),
               tabBarActiveTintColor: "green",
             }}
@@ -201,6 +245,9 @@ const TabLayout = () => {
           <Tabs.Screen
             name="Feeds"
             options={{
+              tabBarLabelStyle: {
+                fontFamily: "OpenSans",
+              },
               headerShown: true,
               header: () => {
                 return (
@@ -221,7 +268,20 @@ const TabLayout = () => {
                 );
               },
               tabBarIcon: ({ focused, color, size }) => (
-                <Icons.post color={focused ? "green" : "#6b7280"} size={size} />
+                <View
+                  style={{
+                    borderTopWidth: focused ? 2 : 0,
+                    padding: 4,
+                    width: "100%",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icons.post
+                    color={focused ? "green" : "#6b7280"}
+                    size={size}
+                  />
+                </View>
               ),
               tabBarActiveTintColor: "green",
             }}
@@ -230,6 +290,9 @@ const TabLayout = () => {
             name="Settings"
             options={{
               headerShown: true,
+              tabBarLabelStyle: {
+                fontFamily: "OpenSans",
+              },
               header: () => {
                 return (
                   <View
@@ -265,10 +328,20 @@ const TabLayout = () => {
                 );
               },
               tabBarIcon: ({ focused, color, size }) => (
-                <Icons.settings
-                  color={focused ? "green" : "#6b7280"}
-                  size={size}
-                />
+                <View
+                  style={{
+                    borderTopWidth: focused ? 2 : 0,
+                    padding: 4,
+                    width: "100%",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icons.settings
+                    color={focused ? "green" : "#6b7280"}
+                    size={size}
+                  />
+                </View>
               ),
               tabBarActiveTintColor: "green",
             }}

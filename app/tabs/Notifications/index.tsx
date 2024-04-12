@@ -50,7 +50,7 @@ const Notifications = () => {
               gap: 4
             }}>
               <Icons.notification color="#a0a0a0" />
-              <Text color="#a0a0a0">No notifications have been recieved</Text>
+              <Text color="#a0a0a0" fontFamily="OpenSans">No notifications have been recieved</Text>
             </View>
           )
       }

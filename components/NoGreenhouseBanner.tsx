@@ -1,14 +1,8 @@
-
 import React from "react";
 import { View, Text } from "react-native";
 import { Dimensions } from "react-native";
 
-const Banner = ({ message,
-  icon
-}: {
-  message: string,
-  icon: JSX.Element
-}) => {
+const Banner = ({ message, icon }: { message: string; icon: JSX.Element }) => {
   const { height } = Dimensions.get("window");
   return (
     <View
@@ -19,15 +13,20 @@ const Banner = ({ message,
         margin: 16,
       }}
     >
-      <Text style={{
-        fontSize: 11,
-        color: '#999'
-      }}>{message}</Text>
+      <Text
+        style={{
+          fontFamily: "OpenSans",
+          fontSize: 13,
+          color: "#999",
+        }}
+      >
+        {message}
+      </Text>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          padding: 10
+          padding: 10,
         }}
       >
         {icon}

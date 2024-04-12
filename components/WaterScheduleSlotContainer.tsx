@@ -164,12 +164,12 @@ const SlotContainer = ({
     setRepetitionDays(newRepetitionDays);
   };
   return (
-    <View paddingY="2" borderBottomWidth={2} padding="2">
+    <View paddingY="2" borderBottomWidth={2} >
       <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
-        <Badge colorScheme="amber">{"Slot " + slot}</Badge>
+        <Badge colorScheme="green">{"Slot " + slot}</Badge>
         <Icons.timer size={25} color="black" />
       </View>
-      <View flexDirection="row" justifyContent="center" padding="5">
+      <View flexDirection="row" justifyContent="space-between" paddingY="5" w="full">
         {/* Display selected days */}
         {daysOfWeek.map((day) => {
           return (

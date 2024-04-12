@@ -8,59 +8,73 @@ import IrrigationNavList from "../../../components/IrrigationNavList";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const IndexPage = () => {
-  const [currentList, setCurrentList] = useState<"greenhouse" | "irrigation">("greenhouse");
+  const [currentList, setCurrentList] = useState<"greenhouse" | "irrigation">(
+    "greenhouse",
+  );
   const toggleList = () => {
-    setCurrentList(state => state === "greenhouse" ? "irrigation" : "greenhouse");
-  }
+    setCurrentList((state) =>
+      state === "greenhouse" ? "irrigation" : "greenhouse",
+    );
+  };
   return (
-    <View padding="2" bg="white" style={{ flex: 1 }} >
+    <View padding="2" bg="white" style={{ flex: 1 }}>
       <View
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
+        marginTop="3"
       >
-        <View flexDirection="row" style={{
-          gap: 4
-        }}>
+        <View
+          flexDirection="row"
+          style={{
+            gap: 4,
+            marginLeft: 5,
+          }}
+        >
           <Icons.help width={20} height={20} color="black" />
-          <Text color="#A0A0A0">Click to switch to {currentList === "greenhouse" ? "irrigation" : "greenhouse"} navigator</Text>
+          <Text color="coolGray.600" fontFamily="OpenSans">
+            Click to switch to{" "}
+            {currentList === "greenhouse" ? "irrigation" : "greenhouse"} list
+          </Text>
         </View>
         <TouchableOpacity
           onPress={toggleList}
           style={{
-            width: 50,
-            height: 50,
-            backgroundColor: "green",
-            borderWidth: 2,
-            padding: 5,
-            marginEnd: 10,
-            borderRadius: 50,
-            alignItems: "center",
-            marginRight: 10,
+            width: 60,
+            height: 60,
+            backgroundColor: "#8CC6A8",
+            elevation: 8,
             shadowColor: "#000",
-            shadowOffset: 10,
-            elevation: 8
+            shadowOffset: {
+              width: 80,
+              height: 80,
+            },
+            marginEnd: 10,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 50,
           }}
         >
-          {
-            currentList === "greenhouse" ?
-              <Icons.waterIrrigation width={32} height={32} color="black" />
-              :
-              <Icons.greenhouse width={32} height={32} color="black" />
-          }
+          {currentList === "greenhouse" ? (
+            <Icons.waterIrrigation width={32} height={32} color="black" />
+          ) : (
+            <Icons.greenhouse width={32} height={32} color="black" />
+          )}
         </TouchableOpacity>
       </View>
-      <SafeAreaView style={{
-        flex: 1,
-      }}>
-        {
-          currentList === "greenhouse" ?
-            <GreenhouseList />
-            :
-            <IrrigationNavList />
-        }
+      <SafeAreaView
+        style={{
+          flex: 1,
+        }}
+      >
+        {currentList === "greenhouse" ? (
+          <GreenhouseList />
+        ) : (
+          <IrrigationNavList />
+        )}
       </SafeAreaView>
-    </View >
+    </View>
   );
 };
 export default IndexPage;

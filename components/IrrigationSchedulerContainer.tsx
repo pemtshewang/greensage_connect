@@ -1,11 +1,16 @@
-import { Badge, View, Text } from "native-base";
+import { Badge, View, Text, Divider } from "native-base";
 import { useState } from "react";
 import { useIrrigationControllerStore } from "../zustand/store";
 import { Switch } from "react-native";
 import IrrigationSlotContainer from "./IrrigationScheduleSlotContainer";
 import { ConnectionType, IWebSocket } from "../zustand/state";
 
-type ValveLabel = "firstSlot" | "secondSlot" | "thirdSlot" | "fourthSlot" | "fifthSlot";
+type ValveLabel =
+  | "firstSlot"
+  | "secondSlot"
+  | "thirdSlot"
+  | "fourthSlot"
+  | "fifthSlot";
 
 const IrrigationSchedulerContainer = ({
   id,
@@ -13,14 +18,14 @@ const IrrigationSchedulerContainer = ({
   valveLabel,
   repDays,
   prevStartTime,
-  prevEndTime
+  prevEndTime,
 }: {
-  id: string,
-  state: boolean,
-  valveLabel: ValveLabel,
-  repDays: number,
-  prevStartTime: Date | null,
-  prevEndTime: Date | null
+  id: string;
+  state: boolean;
+  valveLabel: ValveLabel;
+  repDays: number;
+  prevStartTime: Date | null;
+  prevEndTime: Date | null;
 }) => {
   const store = useIrrigationControllerStore();
   const irrigation = store.items.find((g) => g.id === id);
@@ -29,24 +34,30 @@ const IrrigationSchedulerContainer = ({
     const updatedValveState = !valveState;
     setValveState(updatedValveState);
     if (irrigation?.connectionType === ConnectionType.MQTT) {
-      const topic = "user/" + id + "/waterValve/" + valveLabel.split("S")[0] + "Valve";
+      const topic =
+        "user/" + id + "/waterValve/" + valveLabel.split("S")[0] + "Valve";
       irrigation?.ws?.sendMessage(topic, valveState ? "close" : "open");
     } else {
-      irrigation?.ws?.sendMessage(`waterValve:${valveLabel.split("S")[0] + "Valve"}:${valveState ? "close" : "open"}`);
+      irrigation?.ws?.sendMessage(
+        `waterValve:${valveLabel.split("S")[0] + "Valve"}:${valveState ? "close" : "open"}`,
+      );
     }
     store.updateItem(id, {
       ...irrigation,
       valveStates: {
         [valveLabel]: {
           state: valveState,
-        }
-      }
+        },
+      },
     });
-  }
-  const badge = valveLabel.split('S')[0][0].toUpperCase() + valveLabel.split('S')[0].slice(1,) + " Valve";
+  };
+  const badge =
+    valveLabel.split("S")[0][0].toUpperCase() +
+    valveLabel.split("S")[0].slice(1) +
+    " Valve";
   return (
     <View
-      flexDirection="row"
+      flexDirection="column"
       style={{
         shadowColor: "#000",
         shadowOffset: {
@@ -60,41 +71,59 @@ const IrrigationSchedulerContainer = ({
         borderRadius: 9,
         backgroundColor: "white",
         borderWidth: 1,
-        margin: 10
+        margin: 10,
       }}
     >
-      <View flexDirection="column" alignItems="center" w="20" style={{
-        gap: 5
-      }}>
+      <View
+        flexDirection="column"
+        alignItems="center"
+        style={{
+          gap: 5,
+        }}
+      >
         <View>
-          <Badge colorScheme="info" fontWeight="bold">{badge}</Badge>
+          <Badge colorScheme="green" fontWeight="bold">
+            {badge + " Controller"}
+          </Badge>
         </View>
-        <View>
-          <Badge colorScheme="teal" fontWeight="bold">Manual</Badge>
-        </View>
-        <View borderWidth={1} padding={3} style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 20
-        }}>
+        <View
+          padding={3}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 20,
+          }}
+        >
           <Switch
             style={{
-              transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+              transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
             }}
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={state ? 'green' : '#f33'}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={state ? "green" : "#f33"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleValveState}
             value={valveState}
           />
         </View>
       </View>
-      <View flex={1} flexDirection="column" alignItems="center" w="20" style={{
-        gap: 5
-      }}>
-        <IrrigationSlotContainer id={id} valveNumber={valveLabel} repDays={repDays} ws={irrigation?.ws as IWebSocket} prevEndTime={prevEndTime} prevStartTime={prevStartTime} />
+      <Divider marginBottom="5" />
+      <View
+        flexDirection="column"
+        alignItems="center"
+        style={{
+          gap: 5,
+        }}
+      >
+        <IrrigationSlotContainer
+          id={id}
+          valveNumber={valveLabel}
+          repDays={repDays}
+          ws={irrigation?.ws as IWebSocket}
+          prevEndTime={prevEndTime}
+          prevStartTime={prevStartTime}
+        />
       </View>
     </View>
-  )
-}
-export default IrrigationSchedulerContainer; 
+  );
+};
+export default IrrigationSchedulerContainer;

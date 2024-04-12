@@ -7,7 +7,11 @@ import { Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { Text } from "native-base";
 import { BaseStore } from "../../zustand/store";
-import { ConnectionType, GreenhouseState, IrrigationControllerState } from "../../zustand/state";
+import {
+  ConnectionType,
+  GreenhouseState,
+  IrrigationControllerState,
+} from "../../zustand/state";
 import useWebSocket from "../../hooks/wsservice";
 
 type ConnectionMsgTypes =
@@ -50,7 +54,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
       setConnected(true);
       setConMsg("Connected");
       setShowForm(false);
-      router.push(`/tabs/Home/${type}/${id}`)
+      router.push(`/tabs/Home/${type}/${id}`);
     } catch (error) {
       setConnected(false);
       setConMsg("Connection Failed");
@@ -77,10 +81,11 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
         <Text
           style={{
             width: "100%",
-            textAlign: "center"
+            textAlign: "center",
           }}
         >
-          Testing connection with {store.items.find((res) => res.id === id)?.ipAddress as string}
+          Connection Test for{" "}
+          {store.items.find((res) => res.id === id)?.ipAddress as string}
         </Text>
         <Pressable
           disabled={connecting || connected}
@@ -156,4 +161,3 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
 };
 
 export default MQTTConnectionTestForm;
-

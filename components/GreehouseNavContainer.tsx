@@ -1,5 +1,5 @@
 import { Pressable, TouchableOpacity } from "react-native";
-import { View, Image, Text, Badge, HStack, useClipboard, useToast } from "native-base";
+import { View, Image, Text, Badge, HStack, useClipboard } from "native-base";
 import { Divider, Box } from "native-base";
 import Icons from "../assets/Icons/Icons";
 import { useDisclose } from "native-base";
@@ -10,18 +10,22 @@ import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
 import { useRouter } from "expo-router";
 import MQTTConnectionTestForm from "./Forms/MqttConnectionTest";
-import { useGreenhouseStore, useIrrigationControllerStore } from "../zustand/store";
+import {
+  useGreenhouseStore,
+  useIrrigationControllerStore,
+} from "../zustand/store";
 import { Alert } from "react-native";
 import { Animated } from "react-native";
 import { syncToCloud } from "../utils/sync";
 import createToast from "../hooks/toast";
+import { Dimensions } from "react-native";
 
 const GreenhouseNavContainer = ({
   id,
   name,
   imageUrl,
   removeGreenhouse,
-  type
+  type,
 }: {
   id: string;
   name: string;
@@ -29,19 +33,23 @@ const GreenhouseNavContainer = ({
   imageUrl: string;
   removeGreenhouse: (id: string) => void;
 }) => {
+  const width = Dimensions.get("screen").width;
   const router = useRouter();
-  const store = type === "Greenhouse" ? useGreenhouseStore() : useIrrigationControllerStore();
+  const store =
+    type === "Greenhouse"
+      ? useGreenhouseStore()
+      : useIrrigationControllerStore();
   const { toastMessage } = createToast();
   const controller = store.items.find((item) => item.id === id);
   const [synced, setSynced] = useState<boolean>(controller?.synced as boolean);
   const { isOpen, onOpen, onClose } = useDisclose();
   const [alertDialog, setAlertDialogOpen] = useState<boolean>(false);
-  const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] = useState<boolean>(false);
+  const [removeGreenhouseConfirm, setRemoveGreenhouseConfirm] =
+    useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
   const [showMQTTForm, setShowMQTTForm] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false); // Set loading to false initially
   const { onCopy } = useClipboard();
-  const toast = useToast();
 
   useEffect(() => {
     if (removeGreenhouseConfirm) {
@@ -61,31 +69,28 @@ const GreenhouseNavContainer = ({
         setSynced(true);
         toastMessage({
           type: "success",
-          message: "Synchronized to the server"
-        })
+          message: "Synchronized to the server",
+        });
         store.updateItem(controller?.id as string, {
-          synced: true
-        })
+          synced: true,
+        });
       }
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false); // Set loading to false when sync completes
     }
-  }
+  };
 
   const spinValue = new Animated.Value(0);
 
   useEffect(() => {
     Animated.loop(
-      Animated.timing(
-        spinValue,
-        {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true
-        }
-      )
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
     ).start();
   }, []);
 
@@ -129,8 +134,9 @@ const GreenhouseNavContainer = ({
       <Pressable
         style={{
           position: "absolute",
-          right: 0,
-          backgroundColor: "green",
+          top: 5,
+          right: 5,
+          backgroundColor: "#8CC6A8",
           padding: 3,
           borderRadius: 50,
           marginTop: 3,
@@ -140,26 +146,25 @@ const GreenhouseNavContainer = ({
       >
         <Icons.action size={32} color="black" />
       </Pressable>
-      <HStack space={1} borderRadius="sm" marginLeft="1" bg="coolGray.300" padding="2" position='absolute' flexDirection="row" colorScheme="info" left="0">
+      <HStack
+        space={1}
+        borderRadius="sm"
+        marginLeft="1"
+        bg="coolGray.300"
+        padding="2"
+        position="absolute"
+        flexDirection="row"
+        colorScheme="info"
+        left="0"
+      >
         <Badge colorScheme="info">{id}</Badge>
         <Box borderWidth="1" padding="1">
-          <TouchableOpacity style={{}} onPress={() => {
-            onCopy(id)
-            toast.show({
-              render: () => {
-                return (
-                  <Box bg="green.500" px={4} py={3} rounded="sm" mb={5}>
-                    <Text color="black" bold>
-                      Copied to clipboard
-                    </Text>
-                  </Box>
-                )
-              },
-              duration: 1500,
-              placement: 'top',
-            });
-          }
-          }>
+          <TouchableOpacity
+            style={{}}
+            onPress={() => {
+              onCopy(id);
+            }}
+          >
             <Icons.clipboard size={24} color="black" />
           </TouchableOpacity>
         </Box>
@@ -180,24 +185,27 @@ const GreenhouseNavContainer = ({
             padding: 10,
           }}
         >
-          <Badge minW="20" colorScheme="green">{name}</Badge>
+          <Badge minW="20" colorScheme="green">
+            {name}
+          </Badge>
           <HStack space={2} alignItems="center">
-            <TouchableOpacity style={{
-              position: "relative",
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: synced ? "#fff" : "#A0A0A0",
-              padding: 5,
-              borderRadius: 10,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 8,
-            }}
+            <TouchableOpacity
+              style={{
+                position: "relative",
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: synced ? "#fff" : "#A0A0A0",
+                padding: 5,
+                borderRadius: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 8,
+              }}
               aria-disabled={!synced}
               disabled={!synced}
               onPress={() => {
@@ -210,10 +218,13 @@ const GreenhouseNavContainer = ({
                     position: "absolute",
                     height: "100%",
                     width: "100%",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                   onPress={() => {
-                    Alert.alert("Synchronization not registered", "The controller has not been synchronized to any of the remote servers, You can still synchronize it through settings")
+                    Alert.alert(
+                      "Synchronization not registered",
+                      "The controller has not been synchronized to any of the remote servers, You can still synchronize it through settings",
+                    );
                   }}
                 >
                   <Icons.banIcon width={34} height={34} color="red" />
@@ -222,21 +233,22 @@ const GreenhouseNavContainer = ({
               <Icons.mqttIcon width={32} height={32} color="black" />
               <Text style={{ marginLeft: 10 }}>MQTT</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "#fff",
-              padding: 5,
-              borderRadius: 10,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 8,
-            }}
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "#fff",
+                padding: 5,
+                borderRadius: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 8,
+              }}
               onPress={() => {
                 setShowWSForm(true);
               }}
@@ -245,7 +257,6 @@ const GreenhouseNavContainer = ({
               <Text style={{ marginLeft: 10 }}>WiFi</Text>
             </TouchableOpacity>
           </HStack>
-
         </View>
         <WSTestConnectionForm
           id={id}
@@ -292,39 +303,48 @@ const GreenhouseNavContainer = ({
                       {
                         rotate: spinValue.interpolate({
                           inputRange: [0, 1],
-                          outputRange: ['0deg', '360deg']
-                        })
-                      }
-                    ]
+                          outputRange: ["0deg", "360deg"],
+                        }),
+                      },
+                    ],
                   }}
                 />
-              ) :
-                synced ? (
-                  <Box position="relative">
-                    <Icons.syncedIcon width={23} height={23} />
-                    <Icons.syncArrow width={32} height={32} style={{
+              ) : synced ? (
+                <Box position="relative">
+                  <Icons.syncedIcon width={23} height={23} />
+                  <Icons.syncArrow
+                    width={32}
+                    height={32}
+                    style={{
                       position: "absolute",
                       top: -4,
-                      left: -4
-                    }} color="black" />
-                  </Box>
-                ) : (
-                  <Box position="relative">
-                    <Icons.notSynced width={23} height={23} />
-                    <Icons.syncArrow width={32} height={32} style={{
+                      left: -4,
+                    }}
+                    color="black"
+                  />
+                </Box>
+              ) : (
+                <Box position="relative">
+                  <Icons.notSynced width={23} height={23} />
+                  <Icons.syncArrow
+                    width={32}
+                    height={32}
+                    style={{
                       position: "absolute",
                       top: -4,
-                      left: -4
-                    }} color="black" />
-                  </Box>
-                )
+                      left: -4,
+                    }}
+                    color="black"
+                  />
+                </Box>
+              )
             }
           >
-            {
-              loading ? "Syncing to the server" :
-                synced ? "Synchronized to the server"
-                  : "Not Synced, Press to sync it to server"
-            }
+            {loading
+              ? "Syncing to the server"
+              : synced
+                ? "Synchronized to the server"
+                : "Not Synced, Press to sync it to server"}
           </Actionsheet.Item>
         </CustomActionSheet>
         <CustomAlertDialog
@@ -335,7 +355,7 @@ const GreenhouseNavContainer = ({
           setDeleteGreenhouse={setRemoveGreenhouseConfirm}
         />
       </View>
-    </View >
+    </View>
   );
 };
 

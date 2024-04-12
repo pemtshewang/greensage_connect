@@ -69,7 +69,7 @@ const WeatherContainer = () => {
       if (is_day === 1) {
         // Daytime conditions
         if (precipitation > 0 || rain > 0 || showers > 0) {
-          return <Icons.rain width={55} height={55} />;
+          return <Icons.rain width={55} height={55} fill="lightblue" />;
         } else if (cloud_cover >= 80) {
           return <Icons.sunnyCloudy width={55} height={55} />;
         } else {
@@ -109,6 +109,7 @@ const WeatherContainer = () => {
           flexDirection: "row",
           shadowColor: "#000",
           elevation: 8,
+          position: "relative"
         }}
       >
         {weatherIcon}
@@ -128,10 +129,6 @@ const WeatherContainer = () => {
               {locationName.state}
             </Text>
           )}
-          <Text fontFamily="OpenSans">
-            {format(new Date(), "EEEE")}, {format(new Date(), "dd")}{" "}
-            {format(new Date(), "MMMM")} {format(new Date(), "yyyy")}
-          </Text>
           <HStack space="3">
             <HStack>
               <Icons.thermometer width={25} height={25} color="#003" />
@@ -164,6 +161,14 @@ const WeatherContainer = () => {
         >
           Powered by @OpenMeteo
         </Text>
+        <VStack position='absolute' right="20%" top="20%">
+          <Text textAlign="center" fontSize='2xl' bold>
+            {format(new Date(), 'dd')}
+          </Text>
+          <Text textAlign="center">
+            {format(new Date(), 'MMMM')}
+          </Text>
+        </VStack>
       </View>
     </View>
   );

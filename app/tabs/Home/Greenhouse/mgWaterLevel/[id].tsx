@@ -92,7 +92,6 @@ export default function ParamsContainer() {
       />
       <ScrollView
         w="container"
-        padding="5"
       >
         <WaterValveControllerContainer
           state={state}

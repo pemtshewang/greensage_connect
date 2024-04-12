@@ -1,10 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { IWaterScheduleRecords } from '../../../types';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { IWaterScheduleRecords } from "../../../types";
 
-const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const WaterScheduleTable = ({ waterScheduleRecords }: { waterScheduleRecords: IWaterScheduleRecords[] }) => {
+const WaterScheduleTable = ({
+  waterScheduleRecords,
+}: {
+  waterScheduleRecords: IWaterScheduleRecords[];
+}) => {
   const decodeRepetitionDays = (repetitionDays: number) => {
     const decodedDays = [];
     for (let i = 0; i < 7; i++) {
@@ -12,51 +16,58 @@ const WaterScheduleTable = ({ waterScheduleRecords }: { waterScheduleRecords: IW
         decodedDays.push(dayOfWeek[i]);
       }
     }
-    return decodedDays.join(', ');
+    return decodedDays.join(", ");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={{
-        textAlign: "center",
-        fontWeight: "bold",
-        marginBottom: 20
-      }}>Water Schedule Records</Text>
+      <Text
+        style={{
+          textAlign: "center",
+          fontWeight: "bold",
+          marginBottom: 20,
+        }}
+      >
+        Water Schedule Records
+      </Text>
       <View style={styles.table}>
-        {
-          waterScheduleRecords.length < 0 ? (
-            <>
-              <View style={styles.row}>
-                <Text style={styles.cellHeader}>Start Time</Text>
-                <Text style={styles.cellHeader}>End Time</Text>
-                <Text style={styles.cellHeader}>Repetition Days</Text>
-              </View>
-              {
-                waterScheduleRecords.map((record, index) => (
-                  <View key={index} style={styles.row}>
-                    <Text style={styles.cell}>{record.startTime}</Text>
-                    <Text style={styles.cell}>{record.endTime}</Text>
-                    <Text style={styles.cell}>{decodeRepetitionDays(record.repetitionDays)}</Text>
-                  </View>))
-              }
-            </>
-          ) : (
-            <View style={{
-              padding: 10
-            }}>
-              <Text style={{
-                color: "#A0A0A0",
-                textAlign: "center"
-              }}>
-                No water scheduling records has been found
-              </Text>
+        {waterScheduleRecords.length < 0 ? (
+          <>
+            <View style={styles.row}>
+              <Text style={styles.cellHeader}>Start Time</Text>
+              <Text style={styles.cellHeader}>End Time</Text>
+              <Text style={styles.cellHeader}>Repetition Days</Text>
             </View>
-          )
-        }
+            {waterScheduleRecords.map((record, index) => (
+              <View key={index} style={styles.row}>
+                <Text style={styles.cell}>{record.startTime}</Text>
+                <Text style={styles.cell}>{record.endTime}</Text>
+                <Text style={styles.cell}>
+                  {decodeRepetitionDays(record.repetitionDays)}
+                </Text>
+              </View>
+            ))}
+          </>
+        ) : (
+          <View
+            style={{
+              padding: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: "#A0A0A0",
+                textAlign: "center",
+              }}
+            >
+              Water scheduled records not found
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -64,26 +75,26 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   table: {
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
     borderRadius: 5,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
   },
   cellHeader: {
     flex: 1,
     paddingVertical: 8,
     paddingHorizontal: 10,
-    backgroundColor: '#f2f2f2',
-    fontWeight: 'bold',
+    backgroundColor: "#f2f2f2",
+    fontWeight: "bold",
   },
   cell: {
     flex: 1,
