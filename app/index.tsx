@@ -1,40 +1,14 @@
-import { ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Redirect } from "expo-router";
-import { getValueFor } from "../securestore";
-import LoaderScreen from "../components/LoaderSplash";
-import { Animated, Image, View } from "react-native";
+import { View } from "react-native";
+import { Animated, Image } from "react-native";
 import { useFonts } from "expo-font";
-import Entypo from "@expo/vector-icons/Entypo";
-import * as Font from "expo-font";
-
-async function checkLogin() {
-  const value = await getValueFor("token");
-  if (value) {
-    try {
-      const parsedValue = JSON.parse(value as string);
-      const token = parsedValue.accessToken?.token;
-      if (token) {
-        const expiresAt = new Date(parsedValue.accessToken.expiresAt);
-        const currentTime = new Date();
-        if (expiresAt > currentTime) {
-          return true;
-        } else {
-          alert("Session Expired");
-          return false;
-        }
-      }
-    } catch (err) {
-      return false;
-    }
-  }
-  return false;
-}
+import { checkLogin } from "../utils/session";
+import AnimatedSpinner from "../components/AnimatedSpinner";
+import { Redirect } from "expo-router";
 
 const AnimationComponent = () => {
   const [animValue] = useState(new Animated.Value(0));
   const AnimatedImage = Animated.createAnimatedComponent(Image);
-
   useEffect(() => {
     const animation = Animated.sequence([
       Animated.timing(animValue, {
@@ -53,7 +27,6 @@ const AnimationComponent = () => {
         useNativeDriver: true,
       }),
     ]);
-
     animation.start();
   }, []);
 
@@ -69,9 +42,9 @@ const AnimationComponent = () => {
 
   return (
     <AnimatedImage
-      source={require("../assets/splashscreenlogo.gif")}
-      width={280}
-      height={280}
+      source={require("../assets/first.gif")}
+      width={400}
+      height={400}
       style={{
         opacity: interpolatedOpacity,
         transform: [{ scale: interpolatedScale }],
@@ -81,33 +54,43 @@ const AnimationComponent = () => {
   );
 };
 
-export default function Page() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+// main app
+export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [fontsLoaded, fontError] = useFonts({
     OpenSans: require("../assets/OpenSans.ttf"),
   });
+
+  async function checkAuth() {
+    const isLoggedIn = await checkLogin();
+    setLoggedIn(isLoggedIn);
+    setLoading(false);
+  }
+
   useEffect(() => {
     async function prepare() {
       try {
-        await Font.loadAsync(Entypo.font);
-        await new Promise((resolve) => setTimeout(resolve, 4000));
-        setAppIsReady(true);
-        async function checkAuth() {
-          const isLoggedIn = await checkLogin();
-          setLoggedIn(isLoggedIn);
-        }
-        checkAuth();
-        setTimeout(() => {
-          setLoading(false);
-        }, 1700);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       } catch (e) {
         console.warn(e);
+      } finally {
+        // Tell the application to render
+        if (fontsLoaded) {
+          setAppIsReady(true);
+        }
       }
     }
     prepare();
   }, []);
+
+  useEffect(() => {
+    if (appIsReady) {
+      checkAuth();
+    }
+  }, [appIsReady]);
+
   if (!appIsReady) {
     return (
       <View
@@ -121,14 +104,18 @@ export default function Page() {
       </View>
     );
   }
-  if (loading) {
-    return <LoaderScreen message="Checking User Session" />;
+
+  if (appIsReady && loading) {
+    return (
+      <AnimatedSpinner message="Please wait while the app loads your configs" />
+    );
   }
-  if (loggedIn === null) {
-    return <ActivityIndicator />;
-  }
-  if (!loggedIn) {
+
+  if (!loading && appIsReady && !isLoggedIn) {
     return <Redirect href="/Auth/login" />;
   }
-  return <Redirect href="/tabs/Home" />;
+
+  if (!loading && appIsReady && isLoggedIn) {
+    return <Redirect href="/tabs/Home" />;
+  }
 }

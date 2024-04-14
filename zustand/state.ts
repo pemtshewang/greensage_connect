@@ -68,6 +68,7 @@ interface IrrigationControllerState {
     name: string;
     backgroundImage: string;
     ipAddress: string;
+    soilMoisture:number;
     isConnected: boolean;
     //parameters
     ws: IWebSocket | null;
@@ -103,7 +104,6 @@ interface IrrigationControllerState {
             endTime: Date | null;
             repDays: number;
         } | null,
-        S
     }
 }
 export { GreenhouseState, totalGreenhouseState, IrrigationControllerState, totalIrrigationControllerState };

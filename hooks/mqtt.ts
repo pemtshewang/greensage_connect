@@ -60,6 +60,9 @@ const useMqtt = ({ id }: { id: string }) => {
         userName: brokerValues.brokerUsername,
         password: brokerValues.brokerPassword,
         cleanSession: false,
+        ports: [
+          8883,
+        ],
         onFailure: (err) => {
           console.error(`MQTT connection failed for ${id}:`, err);
           rej(err);
@@ -67,6 +70,7 @@ const useMqtt = ({ id }: { id: string }) => {
         onSuccess: (data) => {
           client.subscribe("user/" + brokerId + "/#");
           client.onMessageArrived = (msg) => {
+            console.log('The recieved message is', msg.payloadBytes)
             try {
               handleMessage({
                 topic: msg?.topic,
@@ -103,7 +107,6 @@ const useMqtt = ({ id }: { id: string }) => {
     topic: string;
     payloadString: string;
   }) => {
-    console.log(topic);
     const lastTopic = topic.split("/").pop();
     if (lastTopic === "readings") {
       const category = payloadString.split("|");

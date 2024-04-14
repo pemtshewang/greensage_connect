@@ -14,6 +14,7 @@ import {
   IrrigationControllerState,
 } from "../../zustand/state";
 import { getValueFor } from "../../securestore";
+import createToast from "../../hooks/toast";
 
 type ConnectionMsgTypes =
   | "Connected"
@@ -45,6 +46,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
     brokerUsername: "",
     brokerPassword: "",
   });
+  const { toastMessage } = createToast();
   useEffect(() => {
     if (connected) {
       router.push(`/tabs/Home/${type}/${id}`);
@@ -60,6 +62,14 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
       });
     });
   }, [connected]);
+  useEffect(() => {
+    if(conMsg === 'Connection Failed'){
+      toastMessage({
+        message: "Mqtt Connection Failed, Please try connecting again",
+        type: "error"
+      });
+    }
+  },[conMsg]);
   const mqtt = useMqtt({ id: id });
   const router = useRouter();
   const testConnection = async () => {
@@ -69,6 +79,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
       await mqtt.connect();
       store.updateItem(id, {
         ...store.items.find((res) => res.id === id),
+        //@ts-ignore
         ws: mqtt,
         connectionType: ConnectionType.MQTT,
         isConnected: true,
@@ -152,10 +163,10 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
               conMsg === "Connected"
                 ? "green"
                 : conMsg === "Not Connected" || conMsg === "Connection Failed"
-                  ? "red"
-                  : conMsg === "Connecting"
-                    ? "orange"
-                    : "black", // Default color
+                ? "red"
+                : conMsg === "Connecting"
+                ? "orange"
+                : "black", // Default color
           }}
         >
           {conMsg}

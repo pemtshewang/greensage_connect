@@ -13,5 +13,14 @@ export const EnvironmentContext = createContext({
 
 export const useEnvironmentContext = () => useContext(EnvironmentContext);
 
+export const IrrigationEnvironmentContext = createContext({
+  environment: {
+    soilMoisture: 0,
+  },
+  updateEnvironment: (data: any) => { }
+});
+
+export const useIrrigationEnvironmentContext = () => useContext(IrrigationEnvironmentContext);
+
 
 

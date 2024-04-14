@@ -10,11 +10,36 @@ import LocationDetails from "../api/location";
 import { Skeleton } from "native-base";
 
 const WeatherContainer = () => {
+  const getWeatherIcon = () => {
+    if (wData) {
+      const { is_day, precipitation, rain, showers, cloud_cover } = wData;
+      if (is_day === 1) {
+        // Daytime conditions
+        if (precipitation > 0 || rain > 0 || showers > 0) {
+          return <Icons.rain width={55} height={55} fill="lightblue" />;
+        } else if (cloud_cover >= 80) {
+          return <Icons.sunnyCloudy width={55} height={55} />;
+        } else {
+          return <Icons.sunnyWeather width={55} height={55} />;
+        }
+      } else {
+        // Nighttime conditions
+        if (precipitation > 0 || rain > 0 || showers > 0) {
+          return <Icons.moon width={55} height={55} />;
+        } else if (cloud_cover >= 80) {
+          return <Icons.moon width={55} height={55} />;
+        } else {
+          return <Icons.moon width={55} height={55} />;
+        }
+      }
+    }
+    return <Skeleton height="12" width="12" borderRadius={99}/>;
+  };
   const { isInternetReachable } = useNetInfo();
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [weatherIcon, setWeatherIcon] = useState(
-    <Icons.sunnyWeather width={55} height={55} color="black" />,
+    <Icons.sunnyWeather width={55} height={55} color="black" />
   );
   const [readings, setReadings] = useState<any>([]);
   const [locationName, setLocationName] = useState<{
@@ -60,35 +85,8 @@ const WeatherContainer = () => {
     })();
   }, [isInternetReachable]);
   useEffect(() => {
-    (async () => { })();
+    (async () => {})();
   }, []);
-  const getWeatherIcon = () => {
-    if (wData) {
-      const { is_day, precipitation, rain, showers, cloud_cover } = wData;
-
-      if (is_day === 1) {
-        // Daytime conditions
-        if (precipitation > 0 || rain > 0 || showers > 0) {
-          return <Icons.rain width={55} height={55} fill="lightblue" />;
-        } else if (cloud_cover >= 80) {
-          return <Icons.sunnyCloudy width={55} height={55} />;
-        } else {
-          return <Icons.sunnyWeather width={55} height={55} />;
-        }
-      } else {
-        // Nighttime conditions
-        if (precipitation > 0 || rain > 0 || showers > 0) {
-          return <Icons.moon width={55} height={55} />;
-        } else if (cloud_cover >= 80) {
-          return <Icons.moon width={55} height={55} />;
-        } else {
-          return <Icons.moon width={55} height={55} />;
-        }
-      }
-    }
-    // Default icon if no conditions match
-    return <Icons.sunnyWeather width={55} height={55} />;
-  };
 
   let text = "Getting Location...";
   if (errorMsg) {
@@ -109,7 +107,7 @@ const WeatherContainer = () => {
           flexDirection: "row",
           shadowColor: "#000",
           elevation: 8,
-          position: "relative"
+          position: "relative",
         }}
       >
         {weatherIcon}
@@ -161,13 +159,11 @@ const WeatherContainer = () => {
         >
           Powered by @OpenMeteo
         </Text>
-        <VStack position='absolute' right="20%" top="20%">
-          <Text textAlign="center" fontSize='2xl' bold>
-            {format(new Date(), 'dd')}
+        <VStack position="absolute" right="20%" top="20%">
+          <Text textAlign="center" fontSize="2xl" bold>
+            {format(new Date(), "dd")}
           </Text>
-          <Text textAlign="center">
-            {format(new Date(), 'MMMM')}
-          </Text>
+          <Text textAlign="center">{format(new Date(), "MMMM")}</Text>
         </VStack>
       </View>
     </View>

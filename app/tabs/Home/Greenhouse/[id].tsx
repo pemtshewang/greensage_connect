@@ -9,7 +9,6 @@ import { useEnvironmentContext } from "../../../../context/envParamsContext";
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const store = useGreenhouseStore()
-  const greenhouse = store.items.find((res) => res.id === id);
   const { environment: envtValues } = useEnvironmentContext();
   return (
     <>

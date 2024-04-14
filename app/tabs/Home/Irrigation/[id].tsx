@@ -6,6 +6,7 @@ import ThresholdSetForm from "../../../../components/Forms/ThresholdSetForm";
 import { IMqttClient, IWebSocket } from "../../../../zustand/state";
 import { ScrollView } from "native-base";
 import IrrigationSchedulerContainer from "../../../../components/IrrigationSchedulerContainer";
+import { useIrrigationEnvironmentContext } from "../../../../context/envParamsContext";
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,21 +17,17 @@ const Page = () => {
   });
   const store = useIrrigationControllerStore();
   const irrigation = store.items.find((g) => g.id === id);
-  useEffect(() => {
-    setParams({
-      soil_moisture: irrigation?.soil_moisture as number,
-    });
-  }, [irrigation]);
+  const { environment: envtValues } = useIrrigationEnvironmentContext();
   return (
     <ScrollView>
-      <IrrigationControllerContainer soilMoistureReading={34} />
+      <IrrigationControllerContainer soilMoistureReading={envtValues.soilMoisture} />
       <ThresholdSetForm
         id={id as string}
         storeType="Irrigation"
         message="Set a threshold for water valves"
         type="soil_moisture"
         ws={irrigation?.ws as IWebSocket | IMqttClient}
-        defaultValue={(irrigation?.soil_moisture as number) || 0}
+        defaultValue={(irrigation?.soilMoisture as number) || 0}
       />
       <IrrigationSchedulerContainer
         prevStartTime={

@@ -1,8 +1,8 @@
-import { create } from "zustand";
+import zustand, { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BrokerConfigType } from "../types";
 import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
+import zustandStorage from "./mmkvWrapper";
 
 export interface BaseStore<T> {
   count: number;
@@ -59,7 +59,7 @@ export function createStore<T>(
 export const useGreenhouseStore = createStore<GreenhouseState>(
   {
     name: "greenhouseStore",
-    storage: createJSONStorage(() => AsyncStorage),
+    storage: createJSONStorage(() => zustandStorage),
   },
   {
     count: 0,
@@ -71,7 +71,7 @@ export const useIrrigationControllerStore =
   createStore<IrrigationControllerState>(
     {
       name: "irrigationControllerStore",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
     },
     {
       count: 0,
@@ -114,7 +114,7 @@ export const useMQTTBrokerStore = create<BrokerStoreState>(
     }),
     {
       name: "mqttBrokerStore",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
     }
   )
 );
@@ -168,7 +168,7 @@ export const useNotificationStore = create<NotificationStoreState>(
     }),
     {
       name: "notificationStore",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
     }
   )
 );

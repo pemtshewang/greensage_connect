@@ -4,7 +4,6 @@ import { Circle } from "@shopify/react-native-skia";
 import { IReadings } from "../../../types";
 import { useChartPressState } from "victory-native";
 import { useFont, Text as CText } from "@shopify/react-native-skia";
-import inter from "../../../assets/fonts/Inter-Regular.ttf";
 import { HStack, Text, Box, View } from "native-base";
 import format from "date-fns/format";
 
@@ -18,7 +17,7 @@ export default function EnvironmentParametersChart({
     y: { humidity: 0, temperature: 0, soilMoisture: 0 },
   } as const;
   const { state, isActive } = useChartPressState(INIT_STATE);
-  const font = useFont(inter, 12);
+  const font = useFont(require('../../../assets/OpenSans.ttf'), 12);
 
   function TemperatureToolTip({
     x,
