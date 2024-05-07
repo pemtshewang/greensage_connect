@@ -1,4 +1,4 @@
-import { View, Badge, ScrollView, Button, FlatList } from "native-base";
+import { View, Badge, FlatList } from "native-base";
 import { useGreenhouseStore } from "../zustand/store";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
@@ -7,10 +7,9 @@ import Icons from "../assets/Icons/Icons";
 import { TouchableOpacity } from "react-native";
 import GreenHouseAddForm from "./Forms/GreenhouseForm";
 import CustomModal from "./ui/Modal";
-import { Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const GreenhouseList = () => {
-  const width = Dimensions.get("screen").width;
   const store = useGreenhouseStore();
   const [greenhouses, setGreenhouseList] = useState(store.items);
   const [showGreenhouseAddForm, setShowGreenhouseAddForm] =
@@ -26,29 +25,21 @@ const GreenhouseList = () => {
         marginBottom="1"
         justifyContent="space-between"
       >
-        <Badge colorScheme="green">Available Added Greenhouse</Badge>
+        <Badge colorScheme="green">Available Greenhouses</Badge>
         <TouchableOpacity
           onPress={() => {
             setShowGreenhouseAddForm(true);
           }}
-          style={{
-            width: 60,
-            height: 60,
-            backgroundColor: "#8CC6A8",
-            elevation: 8,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 80,
-              height: 80,
-            },
-            marginEnd: 10,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 50,
-          }}
         >
-          <Icons.greenhouseAddIcon width={32} height={32} fill="black" />
+          <LinearGradient
+            colors={["#228929", "#6A4"]}
+            style={{
+              padding: 10,
+              borderRadius: 10,
+            }}
+          >
+            <Icons.add width={30} height={30} color="black" />
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       {greenhouses.length > 0 ? (

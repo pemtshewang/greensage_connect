@@ -1,4 +1,4 @@
-import { View, Badge, Text, Button } from "native-base"
+import { View, Badge, Text, Button, Box } from "native-base"
 import Icons from "../assets/Icons/Icons"
 import { useState, useEffect } from "react"
 import { Pressable } from "react-native"
@@ -12,6 +12,7 @@ import { useLocalNotification } from "../hooks/notification"
 import { useNotificationStore } from "../zustand/store"
 import * as Crypto from "expo-crypto";
 import { getValueFor } from "../securestore"
+import { LinearGradient } from "expo-linear-gradient"
 
 const SlotContainer = ({
   id,
@@ -167,7 +168,7 @@ const SlotContainer = ({
     <View paddingY="2" borderBottomWidth={2} >
       <View flexDirection="row" justifyContent="space-between" alignContent="center" alignItems="center">
         <Badge colorScheme="green">{"Slot " + slot}</Badge>
-        <Icons.timer size={25} color="black" />
+        <Icons.calendar size={25} color="black" />
       </View>
       <View flexDirection="row" justifyContent="space-between" paddingY="5" w="full">
         {/* Display selected days */}
@@ -194,7 +195,15 @@ const SlotContainer = ({
         }
       </View>
       <View flexDirection="row" w="100%" alignItems="center" marginTop="5">
+        {/* Start Time */}
         <View flexDirection="column" alignItems="center" justifyContent="center" w="50%" >
+          <Box bg="coolGray.200" padding='2' marginBottom="5" borderRadius="sm">
+            <Text
+              style={{
+                fontFamily: "OpenSans"
+              }}
+            >START TIME</Text>
+          </Box>
           <View flexDirection="row" style={{
             gap: 2,
           }}>
@@ -207,23 +216,42 @@ const SlotContainer = ({
           </View>
           <Pressable style={{
             marginTop: 15,
-            padding: 5,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            backgroundColor: "green",
-            gap: 3,
-            borderRadius: 5,
-            alignItems: "center"
           }}
             onPress={() => {
               setStartTimePickerVisible(true);
             }}
           >
-            <Text color="white">Reschedule</Text>
-            <Icons.timerReset size={25} color="black" />
+            <LinearGradient
+              colors={["#228929", "#6A4"]}
+              style={{
+                padding: 8,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                gap: 3,
+                borderRadius: 5,
+                alignItems: "center"
+              }}
+            >
+
+              <Text
+                style={{
+                  fontFamily: "OpenSans"
+                }}
+                color="white">Reschedule</Text>
+              <Icons.timerReset size={25} color="black" />
+            </LinearGradient>
           </Pressable>
         </View>
+        {/* Start Time */}
+        {/* End Time */}
         <View flexDirection="column" alignItems="center" justifyContent="center" w="50%" >
+          <Box bg="coolGray.200" padding='2' marginBottom="5" borderRadius="sm">
+            <Text
+              style={{
+                fontFamily: "OpenSans"
+              }}
+            >END TIME</Text>
+          </Box>
           <View flexDirection="row" style={{
             gap: 2,
           }}>
@@ -236,22 +264,34 @@ const SlotContainer = ({
           </View>
           <Pressable style={{
             marginTop: 15,
-            padding: 5,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            backgroundColor: "green",
-            gap: 3,
-            borderRadius: 5,
-            alignItems: "center"
           }}
             onPress={() => {
               setEndTimePickerVisible(true);
             }}
           >
-            <Text color="white">Reschedule</Text>
-            <Icons.timerReset size={25} color="black" />
+
+            <LinearGradient
+              colors={["#228929", "#6A4"]}
+              style={{
+                padding: 8,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                gap: 3,
+                borderRadius: 5,
+                alignItems: "center"
+              }}
+            >
+
+              <Text
+                style={{
+                  fontFamily: "OpenSans"
+                }}
+                color="white">Reschedule</Text>
+              <Icons.timerReset size={25} color="black" />
+            </LinearGradient>
           </Pressable>
         </View>
+        {/* End Time */}
       </View>
       <View padding="5" flexDirection="row" justifyContent="center" style={{
         gap: 5
@@ -259,7 +299,7 @@ const SlotContainer = ({
         <Button
           w={120}
           onPress={handleCommitChanges}
-          backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Commit Changes</Button>
+          backgroundColor={disabled ? "gray.300" : "green.600"} disabled={disabled} endIcon={<Icons.send size={20} color={disabled ? "gray" : "black"} />}>Schedule </Button>
         <Button
           w={120}
           onPress={handleClearSlot}

@@ -13,18 +13,12 @@ export default function WSSessionButton({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 999,
-        borderWidth: 2,
-        borderColor: "black",
-        padding: 5
       }}
       onPress={() => {
         setShowDialog(true);
       }}
     >
-      <Icons.disconnectSession
-        color="black"
-      />
+      <Icons.disconnectSession color="black" size={32} />
     </Pressable>
   );
 }

@@ -1,5 +1,5 @@
 import { LoginSchema, SignUpSchema } from "../validations/Auth/schema";
-import GreenhouseAddFormSchema from '../validations/GreenhouseAddFormSchema';
+import GreenhouseAddFormSchema from "../validations/GreenhouseAddFormSchema";
 import { MQTTBrokerSchema } from "../validations/MQTTBroker";
 
 // Path: types/index.d.ts
@@ -13,15 +13,15 @@ interface Post {
 }
 
 interface UserProfile {
-  username: string,
-  id: string,
-  mobile: string,
-  dzongkhag: string,
-  gewog: string,
-  greenhouseCount: string,
-  irrigationCount: string,
-  cid: string,
-  expirationDate: string,
+  username: string;
+  id: string;
+  mobile: string;
+  dzongkhag: string;
+  gewog: string;
+  greenhouseCount: string;
+  irrigationCount: string;
+  cid: string;
+  expirationDate: string;
 }
 
 interface DzongkhagCategory {
@@ -43,26 +43,25 @@ export interface IReadings {
 }
 
 export interface IWaterScheduleRecords {
-  startTime: string
-  endTime: string
-  repetitionDays: number
+  startTime: string;
+  endTime: string;
+  repetitionDays: number;
 }
 
 export interface IHumidityThresholdRecord {
-  recordedAt: Date
-  value: number
+  recordedAt: Date;
+  value: number;
 }
 
 export interface ITemperatureThresholdRecord {
-  recordedAt: Date,
-  value: number,
+  recordedAt: Date;
+  value: number;
 }
 
 export interface ISoilMoistureThresholdRecords {
-  recordedAt: Date
-  value: number
+  recordedAt: Date;
+  value: number;
 }
-
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 type SignUpSchemaType = z.infer<typeof SignUpSchema>;
@@ -73,4 +72,13 @@ type DzongkhagSubCategoryType = z.infer<typeof DzongkhagSubCategory>;
 type BrokerConfigType = z.infer<typeof MQTTBrokerSchema>;
 type UserProfileType = z.infer<typeof UserProfile>;
 
-export { LoginSchemaType, SignUpSchemaType, PostType, GreenhouseAddFormSchemaType, DzongkhagCategoryType, DzongkhagSubCategoryType, BrokerConfigType, UserProfileType };
+export {
+  LoginSchemaType,
+  SignUpSchemaType,
+  PostType,
+  GreenhouseAddFormSchemaType,
+  DzongkhagCategoryType,
+  DzongkhagSubCategoryType,
+  BrokerConfigType,
+  UserProfileType,
+};

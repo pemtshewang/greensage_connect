@@ -54,15 +54,18 @@ const useMqtt = ({ id }: { id: string }) => {
   }, []);
   const connect = () => {
     return new Promise((res, rej) => {
+      // to avoid error and if the client is already connected , then disconnect it
+      if (client.isConnected()) {
+        client.disconnect();
+      }
+      //
       client.connect({
         uris: [`wss://${brokerValues.brokerURL}:8084/mqtt`],
         useSSL: true,
         userName: brokerValues.brokerUsername,
         password: brokerValues.brokerPassword,
         cleanSession: false,
-        ports: [
-          8883,
-        ],
+        ports: [8883],
         onFailure: (err) => {
           console.error(`MQTT connection failed for ${id}:`, err);
           rej(err);
@@ -70,9 +73,10 @@ const useMqtt = ({ id }: { id: string }) => {
         onSuccess: (data) => {
           client.subscribe("user/" + brokerId + "/#");
           client.onMessageArrived = (msg) => {
-            console.log('The recieved message is', msg.payloadBytes)
+            console.log("The recieved message is", msg.payloadBytes);
             try {
               handleMessage({
+                //@ts-ignore
                 topic: msg?.topic,
                 payloadString: msg.payloadString,
               });

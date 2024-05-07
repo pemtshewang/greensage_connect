@@ -11,6 +11,8 @@ import createToast from "../../hooks/toast";
 import { useNotificationStore } from "../../zustand/store";
 import * as Crypto from "expo-crypto";
 import { getValueFor } from "../../securestore";
+import { LinearGradient } from "expo-linear-gradient";
+import { Pressable } from "react-native";
 
 const ThresholdSetForm = ({
   id,
@@ -147,24 +149,38 @@ const ThresholdSetForm = ({
           justifyContent="center"
         >
           <VStack space={2} alignItems="center">
-            <Input
-              placeholder={`${defaultValue < 1 ? "No val" : defaultValue}`}
-              placeholderTextColor="#A0A0A0"
-              alignItems="center"
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                borderBottomWidth: 2,
-                borderBottomColor: "black",
-              }}
-              inputMode="numeric"
-              onChangeText={(text: string) => setValue(parseInt(text))}
-              value={value as unknown as string}
-              isDisabled={!changeState}
-              w={70}
-              borderWidth={0}
-              autoFocus={changeState}
-            />
+            {changeState ? (
+              <Input
+                placeholder="Enter here"
+                placeholderTextColor="#A0A0A0"
+                alignItems="center"
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                }}
+                inputMode="numeric"
+                onChangeText={(text: string) => setValue(parseInt(text))}
+                value={value as unknown as string}
+                isDisabled={!changeState}
+                w={150}
+                autoFocus={false}
+              />
+            ) : (
+              <View>
+                <Text
+                  style={{
+                    color: defaultValue > 0 ? "#000" : "#A0A0a0",
+                    fontSize: defaultValue > 0 ? 15 : 14,
+                    fontFamily: "OpenSans",
+                  }}
+                >
+                  {defaultValue < 1
+                    ? "Threshold not set"
+                    : defaultValue.toString()}
+                  {defaultValue > 0 && (type === "temperature" ? " °C" : " %")}
+                </Text>
+              </View>
+            )}
             {changeState && (
               <VStack alignItems="center">
                 <HStack space={2} alignItems="center">
@@ -206,13 +222,25 @@ const ThresholdSetForm = ({
             gap: 10,
           }}
         >
-          <Button
-            onPress={changeState ? sendThreshold : toggleChangeState}
-            padding="2"
-            bg="info.300"
-          >
-            <Text color="#002">{changeState ? "Confirm" : "Change"}</Text>
-          </Button>
+          <Pressable onPress={changeState ? sendThreshold : toggleChangeState}>
+            <LinearGradient
+              colors={["#228929", "#6A4"]}
+              style={{
+                padding: 10,
+                borderCurve: "circular",
+                borderRadius: 5,
+              }}
+            >
+              <Text
+                color="#fff"
+                style={{
+                  fontFamily: "OpenSans",
+                }}
+              >
+                {changeState ? "Confirm" : "Change"}
+              </Text>
+            </LinearGradient>
+          </Pressable>
           {changeState && (
             <Button
               bg="danger.500"

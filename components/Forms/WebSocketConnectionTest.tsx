@@ -13,12 +13,9 @@ import {
   IrrigationControllerState,
 } from "../../zustand/state";
 import useWebSocket from "../../hooks/wsservice";
+import createToast from "../../hooks/toast";
 
-type ConnectionMsgTypes =
-  | "Connected"
-  | "Not Connected"
-  | "Connection Failed"
-  | "Connecting";
+type ConnectionMsgTypes = "Not Connected" | "Connection Failed" | "Connecting";
 
 interface WebSocketConnectionTestFormProps {
   id: string;
@@ -39,6 +36,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
   const [connected, setConnected] = useState<boolean>(false);
   const [conMsg, setConMsg] = useState<ConnectionMsgTypes>("Not Connected");
   const websocketObj = useWebSocket({ id: id, type });
+  const { toastMessage } = createToast();
   const router = useRouter();
   const testConnection = async () => {
     setConnecting(true);
@@ -47,17 +45,25 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
       await websocketObj.connect();
       store.updateItem(id, {
         ...store.items.find((res) => res.id === id),
+        //@ts-ignore
         ws: websocketObj,
         connectionType: ConnectionType.WebSocket,
         isConnected: true,
       });
-      setConnected(true);
-      setConMsg("Connected");
       setShowForm(false);
+      toastMessage({
+        message: "Connection established!",
+        type: "success",
+        duration: 3000,
+      });
       router.push(`/tabs/Home/${type}/${id}`);
     } catch (error) {
       setConnected(false);
       setConMsg("Connection Failed");
+      toastMessage({
+        message: "Connection Failed, Please try again",
+        type: "error",
+      });
     } finally {
       setConnecting(false);
     }
@@ -82,6 +88,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
           style={{
             width: "100%",
             textAlign: "center",
+            fontFamily: "OpenSans",
           }}
         >
           Connection Test for{" "}
@@ -127,14 +134,11 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
         </Pressable>
         <Text
           style={{
-            color:
-              conMsg === "Connected"
-                ? "green"
-                : conMsg === "Not Connected" || conMsg === "Connection Failed"
-                  ? "red"
-                  : conMsg === "Connecting"
-                    ? "orange"
-                    : "black", // Default color
+            color: conMsg === "Not Connected" || conMsg === "Connection Failed"
+              ? "red"
+              : conMsg === "Connecting"
+                ? "orange"
+                : "black", // Default color
           }}
         >
           {conMsg}
@@ -143,6 +147,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
+            alignItems: "center",
             gap: 5,
           }}
         >
@@ -150,6 +155,7 @@ const MQTTConnectionTestForm: React.FC<WebSocketConnectionTestFormProps> = ({
           <Text
             style={{
               color: "#A0A0A0",
+              fontFamily: "OpenSans",
             }}
           >
             Press the button for connection

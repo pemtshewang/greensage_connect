@@ -28,10 +28,11 @@ const WaterScheduleTable = ({
           marginBottom: 20,
         }}
       >
-        Water Schedule Records
+        {" "}
+        Water Schedule History{" "}
       </Text>
       <View style={styles.table}>
-        {waterScheduleRecords.length < 0 ? (
+        {waterScheduleRecords.length > 0 ? (
           <>
             <View style={styles.row}>
               <Text style={styles.cellHeader}>Start Time</Text>
@@ -60,7 +61,7 @@ const WaterScheduleTable = ({
                 textAlign: "center",
               }}
             >
-              Water scheduled records not found
+              No water scheduling records has been found
             </Text>
           </View>
         )}

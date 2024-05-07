@@ -37,7 +37,9 @@ const AboutPage = ({ }: {}) => {
           MQTT and WebSocket technologies to provide seamless connectivity and
           control for smart agriculture automation. To know more, visit
         </Text>
-        <Text underline selectable>https://greensage-connect-nine.vercel.app</Text>
+        <Text underline selectable>
+          https://greensage-connect-nine.vercel.app
+        </Text>
       </View>
       {/* Additional information */}
       <Box>
@@ -46,9 +48,9 @@ const AboutPage = ({ }: {}) => {
       </Box>
       <Box>
         <Text bold>Contributors:</Text>
+        <Text>Deki Wangmo</Text>
         <Text>Sonam Dema</Text>
         <Text>Thinley Choden</Text>
-        <Text>Deki Wangmo</Text>
       </Box>
       <Box>
         <Text bold>Collaborator:</Text>

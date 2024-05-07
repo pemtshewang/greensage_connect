@@ -16,11 +16,7 @@ import {
 import { getValueFor } from "../../securestore";
 import createToast from "../../hooks/toast";
 
-type ConnectionMsgTypes =
-  | "Connected"
-  | "Not Connected"
-  | "Connection Failed"
-  | "Connecting";
+type ConnectionMsgTypes = "Not Connected" | "Connection Failed" | "Connecting";
 
 interface MQTTConnectionTestFormProps {
   id: string;
@@ -63,13 +59,13 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
     });
   }, [connected]);
   useEffect(() => {
-    if(conMsg === 'Connection Failed'){
+    if (conMsg === "Connection Failed") {
       toastMessage({
-        message: "Mqtt Connection Failed, Please try connecting again",
-        type: "error"
+        message: "Connection Failed, Please try again",
+        type: "error",
       });
     }
-  },[conMsg]);
+  }, [conMsg]);
   const mqtt = useMqtt({ id: id });
   const router = useRouter();
   const testConnection = async () => {
@@ -84,9 +80,13 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
         connectionType: ConnectionType.MQTT,
         isConnected: true,
       });
-      setConnected(true);
-      setConMsg("Connected");
+      // set toast message here on successful
       setShowForm(false);
+      toastMessage({
+        message: "Connection established!",
+        type: "success",
+        duration: 3000,
+      });
       router.push(`/tabs/Home/${type}/${id}`);
     } catch (error) {
       setConnected(false);
@@ -115,12 +115,13 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
           style={{
             width: "100%",
             textAlign: "center",
+            fontFamily: "OpenSans",
           }}
         >
           Connection Test for {mqttBroker.brokerURL}
         </Text>
         <Pressable
-          disabled={connecting || connected}
+          disabled={connecting}
           onPress={testConnection}
           style={({ pressed }) => [
             {
@@ -138,15 +139,15 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
             },
             Platform.OS === "ios"
               ? {
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 4,
-                    height: 9,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 3,
-                }
-              : {}, // Android might not need these shadow properties if elevation is set
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 4,
+                  height: 9,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 3,
+              }
+              : {},
           ]}
         >
           {connected ? (
@@ -160,13 +161,11 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
         <Text
           style={{
             color:
-              conMsg === "Connected"
-                ? "green"
-                : conMsg === "Not Connected" || conMsg === "Connection Failed"
+              conMsg === "Not Connected" || conMsg === "Connection Failed"
                 ? "red"
                 : conMsg === "Connecting"
-                ? "orange"
-                : "black", // Default color
+                  ? "orange"
+                  : "black", // Default color
           }}
         >
           {conMsg}
@@ -175,6 +174,7 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
+            alignItems: "center",
             gap: 5,
           }}
         >
@@ -182,9 +182,10 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
           <Text
             style={{
               color: "#A0A0A0",
+              fontFamily: "OpenSans",
             }}
           >
-            Press the button for connection
+            Press the above button for connection
           </Text>
         </View>
       </View>

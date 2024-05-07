@@ -1,5 +1,5 @@
 import { Slot } from "expo-router";
-import { ScrollView, View } from "native-base";
+import { ScrollView } from "native-base";
 
 const NotificationLayout = () => {
   return (

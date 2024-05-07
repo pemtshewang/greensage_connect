@@ -33,13 +33,13 @@ const WeatherContainer = () => {
         }
       }
     }
-    return <Skeleton height="12" width="12" borderRadius={99}/>;
+    return <Skeleton height="12" width="12" borderRadius={99} />;
   };
   const { isInternetReachable } = useNetInfo();
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [weatherIcon, setWeatherIcon] = useState(
-    <Icons.sunnyWeather width={55} height={55} color="black" />
+    <Icons.sunnyWeather width={55} height={55} color="black" />,
   );
   const [readings, setReadings] = useState<any>([]);
   const [locationName, setLocationName] = useState<{
@@ -85,7 +85,7 @@ const WeatherContainer = () => {
     })();
   }, [isInternetReachable]);
   useEffect(() => {
-    (async () => {})();
+    (async () => { })();
   }, []);
 
   let text = "Getting Location...";
@@ -100,7 +100,7 @@ const WeatherContainer = () => {
       <View
         bg="teal.50"
         paddingX="5"
-        paddingY="3"
+        paddingY="4"
         style={{
           borderBottomRightRadius: 50,
           borderBottomLeftRadius: 50,
@@ -159,7 +159,7 @@ const WeatherContainer = () => {
         >
           Powered by @OpenMeteo
         </Text>
-        <VStack position="absolute" right="20%" top="20%">
+        <VStack position="absolute" right="20%" top="43%">
           <Text textAlign="center" fontSize="2xl" bold>
             {format(new Date(), "dd")}
           </Text>

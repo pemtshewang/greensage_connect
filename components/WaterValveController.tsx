@@ -1,8 +1,9 @@
-import { View, Badge, Text } from "native-base";
+import { View, Badge, Text, HStack, Box } from "native-base";
 import Icons from "../assets/Icons/Icons";
-import { Easing, Switch } from "react-native";
+import { Easing, Switch, TouchableOpacity } from "react-native";
 import { Animated } from "react-native";
 import { useEffect, useRef, useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function WaterValveControllerContainer({
   state,
@@ -128,16 +129,50 @@ export default function WaterValveControllerContainer({
               gap: 20,
             }}
           >
-            <Switch
+            <View
+              padding={3}
               style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 20,
               }}
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={state ? "green" : "#f33"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitchState}
-              value={switchState}
-            />
+            >
+              <LinearGradient
+                colors={["#228929", "#6A4"]}
+                style={{
+                  padding: 10,
+                  borderRadius: 99,
+                }}
+              >
+                <TouchableOpacity onPress={toggleSwitchState}>
+                  <Icons.power size={34} color="black" />
+                </TouchableOpacity>
+              </LinearGradient>
+              <HStack
+                flexDirection={switchState ? "row" : "row-reverse"}
+                bg={switchState ? "green.500" : "red.500"}
+                borderRadius="full"
+                justifyContent="space-between"
+                alignItems="center"
+                padding="1"
+                style={{
+                  width: 92,
+                }}
+              >
+                <Box>
+                  <Text
+                    bold
+                    textAlign={switchState ? "right" : "left"}
+                    w="full"
+                    color="white"
+                    marginRight={1}
+                  >
+                    {switchState ? "OPEN" : "CLOSE"}
+                  </Text>
+                </Box>
+                <Box borderRadius="full" bg="white" w="8" h="8"></Box>
+              </HStack>
+            </View>
           </View>
         </View>
       </View>

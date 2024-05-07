@@ -20,7 +20,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (irrigationController?.isConnected === false) {
-      setShowDialog(true);
+      // setShowDialog(true);
     }
   }, [irrigationController]);
 

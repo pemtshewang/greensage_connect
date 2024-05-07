@@ -11,7 +11,6 @@ import {
 } from "../../../types";
 import { Text } from "native-base";
 import { format } from "date-fns";
-
 type CombinedInterface =
   | IHumidityThresholdRecord[]
   | ITemperatureThresholdRecord[]
@@ -48,14 +47,17 @@ export default function ThresholdChart({
             },
           ]}
           x={x.position.value}
+          //@ts-ignore
           y={y.value.position}
           text={
+            //@ts-ignore
             y.value.value?.value.toString() +
             `${type === "temperature" ? "°C" : "%"}|${format(new Date(x.value.value.toString()), "dd/MM/yyyy hh:mm aa")}`
           }
         />
         <Circle
           cx={x.position.value}
+          //@ts-ignore
           cy={y.value.position}
           r={8}
           color="black"
@@ -81,8 +83,11 @@ export default function ThresholdChart({
             top: 15,
           }}
           padding={5}
+          //@ts-ignore
           data={data}
+          //@ts-ignore
           xKey={"recordedAt"}
+          //@ts-ignore
           yKeys={["value"]}
           domain={{
             y: [0, 100],
@@ -93,11 +98,13 @@ export default function ThresholdChart({
               `${label}${type === "temperature" ? "°C" : "%"}`,
             formatXLabel: (label) => "",
           }}
+          //@ts-ignore
           chartPressState={state}
         >
           {({ points }) => (
             <>
               <Line
+                //@ts-ignore
                 points={points.value}
                 connectMissingData={true}
                 curveType="cardinal50"
@@ -107,6 +114,8 @@ export default function ThresholdChart({
                 blendMode="color"
                 animate={{ type: "timing", duration: 300 }}
               />
+
+              {/* @ts-ignore */}
               {isActive ? <ToolTip x={state.x} y={state.y} /> : null}
             </>
           )}
@@ -120,7 +129,9 @@ export default function ThresholdChart({
             alignItems: "center",
           }}
         >
-          <Text italic color="coolGray.500">Data not recorded for {type}</Text>
+          <Text italic color="coolGray.500">
+            Data not recorded for {type}
+          </Text>
         </View>
       )}
     </View>

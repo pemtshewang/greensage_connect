@@ -59,7 +59,7 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [fontsLoaded, fontError] = useFonts({
+  const [fontsLoaded] = useFonts({
     OpenSans: require("../assets/OpenSans.ttf"),
   });
 

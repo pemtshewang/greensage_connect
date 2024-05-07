@@ -11,6 +11,7 @@ const Banner = ({ message, icon }: { message: string; icon: JSX.Element }) => {
         padding: 16,
         borderRadius: 8,
         margin: 16,
+        marginTop: 50,
       }}
     >
       <Text

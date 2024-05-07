@@ -7,10 +7,11 @@ import {
   useNotificationStore,
 } from "../../zustand/store";
 import { useEffect, useState } from "react";
-import { Pressable, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import SessionContext from "../../context/SessionContext";
 import { EnvironmentContext } from "../../context/envParamsContext";
 import CustomModal from "../../components/ui/Modal";
+import { LinearGradient } from "expo-linear-gradient";
 
 const DeleteAllNotificationPrompt = ({
   isDeletePromptVisible,
@@ -93,12 +94,16 @@ const TabLayout = () => {
         <Tabs
           screenOptions={{
             tabBarHideOnKeyboard: true,
-            tabBarStyle: {
-              marginStart: 3,
-              marginEnd: 3,
-              elevation: 8,
-            },
-            tabBarActiveBackgroundColor: "#F5F5F5",
+            tabBarBackground: () => (
+              <LinearGradient
+                colors={["#228929", "#6A4"]}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                }}
+              ></LinearGradient>
+            ),
+            tabBarActiveTintColor: "#fff",
           }}
         >
           <Tabs.Screen
@@ -107,11 +112,12 @@ const TabLayout = () => {
               headerShown: false,
               tabBarLabelStyle: {
                 fontFamily: "OpenSans",
+                color: "#fff",
               },
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <View
                   style={{
-                    borderTopWidth: focused ? 2 : 0,
+                    borderTopWidth: focused ? 3 : 0,
                     padding: 4,
                     width: "100%",
                     flexDirection: "column",
@@ -119,8 +125,8 @@ const TabLayout = () => {
                   }}
                 >
                   <Icons.home
-                    color={focused ? "green" : "#6b7280"}
-                    size={size}
+                    color={focused ? "#fff" : "#000"}
+                    size={focused ? size * 1.2 : size}
                   />
                 </View>
               ),
@@ -132,11 +138,12 @@ const TabLayout = () => {
             options={{
               tabBarLabelStyle: {
                 fontFamily: "OpenSans",
+                color: "#fff",
               },
               tabBarIcon: ({ focused, color, size }) => (
                 <View
                   style={{
-                    borderTopWidth: focused ? 2 : 0,
+                    borderTopWidth: focused ? 3 : 0,
                     padding: 4,
                     width: "100%",
                     flexDirection: "column",
@@ -144,18 +151,18 @@ const TabLayout = () => {
                   }}
                 >
                   <Icons.dashboard
-                    color={focused ? "green" : "#6b7280"}
-                    size={size}
+                    color={focused ? "#fff" : "#000"}
+                    size={focused ? size * 1.2 : size}
                   />
                 </View>
               ),
-              tabBarActiveTintColor: "green",
               header: () => {
                 return (
-                  <View
+                  <LinearGradient
+                    colors={["#228929", "#6A4"]}
                     style={{
-                      backgroundColor: "green",
                       padding: 10,
+                      paddingBottom: 20,
                     }}
                   >
                     <Heading
@@ -165,7 +172,7 @@ const TabLayout = () => {
                     >
                       Dashboard Analytics
                     </Heading>
-                  </View>
+                  </LinearGradient>
                 );
               },
             }}
@@ -182,16 +189,18 @@ const TabLayout = () => {
             options={{
               tabBarLabelStyle: {
                 fontFamily: "OpenSans",
+                color: "#fff",
               },
               headerShown: true,
               tabBarBadge:
                 notificationCount > 0 ? notificationCount : undefined,
               header: () => {
                 return (
-                  <View
+                  <LinearGradient
+                    colors={["#228929", "#6A4"]}
                     style={{
-                      backgroundColor: "green",
                       padding: 10,
+                      paddingBottom: 20,
                       flexDirection: "row",
                       justifyContent: "space-between",
                     }}
@@ -203,13 +212,10 @@ const TabLayout = () => {
                     >
                       Notifications
                     </Heading>
-                    <Pressable
+                    <TouchableOpacity
                       style={{
-                        borderWidth: 1,
-                        width: 35,
-                        height: 35,
-                        borderRadius: 99,
-                        padding: 1,
+                        width: 30,
+                        height: 30,
                         flexDirection: "row",
                         justifyContent: "center",
                         alignItems: "center",
@@ -218,15 +224,15 @@ const TabLayout = () => {
                         setIsDeletePromptVisible(true);
                       }}
                     >
-                      <Icons.trash color="black" size={20} />
-                    </Pressable>
-                  </View>
+                      <Icons.trash color="black" size={30} />
+                    </TouchableOpacity>
+                  </LinearGradient>
                 );
               },
               tabBarIcon: ({ focused, color, size }) => (
                 <View
                   style={{
-                    borderTopWidth: focused ? 2 : 0,
+                    borderTopWidth: focused ? 3 : 0,
                     padding: 4,
                     width: "100%",
                     flexDirection: "column",
@@ -234,8 +240,8 @@ const TabLayout = () => {
                   }}
                 >
                   <Icons.notification
-                    color={focused ? "green" : "#6b7280"}
-                    size={size}
+                    color={focused ? "#fff" : "#000"}
+                    size={focused ? size * 1.2 : size}
                   />
                 </View>
               ),
@@ -247,14 +253,16 @@ const TabLayout = () => {
             options={{
               tabBarLabelStyle: {
                 fontFamily: "OpenSans",
+                color: "#fff",
               },
               headerShown: true,
               header: () => {
                 return (
-                  <View
+                  <LinearGradient
+                    colors={["#228929", "#6A4"]}
                     style={{
-                      backgroundColor: "green",
                       padding: 10,
+                      paddingBottom: 20,
                     }}
                   >
                     <Heading
@@ -264,13 +272,13 @@ const TabLayout = () => {
                     >
                       News Feed
                     </Heading>
-                  </View>
+                  </LinearGradient>
                 );
               },
               tabBarIcon: ({ focused, color, size }) => (
                 <View
                   style={{
-                    borderTopWidth: focused ? 2 : 0,
+                    borderTopWidth: focused ? 3 : 0,
                     padding: 4,
                     width: "100%",
                     flexDirection: "column",
@@ -278,8 +286,8 @@ const TabLayout = () => {
                   }}
                 >
                   <Icons.post
-                    color={focused ? "green" : "#6b7280"}
-                    size={size}
+                    color={focused ? "#fff" : "#000"}
+                    size={focused ? size * 1.2 : size}
                   />
                 </View>
               ),
@@ -292,13 +300,15 @@ const TabLayout = () => {
               headerShown: true,
               tabBarLabelStyle: {
                 fontFamily: "OpenSans",
+                color: "#fff",
               },
               header: () => {
                 return (
-                  <View
+                  <LinearGradient
+                    colors={["#228929", "#6A4"]}
                     style={{
-                      backgroundColor: "green",
                       padding: 10,
+                      paddingBottom: 20,
                       flexDirection: "row",
                       alignItems: "center",
                       justifyContent: "space-between",
@@ -312,25 +322,19 @@ const TabLayout = () => {
                       Settings
                     </Heading>
                     <TouchableOpacity
-                      style={{
-                        borderRadius: 100,
-                        borderWidth: 1,
-                        borderColor: "white",
-                        padding: 7,
-                      }}
                       onPress={() => {
                         setShowModal(true);
                       }}
                     >
-                      <Icons.logOut color="white" size={20} />
+                      <Icons.logOut color="black" size={30} />
                     </TouchableOpacity>
-                  </View>
+                  </LinearGradient>
                 );
               },
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <View
                   style={{
-                    borderTopWidth: focused ? 2 : 0,
+                    borderTopWidth: focused ? 3 : 0,
                     padding: 4,
                     width: "100%",
                     flexDirection: "column",
@@ -338,8 +342,8 @@ const TabLayout = () => {
                   }}
                 >
                   <Icons.settings
-                    color={focused ? "green" : "#6b7280"}
-                    size={size}
+                    color={focused ? "#fff" : "#000"}
+                    size={focused ? size * 1.2 : size}
                   />
                 </View>
               ),

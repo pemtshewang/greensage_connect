@@ -1,6 +1,8 @@
-import { View, Badge } from "native-base";
-import { Switch } from "react-native";
+import { View, Badge, VStack, Box, Text, HStack } from "native-base";
+import { TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
+import Icons from "../assets/Icons/Icons";
 
 export default function RollerShutterController({
   leftRollerShutterState,
@@ -19,9 +21,6 @@ export default function RollerShutterController({
   const [leftSwitchState, setLeftSwitchState] = useState<boolean>(
     leftRollerShutterState as boolean,
   );
-  const [bothSwitchState, setBothSwitchState] = useState<boolean>(
-    rightSwitchState && leftSwitchState,
-  );
   const toggleRightSwitchState = () => {
     setRightSwitchState(!rightSwitchState);
     setRightRollerShutterState();
@@ -30,22 +29,8 @@ export default function RollerShutterController({
     setLeftSwitchState(!leftSwitchState);
     setLeftRollerShutterState();
   };
-  const toggleBothSwitchState = () => {
-    setBothSwitchState(!bothSwitchState);
-    setLeftRollerShutterState();
-    setRightRollerShutterState();
-  };
   return (
-    <View
-      w="container"
-      marginTop="5"
-      style={{
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 10,
-      }}
-    >
+    <View marginTop="5">
       <View
         w="full"
         style={{
@@ -61,49 +46,115 @@ export default function RollerShutterController({
           shadowRadius: 4,
           elevation: 8, // Required for Android
           backgroundColor: "#fff", // Add a background color if not already specified
-          padding: 10, // Adjust padding as needed
           borderRadius: 20,
+          paddingTop: 10,
         }}
       >
         <Badge colorScheme="green">Side Ventilators</Badge>
-        {/* For both */}
         <View
-          padding="5"
-          marginTop="5"
-          w={200}
+          paddingY="3"
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
-          <View flexDirection="column">
-            <Switch
-              style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
-              }}
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={rightSwitchState ? "green" : "#f33"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleRightSwitchState}
-              value={rightSwitchState}
-            />
-            <Badge colorScheme="lime">Right</Badge>
-          </View>
           {/* For left */}
-          <View flexDirection="column" alignItems="center">
-            <Switch
+          <VStack space={2} alignItems="center">
+            <Badge colorScheme="info">Left</Badge>
+            <View
+              padding={3}
               style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 20,
               }}
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={leftSwitchState ? "green" : "#f33"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleLeftSwitchState}
-              value={leftSwitchState}
-            />
-            <Badge colorScheme="teal">Left</Badge>
-          </View>
+            >
+              <LinearGradient
+                colors={["#228929", "#6A4"]}
+                style={{
+                  padding: 10,
+                  borderRadius: 99,
+                }}
+              >
+                <TouchableOpacity onPress={toggleLeftSwitchState}>
+                  <Icons.power size={34} color="black" />
+                </TouchableOpacity>
+              </LinearGradient>
+              <HStack
+                flexDirection={leftSwitchState ? "row" : "row-reverse"}
+                bg={leftSwitchState ? "green.500" : "red.500"}
+                borderRadius="full"
+                justifyContent="space-between"
+                alignItems="center"
+                padding="1"
+                style={{
+                  width: 92,
+                }}
+              >
+                <Box>
+                  <Text
+                    bold
+                    textAlign={leftSwitchState ? "right" : "left"}
+                    w="full"
+                    color="white"
+                    marginRight={1}
+                  >
+                    {leftSwitchState ? "OPEN" : "CLOSE"}
+                  </Text>
+                </Box>
+                <Box borderRadius="full" bg="white" w="8" h="8"></Box>
+              </HStack>
+            </View>
+          </VStack>
+          {/* For left */}
+          <VStack space={2} alignItems="center">
+            <Badge colorScheme="info">Right</Badge>
+            <View
+              padding={3}
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 20,
+              }}
+            >
+              <LinearGradient
+                colors={["#228929", "#6A4"]}
+                style={{
+                  padding: 10,
+                  borderRadius: 99,
+                }}
+              >
+                <TouchableOpacity onPress={toggleRightSwitchState}>
+                  <Icons.power size={34} color="black" />
+                </TouchableOpacity>
+              </LinearGradient>
+              <HStack
+                flexDirection={rightSwitchState ? "row" : "row-reverse"}
+                bg={rightSwitchState ? "green.500" : "red.500"}
+                borderRadius="full"
+                justifyContent="space-between"
+                alignItems="center"
+                padding="1"
+                style={{
+                  width: 92,
+                }}
+              >
+                <Box>
+                  <Text
+                    bold
+                    textAlign={rightSwitchState ? "right" : "left"}
+                    w="full"
+                    color="white"
+                    marginRight={1}
+                  >
+                    {rightSwitchState ? "OPEN" : "CLOSE"}
+                  </Text>
+                </Box>
+                <Box borderRadius="full" bg="white" w="8" h="8"></Box>
+              </HStack>
+            </View>
+          </VStack>
         </View>
       </View>
     </View>

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import KillSessionDialog from "../../../../components/LogoutSession";
 import WSSessionButton from "../../../../components/WSSessionButton";
 import { IWebSocket } from "../../../../zustand/state";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Layout() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,11 +17,12 @@ export default function Layout() {
   const greenhouse = store.items.find((res) => res.id === id);
   const name = greenhouse?.name;
   const [showDialog, setShowDialog] = useState<boolean>(false);
-  const [showKillSessionDialog, setShowKillSessionDialog] = useState<boolean>(false);
+  const [showKillSessionDialog, setShowKillSessionDialog] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (greenhouse?.isConnected === false) {
-      setShowDialog(true);
+      // setShowDialog(true);
     }
   }, [greenhouse]);
 
@@ -28,7 +30,7 @@ export default function Layout() {
     <>
       <Stack.Screen
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <WSDisconnectDialogBox
@@ -47,47 +49,54 @@ export default function Layout() {
         screenOptions={{
           header: () => {
             return (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignContent: "center",
-                  padding: 10,
-                  gap: 10,
-                  backgroundColor: "green"
-                }}
-              >
-                <Pressable
-                  onPress={() => {
-                    setShowKillSessionDialog(true);
-                  }}
-                >
-                  <Icons.navigateBack color="black" size={32} />
-                </Pressable>
-                <View
-                  flexDirection="column"
-                  justifyContent="center"
-                >
-                  <Text
-                    color="#fff"
-                    fontSize="xl"
-                  >{name}</Text>
-                </View>
-                <View
+              <View>
+                <LinearGradient
+                  colors={["#228929", "#6A4"]}
                   style={{
                     flexDirection: "row",
-                    justifyContent: "flex-end",
-                    flex: 1,
+                    alignItems: "center",
+                    padding: 10,
+                    paddingBottom: 20,
+                    gap: 10,
                   }}
                 >
-                  <WSSessionButton showDialog={showKillSessionDialog}
-                    setShowDialog={setShowKillSessionDialog}
-                    ws={greenhouse?.ws}
-                  />
-                </View>
+                  <Pressable
+                    onPress={() => {
+                      setShowKillSessionDialog(true);
+                    }}
+                  >
+                    <Icons.navigateBack color="black" size={37} />
+                  </Pressable>
+                  <View flexDirection="column" justifyContent="center">
+                    <Text
+                      color="#fff"
+                      fontSize="xl"
+                      style={{
+                        fontFamily: "OpenSans",
+                      }}
+                    >
+                      {name}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      flex: 1,
+                    }}
+                  >
+                    <WSSessionButton
+                      showDialog={showKillSessionDialog}
+                      setShowDialog={setShowKillSessionDialog}
+                      ws={greenhouse?.ws}
+                    />
+                  </View>
+                </LinearGradient>
               </View>
             );
           },
         }}
       />
-    </>);
+    </>
+  );
 }

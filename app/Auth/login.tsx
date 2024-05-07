@@ -90,7 +90,7 @@ function Login() {
   });
   //
   return (
-    <LinearGradient colors={["#228B29", "#6A9"]} style={LoginStyles.container}>
+    <LinearGradient colors={["#228B29", "#6A4"]} style={LoginStyles.container}>
       <VStack flex={1} space={3} alignItems="start">
         <View
           bg="white"

@@ -8,7 +8,6 @@ import { Actionsheet } from "native-base";
 import { useEffect, useState } from "react";
 import CustomAlertDialog from "./ui/AlertDialog";
 import WSTestConnectionForm from "./Forms/WebSocketConnectionTest";
-import { useRouter } from "expo-router";
 import MQTTConnectionTestForm from "./Forms/MqttConnectionTest";
 import {
   useGreenhouseStore,
@@ -18,7 +17,8 @@ import { Alert } from "react-native";
 import { Animated } from "react-native";
 import { syncToCloud } from "../utils/sync";
 import createToast from "../hooks/toast";
-import { Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import NavContainerEditForm from "./Forms/NavContainerEditForm";
 
 const GreenhouseNavContainer = ({
   id,
@@ -33,8 +33,6 @@ const GreenhouseNavContainer = ({
   imageUrl: string;
   removeGreenhouse: (id: string) => void;
 }) => {
-  const width = Dimensions.get("screen").width;
-  const router = useRouter();
   const store =
     type === "Greenhouse"
       ? useGreenhouseStore()
@@ -48,6 +46,7 @@ const GreenhouseNavContainer = ({
     useState<boolean>(false);
   const [showWSForm, setShowWSForm] = useState<boolean>(false);
   const [showMQTTForm, setShowMQTTForm] = useState<boolean>(false);
+  const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false); // Set loading to false initially
   const { onCopy } = useClipboard();
 
@@ -137,224 +136,274 @@ const GreenhouseNavContainer = ({
           top: 5,
           right: 5,
           backgroundColor: "#8CC6A8",
-          padding: 3,
-          borderRadius: 50,
           marginTop: 3,
           marginRight: 3,
+          borderRadius: 50,
         }}
         onPress={onOpen}
       >
-        <Icons.action size={32} color="black" />
+        <LinearGradient
+          colors={["#228929", "#6A4"]}
+          style={{
+            borderRadius: 50,
+            padding: 5,
+          }}
+        >
+          <Icons.action size={32} color="black" />
+        </LinearGradient>
       </Pressable>
       <HStack
         space={1}
         borderRadius="sm"
-        marginLeft="1"
-        bg="coolGray.300"
-        padding="2"
         position="absolute"
         flexDirection="row"
         colorScheme="info"
-        left="0"
       >
-        <Badge colorScheme="info">{id}</Badge>
-        <Box borderWidth="1" padding="1">
-          <TouchableOpacity
-            style={{}}
-            onPress={() => {
-              onCopy(id);
-            }}
-          >
-            <Icons.clipboard size={24} color="black" />
-          </TouchableOpacity>
-        </Box>
+        <LinearGradient
+          style={{
+            borderCurve: "circular",
+            borderRadius: 8,
+          }}
+          colors={["#228B29", "#6A4"]}
+        >
+          <Box borderRadius="md" borderWidth="1" padding="1">
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                gap: 5,
+              }}
+              onPress={() => {
+                onCopy(id);
+              }}
+            >
+              <Icons.clipboard size={24} color="black" />
+              <Badge colorScheme="info">{id}</Badge>
+            </TouchableOpacity>
+          </Box>
+        </LinearGradient>
       </HStack>
       <Divider height="px" backgroundColor={"black"} />
-      <View
+
+      <LinearGradient
         style={{
-          alignContent: "center",
-          backgroundColor: "green",
           borderBottomRightRadius: 9,
           borderBottomLeftRadius: 9,
         }}
+        colors={["#228B29", "#6A4"]}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            padding: 10,
+            alignContent: "center",
+            backgroundColor: "transparent",
+            borderBottomRightRadius: 9,
+            borderBottomLeftRadius: 9,
           }}
         >
-          <Badge minW="20" colorScheme="green">
-            {name}
-          </Badge>
-          <HStack space={2} alignItems="center">
-            <TouchableOpacity
-              style={{
-                position: "relative",
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: synced ? "#fff" : "#A0A0A0",
-                padding: 5,
-                borderRadius: 10,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 8,
-              }}
-              aria-disabled={!synced}
-              disabled={!synced}
-              onPress={() => {
-                setShowMQTTForm(true);
-              }}
-            >
-              {!synced && (
-                <Pressable
-                  style={{
-                    position: "absolute",
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                  }}
-                  onPress={() => {
-                    Alert.alert(
-                      "Synchronization not registered",
-                      "The controller has not been synchronized to any of the remote servers, You can still synchronize it through settings",
-                    );
-                  }}
-                >
-                  <Icons.banIcon width={34} height={34} color="red" />
-                </Pressable>
-              )}
-              <Icons.mqttIcon width={32} height={32} color="black" />
-              <Text style={{ marginLeft: 10 }}>MQTT</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: "#fff",
-                padding: 5,
-                borderRadius: 10,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 8,
-              }}
-              onPress={() => {
-                setShowWSForm(true);
-              }}
-            >
-              <Icons.wifiIcon width={32} height={32} color="black" />
-              <Text style={{ marginLeft: 10 }}>WiFi</Text>
-            </TouchableOpacity>
-          </HStack>
-        </View>
-        <WSTestConnectionForm
-          id={id}
-          showForm={showWSForm}
-          setShowForm={setShowWSForm}
-          store={store}
-          type={type}
-        />
-        <MQTTConnectionTestForm
-          id={id}
-          showForm={showMQTTForm}
-          setShowForm={setShowMQTTForm}
-          store={store}
-          type={type}
-        />
-        <CustomActionSheet
-          onClose={onClose}
-          onOpen={onOpen}
-          isOpen={isOpen}
-          title={name}
-        >
-          <Actionsheet.Item startIcon={<Icons.edit color="black" size={32} />}>
-            Edit
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            onPress={() => {
-              setAlertDialogOpen(true);
-              onClose();
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              padding: 10,
             }}
-            startIcon={<Icons.trash color="black" size={32} />}
           >
-            Remove
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            onPress={handleSync}
-            startIcon={
-              loading ? (
-                <LoadingIcon
-                  width={32}
-                  height={32}
-                  color="black"
-                  style={{
-                    transform: [
-                      {
-                        rotate: spinValue.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: ["0deg", "360deg"],
-                        }),
-                      },
-                    ],
-                  }}
-                />
-              ) : synced ? (
-                <Box position="relative">
-                  <Icons.syncedIcon width={23} height={23} />
-                  <Icons.syncArrow
-                    width={32}
-                    height={32}
+            <Badge minW="20" colorScheme="green">
+              {name}
+            </Badge>
+            <HStack space={2} alignItems="center">
+              <TouchableOpacity
+                style={{
+                  position: "relative",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: synced ? "#fff" : "#A0A0A0",
+                  padding: 5,
+                  borderRadius: 10,
+                  gap: 3,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 8,
+                  width: 100,
+                }}
+                aria-disabled={!synced}
+                disabled={!synced}
+                onPress={() => {
+                  setShowMQTTForm(true);
+                }}
+              >
+                {!synced && (
+                  <Pressable
                     style={{
                       position: "absolute",
-                      top: -4,
-                      left: -4,
+                      height: "100%",
+                      width: "100%",
+                      alignItems: "center",
                     }}
-                    color="black"
-                  />
-                </Box>
-              ) : (
-                <Box position="relative">
-                  <Icons.notSynced width={23} height={23} />
-                  <Icons.syncArrow
+                    onPress={() => {
+                      Alert.alert(
+                        "Synchronization not registered",
+                        "The controller has not been synchronized to any of the remote servers, You can still synchronize it through settings",
+                      );
+                    }}
+                  >
+                    <Icons.banIcon width={34} height={34} color="red" />
+                  </Pressable>
+                )}
+                <Icons.mqttIcon width={32} height={32} color="black" />
+                <Text>REMOTE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#fff",
+                  padding: 5,
+                  gap: 3,
+                  borderRadius: 10,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 8,
+                  width: 100,
+                }}
+                onPress={() => {
+                  setShowWSForm(true);
+                }}
+              >
+                <Icons.wifiIcon width={32} height={32} color="black" />
+                <Text>LOCAL</Text>
+              </TouchableOpacity>
+            </HStack>
+          </View>
+          <WSTestConnectionForm
+            id={id}
+            showForm={showWSForm}
+            setShowForm={setShowWSForm}
+            //@ts-ignore
+            store={store}
+            type={type}
+          />
+          <MQTTConnectionTestForm
+            id={id}
+            showForm={showMQTTForm}
+            setShowForm={setShowMQTTForm}
+            //@ts-ignore
+            store={store}
+            type={type}
+          />
+          <CustomActionSheet
+            onClose={onClose}
+            onOpen={onOpen}
+            isOpen={isOpen}
+            title={`Actions available for ${name}`}
+          >
+            <Actionsheet.Item
+              startIcon={<Icons.edit color="black" size={32} />}
+              onPress={() => {
+                setShowEditForm(true);
+                onClose();
+              }}
+            >
+              Edit details
+            </Actionsheet.Item>
+            <Actionsheet.Item
+              onPress={() => {
+                setAlertDialogOpen(true);
+                onClose();
+              }}
+              startIcon={<Icons.trash color="black" size={32} />}
+            >
+              Remove
+            </Actionsheet.Item>
+            <Actionsheet.Item
+              onPress={handleSync}
+              startIcon={
+                loading ? (
+                  <LoadingIcon
                     width={32}
                     height={32}
-                    style={{
-                      position: "absolute",
-                      top: -4,
-                      left: -4,
-                    }}
                     color="black"
+                    style={{
+                      transform: [
+                        {
+                          rotate: spinValue.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: ["0deg", "360deg"],
+                          }),
+                        },
+                      ],
+                    }}
                   />
-                </Box>
-              )
-            }
-          >
-            {loading
-              ? "Syncing to the server"
-              : synced
-                ? "Synchronized to the server"
-                : "Not Synced, Press to sync it to server"}
-          </Actionsheet.Item>
-        </CustomActionSheet>
-        <CustomAlertDialog
-          title={`Remove ${type}`}
-          isOpen={alertDialog}
-          message={`Are you sure you want to remove ${name}?`}
-          setIsOpen={setAlertDialogOpen}
-          setDeleteGreenhouse={setRemoveGreenhouseConfirm}
-        />
-      </View>
+                ) : synced ? (
+                  <Box position="relative">
+                    <Icons.syncedIcon width={23} height={23} />
+                    <Icons.syncArrow
+                      width={32}
+                      height={32}
+                      style={{
+                        position: "absolute",
+                        top: -4,
+                        left: -4,
+                      }}
+                      color="black"
+                    />
+                  </Box>
+                ) : (
+                  <Box position="relative">
+                    <Icons.notSynced width={23} height={23} />
+                    <Icons.syncArrow
+                      width={32}
+                      height={32}
+                      style={{
+                        position: "absolute",
+                        top: -4,
+                        left: -4,
+                      }}
+                      color="black"
+                    />
+                  </Box>
+                )
+              }
+            >
+              {loading
+                ? "Syncing to the server"
+                : synced
+                  ? "Synchronized to the server"
+                  : "Not Synced, Press to sync it to server"}
+            </Actionsheet.Item>
+          </CustomActionSheet>
+          <CustomAlertDialog
+            title={`Remove ${type}`}
+            isOpen={alertDialog}
+            message={`Are you sure you want to remove ${name}?`}
+            setIsOpen={setAlertDialogOpen}
+            setDeleteGreenhouse={setRemoveGreenhouseConfirm}
+          />
+          {controller?.id && (
+            <NavContainerEditForm
+              key={controller?.id}
+              id={controller?.id as string}
+              name={controller?.name as string}
+              store={store}
+              modalTitle={`Edit ${controller?.name}`}
+              modalVisible={showEditForm}
+              setModalVisible={setShowEditForm}
+              //@ts-ignore
+              controller={controller}
+            />
+          )}
+        </View>
+      </LinearGradient>
     </View>
   );
 };

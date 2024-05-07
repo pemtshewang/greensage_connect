@@ -3,12 +3,10 @@ import { View } from "native-base";
 import { Icons } from "../../../../assets/Icons/Icons";
 import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
-import { useGreenhouseStore } from "../../../../zustand/store";
 import { useEnvironmentContext } from "../../../../context/envParamsContext";
-
+import LightControllerContainer from "../../../../components/Greenhouse/LightControllerContainer";
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const store = useGreenhouseStore()
   const { environment: envtValues } = useEnvironmentContext();
   return (
     <>
@@ -18,12 +16,14 @@ const Page = () => {
         temperatureReading={envtValues.temperature}
         soilMoistureReading={envtValues.soilMoisture}
       />
-      <View style={{
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 20
-      }}>
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          marginTop: 20,
+        }}
+      >
         <ShadowContainer
           label={"Temperature"}
           id={id as string}
@@ -37,6 +37,7 @@ const Page = () => {
           navigatePath={`/tabs/Home/Greenhouse/mgWaterLevel/${id}`}
         />
       </View>
+      <LightControllerContainer key={id} id={id as string} />
     </>
   );
 };

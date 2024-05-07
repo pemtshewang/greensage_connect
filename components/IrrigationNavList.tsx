@@ -1,4 +1,4 @@
-import { View, Badge, ScrollView } from "native-base";
+import { View, Badge, FlatList } from "native-base";
 import GreenhouseNavContainer from "./GreehouseNavContainer";
 import Banner from "./NoGreenhouseBanner";
 import { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native";
 import GreenHouseAddForm from "./Forms/GreenhouseForm";
 import CustomModal from "./ui/Modal";
 import { useIrrigationControllerStore } from "../zustand/store";
+import { LinearGradient } from "expo-linear-gradient";
 
 const IrrigationNavList = () => {
   const store = useIrrigationControllerStore();
@@ -24,42 +25,30 @@ const IrrigationNavList = () => {
         marginBottom="1"
         justifyContent="space-between"
       >
-        <Badge colorScheme="success">Available Added Irrigation</Badge>
+        <Badge colorScheme="success" fontFamily="OpenSans">
+          Available Added Irrigation
+        </Badge>
         <TouchableOpacity
-          style={{
-            width: 60,
-            height: 60,
-            backgroundColor: "#8CC6A8",
-            elevation: 8,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 80,
-              height: 80,
-            },
-            marginEnd: 10,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 50,
-          }}
           onPress={() => {
             setShowGreenhouseAddForm(true);
           }}
         >
-          <Icons.irrigationAddIcon width={30} height={30} fill="black" />
+          <LinearGradient
+            colors={["#228929", "#6A4"]}
+            style={{
+              padding: 10,
+              borderRadius: 10,
+            }}
+          >
+            <Icons.add width={30} height={30} color="black" />
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       {greenhouses.length > 0 ? (
-        <ScrollView
-          borderWidth="1"
-          style={{
-            marginBottom: 40,
-          }}
-          padding="1"
-          borderRadius="sm"
-          borderColor="coolGray.400"
-        >
-          {greenhouses.map((item) => {
+        <FlatList
+          height={420}
+          data={greenhouses}
+          renderItem={({ item }) => {
             return (
               <GreenhouseNavContainer
                 key={item.id}
@@ -72,12 +61,12 @@ const IrrigationNavList = () => {
                 }}
               />
             );
-          })}
-        </ScrollView>
+          }}
+        />
       ) : (
         <View justifyContent="center" alignItems="center">
           <Banner
-            message="You have no irrigation, Add one!"
+            message="You haven't added irrigation valves, Add one!"
             icon={
               <Icons.irrigationAddIcon height={32} width={32} fill="#A0A0A0" />
             }

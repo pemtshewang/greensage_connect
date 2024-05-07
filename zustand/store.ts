@@ -1,8 +1,9 @@
-import zustand, { create } from "zustand";
+import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { BrokerConfigType } from "../types";
 import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
 import zustandStorage from "./mmkvWrapper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface BaseStore<T> {
   count: number;
@@ -22,7 +23,7 @@ interface StoreState<T> extends BaseStore<T> { }
 
 export function createStore<T>(
   config: StoreConfig<T>,
-  initialState: StoreState<T>
+  initialState: StoreState<T>,
 ) {
   return create<BaseStore<T>>(
     persist(
@@ -37,7 +38,7 @@ export function createStore<T>(
         updateItem: (id, data) =>
           set((state) => ({
             items: state.items.map((item) =>
-              item.id === id ? { ...item, ...data } : item
+              item.id === id ? { ...item, ...data } : item,
             ),
           })),
         removeItem: (id) =>
@@ -51,8 +52,8 @@ export function createStore<T>(
             items: [],
           })),
       }),
-      config
-    )
+      config,
+    ),
   );
 }
 
@@ -60,11 +61,12 @@ export const useGreenhouseStore = createStore<GreenhouseState>(
   {
     name: "greenhouseStore",
     storage: createJSONStorage(() => zustandStorage),
+    // storage: createJSONStorage(() => AsyncStorage),
   },
   {
     count: 0,
     items: [],
-  }
+  },
 );
 
 export const useIrrigationControllerStore =
@@ -72,11 +74,12 @@ export const useIrrigationControllerStore =
     {
       name: "irrigationControllerStore",
       storage: createJSONStorage(() => zustandStorage),
+      // storage: createJSONStorage(() => AsyncStorage),
     },
     {
       count: 0,
       items: [],
-    }
+    },
   );
 
 interface BrokerStoreState extends BrokerConfigType {
@@ -115,8 +118,9 @@ export const useMQTTBrokerStore = create<BrokerStoreState>(
     {
       name: "mqttBrokerStore",
       storage: createJSONStorage(() => zustandStorage),
-    }
-  )
+      // storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
 );
 
 export interface Notification {
@@ -151,7 +155,7 @@ export const useNotificationStore = create<NotificationStoreState>(
       markAllUnseenNotificationsAsSeen: () =>
         set((state) => ({
           notifications: state.notifications.map((notification) =>
-            notification.seen ? notification : { ...notification, seen: true }
+            notification.seen ? notification : { ...notification, seen: true },
           ),
           countOfUnseenNotifications: 0,
         })),
@@ -162,13 +166,14 @@ export const useNotificationStore = create<NotificationStoreState>(
       deleteNotification: (id) =>
         set((state) => ({
           notifications: state.notifications.filter(
-            (notification) => notification.id !== id
+            (notification) => notification.id !== id,
           ),
         })),
     }),
     {
       name: "notificationStore",
       storage: createJSONStorage(() => zustandStorage),
-    }
-  )
+      // storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
 );

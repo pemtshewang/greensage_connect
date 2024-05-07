@@ -99,7 +99,7 @@ function Register() {
 
   return (
     <OTPContext.Provider value={{ id, setID }}>
-      <LinearGradient colors={["#228929", "#6A9"]} style={{ flex: 1 }}>
+      <LinearGradient colors={["#228929", "#6A4"]} style={{ flex: 1 }}>
         <OTPModal
           mobile={data.phoneNumber}
           modalVisible={isOTPModalVisible}
@@ -112,6 +112,7 @@ function Register() {
                 fontFamily="OpenSans"
                 textAlign="center"
                 fontSize="xl"
+                bold
                 style={{ color: "#fff" }}
               >
                 Register to GreenSage Connect

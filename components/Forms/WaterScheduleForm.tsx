@@ -14,6 +14,8 @@ const WaterSchedulerForm = ({
   const greenhouse = store.items.find((greenhouse) => greenhouse.id === id);
   return (
     <View
+    bg="white"
+    borderRadius="md"
       padding="5"
       style={{
         // shadowy container

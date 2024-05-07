@@ -1,4 +1,4 @@
-import { Badge, Text, View } from "native-base";
+import { Badge, View } from "native-base";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Circle } from "react-native-svg";
 import Icons from "../assets/Icons/Icons";
@@ -8,23 +8,17 @@ const IrrigationControllerContainer = ({
   soilMoistureReading: number;
 }) => {
   return (
-    <>
+    <View alignItems="center">
       <View
         alignItems="center"
         style={{
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          padding: 5,
-          backgroundColor: "#fff",
+          padding: 4,
+          paddingHorizontal: 10,
+          width: "100%",
           borderRadius: 10,
           marginTop: 10,
           marginHorizontal: 10,
+          backgroundColor: "#fff",
         }}
       >
         <Badge colorScheme="blue">Soil Moisture</Badge>
@@ -53,7 +47,7 @@ const IrrigationControllerContainer = ({
           <Badge colorScheme="blue">{soilMoistureReading + " %"}</Badge>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 export default IrrigationControllerContainer;

@@ -1,5 +1,6 @@
 import { Modal } from "native-base";
 import { Text } from "native-base";
+import { LinearGradient } from "expo-linear-gradient";
 
 const CustomModal = ({
   modalVisible,
@@ -35,7 +36,14 @@ const CustomModal = ({
             backgroundColor: "green",
           }}
         >
-          <Text color="white" fontWeight="bold" fontSize="md">
+          <Text
+            color="white"
+            style={{
+              fontFamily: "OpenSans",
+            }}
+            fontWeight="bold"
+            fontSize="md"
+          >
             {modalTitle}
           </Text>
         </Modal.Header>

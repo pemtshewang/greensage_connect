@@ -1,8 +1,9 @@
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { View, Text, Badge } from "native-base";
+import { View, Badge } from "native-base";
 
 import { Circle } from "react-native-svg";
 import Icons from "../../assets/Icons/Icons";
+import { LightbulbIcon, LightbulbOffIcon } from "lucide-react-native";
 
 export default function ReadingsContainer({
   temperatureReading,
@@ -33,10 +34,12 @@ export default function ReadingsContainer({
       }}
     >
       {/* first row */}
-      <View style={{
-        flexDirection: "row",
-        justifyContent: "space-around"
-      }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+        }}
+      >
         {/* Temperature */}
         <View style={{ position: "relative" }}>
           <Badge colorScheme="red">Temperature</Badge>
@@ -49,9 +52,14 @@ export default function ReadingsContainer({
             tintColor={temperatureReading > 50 ? "#FF6347" : "#00e0ff"} // Red for higher temperatures, blue for lower
             backgroundColor="#A0A0A0"
             padding={10}
-            renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
+            renderCap={({ center }) => (
+              <Circle cx={center.x} cy={center.y} r="10" fill="green" />
+            )}
           />
-          <Badge colorScheme="red" style={{ position: "absolute", top: "70%", left: "34%" }}>
+          <Badge
+            colorScheme="red"
+            style={{ position: "absolute", top: "70%", left: "34%" }}
+          >
             {temperatureReading + " °C"}
           </Badge>
           <Icons.thermometer
@@ -73,9 +81,14 @@ export default function ReadingsContainer({
             arcSweepAngle={180}
             rotation={270}
             padding={10}
-            renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
+            renderCap={({ center }) => (
+              <Circle cx={center.x} cy={center.y} r="10" fill="green" />
+            )}
           />
-          <Badge colorScheme="cyan" style={{ position: "absolute", top: "70%", left: "34%" }}>
+          <Badge
+            colorScheme="cyan"
+            style={{ position: "absolute", top: "70%", left: "34%" }}
+          >
             {humidityReading + " %"}
           </Badge>
           <Icons.droplets
@@ -88,9 +101,12 @@ export default function ReadingsContainer({
       {/* end of first row */}
 
       {/* start of second row */}
-      <View style={{
-        flexDirection: "row", justifyContent: "space-around"
-      }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+        }}
+      >
         {/* Soil Moisture */}
         <View style={{ position: "relative" }}>
           <Badge colorScheme="lightBlue">Soil Moisture</Badge>
@@ -103,9 +119,14 @@ export default function ReadingsContainer({
             tintColor={soilMoistureReading > 50 ? "#FF6347" : "#00e0ff"} // Red for higher temperatures, blue for lower
             backgroundColor="#A0A0A0"
             padding={10}
-            renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
+            renderCap={({ center }) => (
+              <Circle cx={center.x} cy={center.y} r="10" fill="green" />
+            )}
           />
-          <Badge colorScheme="lightBlue" style={{ position: "absolute", top: "70%", left: "34%" }}>
+          <Badge
+            colorScheme="lightBlue"
+            style={{ position: "absolute", top: "70%", left: "34%" }}
+          >
             {soilMoistureReading + " %"}
           </Badge>
           <Icons.soilMoisture
@@ -117,26 +138,39 @@ export default function ReadingsContainer({
 
         {/* LDR */}
         <View style={{ position: "relative" }}>
-          <Badge colorScheme="indigo">Light Intensity</Badge>
+          <Badge colorScheme="indigo">Light State</Badge>
           <AnimatedCircularProgress
             size={120}
             width={15}
-            fill={ldrReading}
-            tintColor={ldrReading > 50 ? "#FF6347" : "#00e0ff"} // Red for higher humidity, blue for lower
+            fill={ldrReading === 0 ? 0 : 100}
+            tintColor={ldrReading > 50 ? "#f00" : "#fff"} // Red for higher humidity, blue for lower
             backgroundColor="#A0A0A0"
             arcSweepAngle={180}
             rotation={270}
             padding={10}
-            renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="10" fill="green" />}
+            renderCap={({ center }) => (
+              <Circle cx={center.x} cy={center.y} r="10" fill="green" />
+            )}
           />
-          <Badge colorScheme="indigo" style={{ position: "absolute", top: "70%", left: "34%" }}>
-            {ldrReading + " %"}
+          <Badge
+            colorScheme="indigo"
+            style={{ position: "absolute", top: "70%", left: "34%" }}
+          >
+            {ldrReading.toString() === "0" ? "OFF" : "ON"}
           </Badge>
-          <Icons.sunIcon
-            style={{ position: "absolute", top: "39%", left: "39%" }}
-            size={32}
-            color="black"
-          />
+          {ldrReading.toString() === "0" ? (
+            <LightbulbOffIcon
+              style={{ position: "absolute", top: "39%", left: "39%" }}
+              size={32}
+              color="black"
+            />
+          ) : (
+            <LightbulbIcon
+              style={{ position: "absolute", top: "39%", left: "39%" }}
+              size={32}
+              color="black"
+            />
+          )}
         </View>
       </View>
       {/* end of second row */}

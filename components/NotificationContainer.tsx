@@ -1,4 +1,4 @@
-import { VStack, View, Pressable, Badge } from "native-base";
+import { VStack, View, Pressable } from "native-base";
 import Icons from "../assets/Icons/Icons";
 import React, { useEffect, useState } from "react";
 import { Text, Menu } from "native-base";
@@ -47,6 +47,7 @@ const NotificationContainer = ({
 
   return (
     <View
+      marginTop="1"
       borderBottomWidth="1"
       borderColor="gray.100"
       style={{
@@ -81,21 +82,31 @@ const NotificationContainer = ({
         <Text fontSize="xs" color="gray.500">
           {footer}
         </Text>
-      </VStack >
-      <Menu w="24" placement="right bottom" trigger={triggerProps => {
-        return <Pressable marginRight="6" {...triggerProps}>
-          <Icons.options size={24} color="black" />
-        </Pressable>;
-      }}>
-        <Menu.Item accessibilityLabel="delete"
+      </VStack>
+      <Menu
+        w="24"
+        placement="right bottom"
+        trigger={(triggerProps) => {
+          return (
+            <Pressable marginRight="6" {...triggerProps}>
+              <Icons.options size={24} color="black" />
+            </Pressable>
+          );
+        }}
+      >
+        <Menu.Item
+          accessibilityLabel="delete"
           _pressed={{
-            backgroundColor: "coolGray.100"
+            backgroundColor: "coolGray.100",
           }}
           onPress={() => {
             store.deleteNotification(id);
-          }}>Delete</Menu.Item>
+          }}
+        >
+          Delete
+        </Menu.Item>
       </Menu>
-    </View >
+    </View>
   );
 };
 
