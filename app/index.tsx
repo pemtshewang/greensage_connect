@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { Animated, Image } from "react-native";
+import { View, Animated, Image } from "react-native";
 import { useFonts } from "expo-font";
 import { checkLogin } from "../utils/session";
 import AnimatedSpinner from "../components/AnimatedSpinner";
@@ -21,14 +20,9 @@ const AnimationComponent = () => {
         duration: 500,
         useNativeDriver: true,
       }),
-      Animated.timing(animValue, {
-        toValue: 0.8,
-        duration: 500,
-        useNativeDriver: true,
-      }),
     ]);
     animation.start();
-  }, []);
+  }, [animValue]);
 
   const interpolatedOpacity = animValue.interpolate({
     inputRange: [0, 1],
@@ -54,7 +48,6 @@ const AnimationComponent = () => {
   );
 };
 
-// main app
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -63,35 +56,30 @@ export default function App() {
     OpenSans: require("../assets/OpenSans.ttf"),
   });
 
-  async function checkAuth() {
-    const isLoggedIn = await checkLogin();
-    setLoggedIn(isLoggedIn);
-    setLoading(false);
-  }
-
+  // necessary for loading animation
   useEffect(() => {
     async function prepare() {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        // Tell the application to render
-        if (fontsLoaded) {
-          setAppIsReady(true);
-        }
-      }
+      setTimeout(() => {
+        setAppIsReady(true);
+      }, 2000);
     }
     prepare();
   }, []);
 
   useEffect(() => {
     if (appIsReady) {
-      checkAuth();
+      // if app loaded all fonts, then start setLoading to true then to false based on the logged in information
+      setLoading(true);
+      async function checkSession() {
+        const res = await checkLogin();
+        setLoggedIn(res);
+        setLoading(false);
+      }
+      checkSession();
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
+  if (!appIsReady || loading) {
     return (
       <View
         style={{
@@ -100,22 +88,22 @@ export default function App() {
           alignItems: "center",
         }}
       >
-        <AnimationComponent />
+        {loading ? (
+          <AnimatedSpinner message="Please wait while the app loads your configs" />
+        ) : (
+          <AnimationComponent />
+        )}
       </View>
     );
   }
 
-  if (appIsReady && loading) {
-    return (
-      <AnimatedSpinner message="Please wait while the app loads your configs" />
-    );
-  }
-
-  if (!loading && appIsReady && !isLoggedIn) {
+  if (isLoggedIn === false && appIsReady) {
     return <Redirect href="/Auth/login" />;
   }
 
-  if (!loading && appIsReady && isLoggedIn) {
+  if (isLoggedIn === true && appIsReady) {
     return <Redirect href="/tabs/Home" />;
   }
+
+  return null;
 }

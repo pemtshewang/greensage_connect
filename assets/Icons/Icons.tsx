@@ -1,4 +1,4 @@
-import { ArrowBigRightIcon, ArrowDown10Icon, AtSignIcon, BanIcon, CalendarClockIcon, CheckCheckIcon, CheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, GlobeIcon, KeyboardIcon, LinkIcon, LinkedinIcon, MoreHorizontalIcon, PowerCircleIcon, PowerIcon, RefreshCwIcon, RefreshCwOffIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, TriangleIcon, UnplugIcon, WavesIcon, WifiIcon, XIcon, XOctagonIcon } from "lucide-react-native";
+import { ArrowBigRightIcon, ArrowDown10Icon, AtSignIcon, BanIcon, CalendarClockIcon, CheckCheckIcon, CheckIcon, ClipboardCopyIcon, Clock3Icon, DropletIcon, GithubIcon, GlobeIcon, HeadsetIcon, KeyboardIcon, LinkIcon, LinkedinIcon, MoreHorizontalIcon, PowerCircleIcon, PowerIcon, RefreshCwIcon, RefreshCwOffIcon, SendHorizontalIcon, SettingsIcon, ThermometerIcon, Timer, TimerResetIcon, TriangleIcon, UnplugIcon, WavesIcon, WifiIcon, XIcon, XOctagonIcon } from "lucide-react-native";
 import {
   Eye,
   EyeOff,
@@ -124,7 +124,7 @@ export const Icons = {
     </Svg>
     );
   },
-  exhaustFan: (props) => {
+  exhaustFan: (props:any) => {
     return (
       <Svg
         width="800px"
@@ -166,7 +166,7 @@ export const Icons = {
       </Svg>
     )
   },
-  animatedFan: (props) => {
+  animatedFan: (props:any) => {
     return (
       <Svg
         width="800px"
@@ -180,7 +180,7 @@ export const Icons = {
       </Svg>
     )
   },
-  valve: (props) => {
+  valve: (props:any) => {
     return (
       <Svg
         fill="#000"
@@ -194,7 +194,7 @@ export const Icons = {
       </Svg>
     )
   },
-  waterTap: (props) => {
+  waterTap: (props:any) => {
     return (
       <Svg
         fill="#000"
@@ -217,7 +217,7 @@ export const Icons = {
       </Svg>
     )
   },
-  failedConnection: (props) => {
+  failedConnection: (props:any) => {
     return (<Svg
       viewBox="0 0 24 24"
       fill="none"
@@ -239,7 +239,7 @@ export const Icons = {
     </Svg>
     )
   },
-  passedConnection: (props) => {
+  passedConnection: (props:any) => {
     return (
       <Svg
         viewBox="0 0 24 24"
@@ -262,7 +262,7 @@ export const Icons = {
       </Svg>
     );
   },
-  rollerShutter: (props) => {
+  rollerShutter: (props:any) => {
     return (
       <Svg
         viewBox="0 0 24 24"
@@ -283,7 +283,7 @@ export const Icons = {
       </Svg>
     )
   },
-  sunnyWeather: (props) => {
+  sunnyWeather: (props:any) => {
     return (
       <Svg
         viewBox="0 0 36 36"
@@ -312,7 +312,7 @@ export const Icons = {
       </Svg>
     )
   },
-  sunnyCloudy: (props) => {
+  sunnyCloudy: (props:any) => {
     return (
       <Svg
         viewBox="0 0 36 36"
@@ -345,7 +345,7 @@ export const Icons = {
       </Svg>
     )
   },
-  sunnyRainy: (props) => {
+  sunnyRainy: (props:any) => {
     return (
       <Svg
         viewBox="0 0 36 36"
@@ -382,7 +382,7 @@ export const Icons = {
       </Svg>
     )
   },
-  moon: (props) => {
+  moon: (props:any) => {
     return (
       <Svg
         viewBox="0 0 1024 1024"
@@ -405,7 +405,7 @@ export const Icons = {
         </G>
       </Svg>)
   },
-  rain: (props) => {
+  rain: (props:any) => {
     return (
       <Svg
         id="Uploaded to svgrepo.com"
@@ -438,7 +438,7 @@ export const Icons = {
       </Svg>
     )
   },
-  waterIrrigation: (props) => {
+  waterIrrigation: (props:any) => {
     return (
       <Svg
         fill="#000000"
@@ -473,7 +473,7 @@ export const Icons = {
       </Svg>
     )
   },
-  greenhouse: (props) => {
+  greenhouse: (props:any) => {
     return (
       <Svg
         fill="#000000"
@@ -502,7 +502,7 @@ export const Icons = {
       </Svg>
     )
   },
-  irrigationAddIcon: (props) => {
+  irrigationAddIcon: (props:any) => {
     return (
       <Svg
         fill="#000000"
@@ -546,7 +546,7 @@ export const Icons = {
       </Svg>
     )
   },
-  mqttServerAdd: (props) => {
+  mqttServerAdd: (props:any) => {
     return (
       <Svg
         fill="#000000"
@@ -630,7 +630,7 @@ export const Icons = {
       </Svg>
     )
   },
-  XIcon: (props) => {
+  XIcon: (props:any) => {
     return (
       <Svg
         xmlns="http://www.w3.org/2000/svg"
@@ -645,7 +645,7 @@ export const Icons = {
       </Svg>
     )
   },
-  maizeIcon: (props) => {
+  maizeIcon: (props:any) => {
     return (
       <Svg
         viewBox="0 0 1024 1024"
@@ -681,7 +681,7 @@ export const Icons = {
       </Svg>
     )
   },
-  chilliIcon: (props) => {
+  chilliIcon: (props:any) => {
     return (
       <Svg
         height="200px"
@@ -723,7 +723,7 @@ export const Icons = {
       </Svg>
     )
   },
-  cabbageIcon: (props) => {
+  cabbageIcon: (props:any) => {
     return (
       <Svg
         viewBox="0 0 1024 1024"
@@ -783,7 +783,7 @@ export const Icons = {
       </Svg>
     )
   },
-  lettuceIcon: (props) => {
+  lettuceIcon: (props:any) => {
     return (
       <Svg
         height="200px"
@@ -865,7 +865,7 @@ export const Icons = {
       </Svg>
     )
   },
-  onionIcon: (props) => {
+  onionIcon: (props:any) => {
     return (
       <Svg
         height="200px"
@@ -938,7 +938,7 @@ export const Icons = {
 
     )
   },
-  broccoliIcon: (props) => {
+  broccoliIcon: (props:any) => {
     return (
       <Svg
         height="200px"
@@ -984,7 +984,7 @@ export const Icons = {
       </Svg>
     )
   },
-  vegetablesIcon: (props) => {
+  vegetablesIcon: (props:any) => {
     return (
       <Svg
         height="200px"
@@ -1127,6 +1127,7 @@ export const Icons = {
   currentTriangle: TriangleIcon,
   power: PowerIcon,
   calendar:CalendarClockIcon,
+  customerSupport: HeadsetIcon,
 };
 
 

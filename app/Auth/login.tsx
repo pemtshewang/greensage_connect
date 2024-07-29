@@ -18,7 +18,7 @@ import zodResolver from "@hookform/resolvers/zod";
 import { Box } from "native-base";
 import { useRouter } from "expo-router";
 import createToast from "../../hooks/toast";
-import { save } from "../../securestore";
+import { getValueFor, save } from "../../securestore";
 
 const signIn = async (data: LoginSchemaType) => {
   data.username = data.username.trim();
@@ -32,7 +32,7 @@ const signIn = async (data: LoginSchemaType) => {
       },
       body: JSON.stringify(data),
       cache: "no-store",
-    },
+    }
   );
   if (res.ok) {
     const result = await res.json();
@@ -118,6 +118,7 @@ function Login() {
         </View>
         <View marginTop="6">
           <TextInputIcon
+            //@ts-ignore
             type="text"
             placeholder="Username/Phone Number"
             w="80%"
@@ -137,6 +138,7 @@ function Login() {
         </View>
         <View>
           <TextInputIcon
+            //@ts-ignore
             type="password"
             placeholder="Password"
             w="80%"

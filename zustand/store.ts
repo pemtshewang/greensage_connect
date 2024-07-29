@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { BrokerConfigType } from "../types";
 import { GreenhouseState, IrrigationControllerState } from "../zustand/state";
-import zustandStorage from "./mmkvWrapper";
+//import zustandStorage from "./mmkvWrapper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface BaseStore<T> {
@@ -26,6 +26,7 @@ export function createStore<T>(
   initialState: StoreState<T>,
 ) {
   return create<BaseStore<T>>(
+    //@ts-ignore
     persist(
       (set) => ({
         count: initialState.count,
@@ -38,12 +39,14 @@ export function createStore<T>(
         updateItem: (id, data) =>
           set((state) => ({
             items: state.items.map((item) =>
+              //@ts-ignore
               item.id === id ? { ...item, ...data } : item,
             ),
           })),
         removeItem: (id) =>
           set((state) => ({
             count: state.count - 1,
+            //@ts-ignore
             items: state.items.filter((item) => item.id !== id),
           })),
         removeAllItems: () =>
@@ -60,12 +63,24 @@ export function createStore<T>(
 export const useGreenhouseStore = createStore<GreenhouseState>(
   {
     name: "greenhouseStore",
-    storage: createJSONStorage(() => zustandStorage),
-    // storage: createJSONStorage(() => AsyncStorage),
+    // storage: createJSONStorage(() => zustandStorage),
+    storage: createJSONStorage(() => AsyncStorage),
   },
   {
     count: 0,
     items: [],
+    addItem: function (item: GreenhouseState): void {
+      throw new Error("Function not implemented.");
+    },
+    updateItem: function (id: string, data: Partial<GreenhouseState>): void {
+      throw new Error("Function not implemented.");
+    },
+    removeItem: function (id: string): void {
+      throw new Error("Function not implemented.");
+    },
+    removeAllItems: function (): void {
+      throw new Error("Function not implemented.");
+    }
   },
 );
 
@@ -73,12 +88,24 @@ export const useIrrigationControllerStore =
   createStore<IrrigationControllerState>(
     {
       name: "irrigationControllerStore",
-      storage: createJSONStorage(() => zustandStorage),
-      // storage: createJSONStorage(() => AsyncStorage),
+      // storage: createJSONStorage(() => zustandStorage),
+      storage: createJSONStorage(() => AsyncStorage),
     },
     {
       count: 0,
       items: [],
+      addItem: function (item: IrrigationControllerState): void {
+        throw new Error("Function not implemented.");
+      },
+      updateItem: function (id: string, data: Partial<IrrigationControllerState>): void {
+        throw new Error("Function not implemented.");
+      },
+      removeItem: function (id: string): void {
+        throw new Error("Function not implemented.");
+      },
+      removeAllItems: function (): void {
+        throw new Error("Function not implemented.");
+      }
     },
   );
 
@@ -93,6 +120,7 @@ interface BrokerStoreState extends BrokerConfigType {
 }
 
 export const useMQTTBrokerStore = create<BrokerStoreState>(
+    //@ts-ignore
   persist(
     (set) => ({
       brokerUsername: "",
@@ -117,8 +145,8 @@ export const useMQTTBrokerStore = create<BrokerStoreState>(
     }),
     {
       name: "mqttBrokerStore",
-      storage: createJSONStorage(() => zustandStorage),
-      // storage: createJSONStorage(() => AsyncStorage),
+      // storage: createJSONStorage(() => zustandStorage),
+      storage: createJSONStorage(() => AsyncStorage),
     },
   ),
 );
@@ -143,6 +171,7 @@ export interface NotificationStoreState {
 }
 
 export const useNotificationStore = create<NotificationStoreState>(
+    //@ts-ignore
   persist(
     (set) => ({
       countOfUnseenNotifications: 0,
@@ -172,8 +201,8 @@ export const useNotificationStore = create<NotificationStoreState>(
     }),
     {
       name: "notificationStore",
-      storage: createJSONStorage(() => zustandStorage),
-      // storage: createJSONStorage(() => AsyncStorage),
+      // storage: createJSONStorage(() => zustandStorage),
+      storage: createJSONStorage(() => AsyncStorage),
     },
   ),
 );

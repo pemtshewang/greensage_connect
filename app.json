@@ -7,7 +7,9 @@
     "icon": "./assets/appicon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "y"
@@ -40,7 +42,9 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/OpenSans.ttf"]
+          "fonts": [
+            "./assets/OpenSans.ttf"
+          ]
         }
       ],
       [
@@ -53,7 +57,8 @@
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "extra": {
       "router": {
