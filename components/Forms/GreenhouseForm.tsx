@@ -97,12 +97,36 @@ const GreenHouseAddForm = ({
           isConnected: false,
           backgroundImage: imagePath,
           valveStates: {
-            firstSlot: defaultSlotValues,
-            secondSlot: defaultSlotValues,
-            thirdSlot: defaultSlotValues,
-            fourthSlot: defaultSlotValues,
-            fifthSlot: defaultSlotValues,
+            firstSlot: {
+              name: "firstSlot",
+              ...defaultSlotValues,
+            },
+            secondSlot: {
+              name: "secondSlot",
+              ...defaultSlotValues,
+            },
+            thirdSlot: {
+              name: "thirdSlot",
+              ...defaultSlotValues,
+            },
+            fourthSlot: {
+              name: "fourthSlot",
+              ...defaultSlotValues,
+            },
+            fifthSlot: {
+              name: "fifthSlot",
+              ...defaultSlotValues,
+            },
+            sixthSlot: {
+              name: "sixthSlot",
+              ...defaultSlotValues,
+            },
+            seventhSlot: {
+              name: "seventhSlot",
+              ...defaultSlotValues,
+            },
           },
+          soilMoisture: 0,
           synced: synced,
           ws: null,
           connectionType: null,
@@ -179,6 +203,7 @@ const GreenHouseAddForm = ({
       </View>
       <View>
         <TextInputIcon
+          //@ts-ignore
           type="text"
           placeholder={`Keep a name for your ${type}`}
           placeholderTextColor="coolGray.400"
@@ -197,6 +222,7 @@ const GreenHouseAddForm = ({
       </View>
       <View>
         <TextInputIcon
+          //@ts-ignore
           type="text"
           placeholder="Enter IP address of the controller"
           placeholderTextColor="coolGray.400"
@@ -276,5 +302,4 @@ const GreenHouseAddForm = ({
     </VStack>
   );
 };
-
 export default GreenHouseAddForm;

@@ -8,6 +8,7 @@ import { useIrrigationEnvironmentContext } from "../../../../context/envParamsCo
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity, View } from "react-native";
 import Icons from "../../../../assets/Icons/Icons";
+
 type Zones =
   | "zone1"
   | "zone2"
@@ -99,136 +100,6 @@ const Page = () => {
   const irrigation = store.items.find((g) => g.id === id);
   const { environment: envtValues } = useIrrigationEnvironmentContext();
   const [currentTab, setCurrentTab] = useState<Zones>("zone1");
-  const switchTabTo = (zoneType: Zones) => {
-    switch (zoneType) {
-      case "zone1":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone1"}
-            prevStartTime={
-              (irrigation?.valveStates.firstSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.firstSlot?.endTime as Date) || null
-            }
-            valveLabel="firstSlot"
-            repDays={
-              (irrigation?.valveStates.firstSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.firstSlot?.state as boolean}
-          />
-        );
-      case "zone2":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone2"}
-            prevStartTime={
-              (irrigation?.valveStates.secondSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.secondSlot?.endTime as Date) || null
-            }
-            valveLabel="secondSlot"
-            repDays={
-              (irrigation?.valveStates.secondSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.secondSlot?.state as boolean}
-          />
-        );
-      case "zone3":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone3"}
-            prevStartTime={
-              (irrigation?.valveStates.thirdSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.thirdSlot?.endTime as Date) || null
-            }
-            valveLabel="thirdSlot"
-            repDays={
-              (irrigation?.valveStates.thirdSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.thirdSlot?.state as boolean}
-          />
-        );
-      case "zone4":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone4"}
-            valveLabel="fourthSlot"
-            prevStartTime={
-              (irrigation?.valveStates.fourthSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.fourthSlot?.endTime as Date) || null
-            }
-            repDays={
-              (irrigation?.valveStates.fourthSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.fourthSlot?.state as boolean}
-          />
-        );
-      case "zone5":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone5"}
-            valveLabel="fifthSlot"
-            prevStartTime={
-              (irrigation?.valveStates.fifthSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.fifthSlot?.endTime as Date) || null
-            }
-            repDays={
-              (irrigation?.valveStates.fifthSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.fifthSlot?.state as boolean}
-          />
-        );
-      case "zone6":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone6"}
-            valveLabel="sixthSlot"
-            prevStartTime={
-              (irrigation?.valveStates.sixthSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.sixthSlot?.endTime as Date) || null
-            }
-            repDays={
-              (irrigation?.valveStates.sixthSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.sixthSlot?.state as boolean}
-          />
-        );
-      case "zone7":
-        return (
-          <IrrigationSchedulerContainer
-            isActive={currentTab === "zone7"}
-            valveLabel="seventhSlot"
-            prevStartTime={
-              (irrigation?.valveStates.seventhSlot?.startTime as Date) || null
-            }
-            prevEndTime={
-              (irrigation?.valveStates.seventhSlot?.endTime as Date) || null
-            }
-            repDays={
-              (irrigation?.valveStates.seventhSlot?.repDays as number) || 0
-            }
-            id={id as string}
-            state={irrigation?.valveStates.seventhSlot?.state as boolean}
-          />
-        );
-    }
-  };
   return (
     <ScrollView backgroundColor="#fff">
       <IrrigationControllerContainer
@@ -245,7 +116,138 @@ const Page = () => {
           />
         ))}
       </HStack>
-      {switchTabTo(currentTab)}
+      {
+        currentTab === 'zone1' && <IrrigationSchedulerContainer
+          key={irrigation?.valveStates.firstSlot?.name}
+          isActive={currentTab === "zone1"}
+          prevStartTime={
+            (irrigation?.valveStates.firstSlot?.startTime as Date) || null
+          }
+          prevEndTime={
+            (irrigation?.valveStates.firstSlot?.endTime as Date) || null
+          }
+          valveLabel="firstSlot"
+          repDays={
+            (irrigation?.valveStates.firstSlot?.repDays as number) || 0
+          }
+          id={id as string}
+          state={irrigation?.valveStates.firstSlot?.state as boolean}
+        />
+      }
+      {
+        currentTab === "zone2" && <IrrigationSchedulerContainer
+          key={irrigation?.valveStates.secondSlot?.name}
+          isActive={currentTab === "zone2"}
+          prevStartTime={
+            (irrigation?.valveStates.secondSlot?.startTime as Date) || null
+          }
+          prevEndTime={
+            (irrigation?.valveStates.secondSlot?.endTime as Date) || null
+          }
+          valveLabel="secondSlot"
+          repDays={
+            (irrigation?.valveStates.secondSlot?.repDays as number) || 0
+          }
+          id={id as string}
+          state={irrigation?.valveStates.secondSlot?.state as boolean}
+        />
+      }
+      {
+        currentTab === 'zone3' &&
+        <IrrigationSchedulerContainer
+          key={irrigation?.valveStates.thirdSlot?.name}
+          isActive={currentTab === "zone3"}
+          prevStartTime={
+            (irrigation?.valveStates.thirdSlot?.startTime as Date) || null
+          }
+          prevEndTime={
+            (irrigation?.valveStates.thirdSlot?.endTime as Date) || null
+          }
+          valveLabel="thirdSlot"
+          repDays={
+            (irrigation?.valveStates.thirdSlot?.repDays as number) || 0
+          }
+          id={id as string}
+          state={irrigation?.valveStates.thirdSlot?.state as boolean}
+        />
+      }
+      {
+        currentTab === "zone4" && <IrrigationSchedulerContainer
+          isActive={currentTab === "zone4"}
+          valveLabel="fourthSlot"
+          key={irrigation?.valveStates.fourthSlot?.name}
+          prevStartTime={
+            (irrigation?.valveStates.fourthSlot?.startTime as Date) || null
+          }
+          prevEndTime={
+            (irrigation?.valveStates.fourthSlot?.endTime as Date) || null
+          }
+          repDays={
+            (irrigation?.valveStates.fourthSlot?.repDays as number) || 0
+          }
+          id={id as string}
+          state={irrigation?.valveStates.fourthSlot?.state as boolean}
+        />
+      }
+      {
+        currentTab === "zone5" && <IrrigationSchedulerContainer
+          key={irrigation?.valveStates.fifthSlot?.name}
+          isActive={currentTab === "zone5"}
+          valveLabel="fifthSlot"
+          prevStartTime={
+            (irrigation?.valveStates.fifthSlot?.startTime as Date) || null
+          }
+          prevEndTime={
+            (irrigation?.valveStates.fifthSlot?.endTime as Date) || null
+          }
+          repDays={
+            (irrigation?.valveStates.fifthSlot?.repDays as number) || 0
+          }
+          id={id as string}
+          state={irrigation?.valveStates.fifthSlot?.state as boolean}
+        />
+
+      }
+      {
+        currentTab === "zone6" && (
+          <IrrigationSchedulerContainer
+            key={irrigation?.valveStates.sixthSlot?.name}
+            isActive={currentTab === "zone6"}
+            valveLabel="sixthSlot"
+            prevStartTime={
+              (irrigation?.valveStates.sixthSlot?.startTime as Date) || null
+            }
+            prevEndTime={
+              (irrigation?.valveStates.sixthSlot?.endTime as Date) || null
+            }
+            repDays={
+              (irrigation?.valveStates.sixthSlot?.repDays as number) || 0
+            }
+            id={id as string}
+            state={irrigation?.valveStates.sixthSlot?.state as boolean}
+          />
+
+        )
+      }
+      {
+        currentTab === "zone7" &&
+        <IrrigationSchedulerContainer
+          key={irrigation?.valveStates.seventhSlot?.name}
+          isActive={currentTab === "zone7"}
+          valveLabel="seventhSlot"
+          prevStartTime={
+            (irrigation?.valveStates.seventhSlot?.startTime as Date) || null
+          }
+          prevEndTime={
+            (irrigation?.valveStates.seventhSlot?.endTime as Date) || null
+          }
+          repDays={
+            (irrigation?.valveStates.seventhSlot?.repDays as number) || 0
+          }
+          id={id as string}
+          state={irrigation?.valveStates.seventhSlot?.state as boolean}
+        />
+      }
     </ScrollView>
   );
 };

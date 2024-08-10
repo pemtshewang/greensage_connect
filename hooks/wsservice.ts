@@ -59,7 +59,7 @@ const useWebSocket = ({
     try {
       socket?.current?.send(message);
     } catch (err) {
-      console.log(err);
+      console.log("The error is ", err);
       connect();
       socket?.current?.send(message);
     }
@@ -110,6 +110,7 @@ const useWebSocket = ({
   };
 
   const handleDisconnect = (message: string) => {
+    console.warn(message)
     store.updateItem(id, { isConnected: false });
     socket.current = null;
     clearInterval(heartbeatInterval!);

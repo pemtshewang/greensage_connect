@@ -128,41 +128,32 @@ export default function TemperatureControllerContainer({
                   gap: 20,
                 }}
               >
-                <LinearGradient
-                  colors={["#228929", "#6A4"]}
-                  style={{
-                    padding: 10,
-                    borderRadius: 99,
-                  }}
-                >
-                  <TouchableOpacity onPress={toggleSwitchState}>
-                    <Icons.power size={34} color="black" />
-                  </TouchableOpacity>
-                </LinearGradient>
-                <HStack
-                  flexDirection={state ? "row" : "row-reverse"}
-                  bg={state ? "green.500" : "red.500"}
-                  borderRadius="full"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  padding="1"
-                  style={{
-                    width: 74,
-                  }}
-                >
-                  <Box>
-                    <Text
-                      bold
-                      textAlign={switchState ? "right" : "left"}
-                      w="full"
-                      color="white"
-                      marginRight={1}
-                    >
-                      {switchState ? "ON" : "OFF"}
-                    </Text>
-                  </Box>
-                  <Box borderRadius="full" bg="white" w="8" h="8"></Box>
-                </HStack>
+                <TouchableOpacity onPress={toggleSwitchState}>
+                  <HStack
+                    flexDirection={state ? "row" : "row-reverse"}
+                    bg={state ? "green.500" : "red.500"}
+                    borderRadius="full"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    padding="1"
+                    style={{
+                      width: 74,
+                    }}
+                  >
+                    <Box>
+                      <Text
+                        bold
+                        textAlign={switchState ? "right" : "left"}
+                        w="full"
+                        color="white"
+                        marginRight={1}
+                      >
+                        {switchState ? "ON" : "OFF"}
+                      </Text>
+                    </Box>
+                    <Box borderRadius="full" bg="white" w="8" h="8"></Box>
+                  </HStack>
+                </TouchableOpacity>
               </View>
             </View>
           </View>

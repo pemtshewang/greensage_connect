@@ -67,6 +67,7 @@ function Register() {
       formData.append("lat", location?.lat as string);
       formData.append("long", location?.long as string);
     }
+    formData.append("username",data.username)
     formData.append("password", data.password);
     formData.append("mobile", data.phoneNumber);
     formData.append("cid", data.idNumber);

@@ -61,21 +61,6 @@ const IrrigationSchedulerContainer = ({
       setUserBrokerId(parsed.brokerId);
     });
   }, []);
-  useEffect(() => {
-    const valveStates = irrigation?.valveStates;
-    const states = Object.values(valveStates as Object).map(
-      (slot) => slot?.state,
-    );
-    const onCounts = states.filter((item) => item === true);
-    if (onCounts.length > 1) {
-      toastMessage({
-        message: `${onCounts.length - 1
-          } other ${onCounts.length - 1 < 2 ? "valve is" : "valves are"} open, You may consider closing ${onCounts.length - 1 < 2 ? "it" : "them"}`,
-        type: "warning",
-        duration: 6000,
-      });
-    }
-  }, [irrigation?.valveStates]);
   const handleChangeWaterValveName = () => {
     if (isActive) {
       store.updateItem(id, {
@@ -83,6 +68,7 @@ const IrrigationSchedulerContainer = ({
         valveStates: {
           ...irrigation?.valveStates,
           [valveLabel]: {
+            ...irrigation?.valveStates[valveLabel],
             name: changeWaterValveName,
           },
         },
@@ -228,45 +214,36 @@ const IrrigationSchedulerContainer = ({
             gap: 20,
           }}
         >
-          <LinearGradient
-            colors={["#228929", "#6A4"]}
-            style={{
-              padding: 10,
-              borderRadius: 99,
+          <TouchableOpacity
+            onPress={() => {
+              toggleValveState(valveLabel);
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                toggleValveState(valveLabel);
+            <HStack
+              flexDirection={state ? "row" : "row-reverse"}
+              bg={state ? "green.500" : "red.500"}
+              borderRadius="full"
+              justifyContent="space-between"
+              alignItems="center"
+              padding="1"
+              style={{
+                width: 98,
               }}
             >
-              <Icons.power size={34} color="black" />
-            </TouchableOpacity>
-          </LinearGradient>
-          <HStack
-            flexDirection={state ? "row" : "row-reverse"}
-            bg={state ? "green.500" : "red.500"}
-            borderRadius="full"
-            justifyContent="space-between"
-            alignItems="center"
-            padding="1"
-            style={{
-              width: 98,
-            }}
-          >
-            <Box>
-              <Text
-                bold
-                textAlign={state ? "right" : "left"}
-                w="full"
-                color="white"
-                marginRight={1}
-              >
-                {state ? "OPEN" : "CLOSE"}
-              </Text>
-            </Box>
-            <Box borderRadius="full" bg="white" w="8" h="8"></Box>
-          </HStack>
+              <Box>
+                <Text
+                  bold
+                  textAlign={state ? "right" : "left"}
+                  w="full"
+                  color="white"
+                  marginRight={1}
+                >
+                  {state ? "OPEN" : "CLOSE"}
+                </Text>
+              </Box>
+              <Box borderRadius="full" bg="white" w="8" h="8"></Box>
+            </HStack>
+          </TouchableOpacity>
         </View>
       </View>
       <Divider marginBottom="5" />
@@ -279,11 +256,11 @@ const IrrigationSchedulerContainer = ({
       >
         <IrrigationSlotContainer
           id={id}
+          prevStartTime={prevStartTime}
+          prevEndTime={prevEndTime}
           valveNumber={valveLabel}
           repDays={repDays}
           ws={irrigation?.ws as IWebSocket}
-          prevEndTime={prevEndTime}
-          prevStartTime={prevStartTime}
         />
       </View>
     </View>

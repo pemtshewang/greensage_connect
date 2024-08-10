@@ -75,11 +75,11 @@ const MQTTConnectionTestForm: React.FC<MQTTConnectionTestFormProps> = ({
       await mqtt.connect();
       store.updateItem(id, {
         ...store.items.find((res) => res.id === id),
-        //@ts-ignore
         ws: mqtt,
         connectionType: ConnectionType.MQTT,
         isConnected: true,
       });
+      console.log(store.items.find(item => item.id === id))
       // set toast message here on successful
       setShowForm(false);
       toastMessage({

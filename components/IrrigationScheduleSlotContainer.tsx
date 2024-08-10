@@ -72,6 +72,7 @@ const IrrigationSlotContainer = ({
   const handleCommitChanges = () => {
     const formattedStartTime = extractTime(startTime as Date);
     const formattedEndTime = extractTime(endTime as Date);
+    // to send the turn on and off payload through mqtt and websocket respectively
     if (
       store.items.find((greenhouse) => greenhouse.id === id)?.connectionType ===
       ConnectionType.MQTT
@@ -81,23 +82,37 @@ const IrrigationSlotContainer = ({
       ws.sendMessage(topic, message);
     } else {
       ws.sendMessage(
-        `schedule:${valveIndex[valveNumber]}:${formattedStartTime}:${formattedEndTime}:${repetitionDays}`,
+        `schedule:${valveIndex[valveNumber]}:${formattedStartTime}:${formattedEndTime}:${repetitionDays}`
       );
     }
+    // successful toast message
     toastMessage({
       type: "success",
       message: `Scheduled for ${valveNumber.split("S")[0]} valve successful`,
     });
+    //
     store.updateItem(id, {
       ...store.items.find((g) => g.id === id),
+      valveStates: {
+        ...store.items.find((g) => g.id === id)?.valveStates,
+        [valveNumber]: {
+          startTime: startTime,
+          endTime: endTime,
+          repDays: repetitionDays,
+        },
+      },
     });
+    //
+
+    // notification scheduler before 5 min the scheduled day
     for (let i = 1; i <= 7; i++) {
       if (repetitionDays & (1 << i)) {
         //notify before 5 minutes
         try {
           scheduleNotification({
             content: {
-              title: `Irrigation Schedule for ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+              title: `Irrigation Schedule for ${store.items.find((greenhouse) => greenhouse.id === id)?.name
+                }`,
               subtitle: "Irrigation Schedule",
               body: `Irrigation for ${valveNumber} is active now`,
             },
@@ -114,12 +129,16 @@ const IrrigationSlotContainer = ({
         }
       }
     }
+    //
+    // funciton to schedule local notification mechanism
     addNotification({
       id: Crypto.randomUUID().toString(),
       seen: false,
       title: "Irrigation schedule added",
-      message: `Watering schedule for ${valveNumber.split("S")[0]} valve updated to ${formattedStartTime} - ${formattedEndTime}`,
-      footer: `Updated in irrigation ${store.items.find((greenhouse) => greenhouse.id === id)?.name}`,
+      message: `Watering schedule for ${valveNumber.split("S")[0]
+        } valve updated to ${formattedStartTime} - ${formattedEndTime}`,
+      footer: `Updated in irrigation ${store.items.find((greenhouse) => greenhouse.id === id)?.name
+        }`,
       type: "waterSchedule",
       dateTime: new Date(),
     });
@@ -147,16 +166,15 @@ const IrrigationSlotContainer = ({
     }
   };
   const [startTime, setStartTime] = useState<Date | null>(
-    prevStartTime ? new Date(prevStartTime) : null,
+    prevStartTime ? new Date(prevStartTime) : null
   );
   const [endTime, setEndTime] = useState<Date | null>(
-    prevEndTime ? new Date(prevEndTime) : null,
+    prevEndTime ? new Date(prevEndTime) : null
   );
   const [err, setErr] = useState<string | null>(null);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [clearBtnDisabled, setClearBtnDisabled] = useState<boolean>(false);
   const [repetitionDays, setRepetitionDays] = useState(repDays); // Initialize bitmask
-  const toast = useToast();
   const [startTimePickerVisible, setStartTimePickerVisible] =
     useState<boolean>(false);
   const [endTimePickerVisible, setEndTimePickerVisible] =
@@ -177,7 +195,7 @@ const IrrigationSlotContainer = ({
         !isNaN(endTime?.getTime() as number) &&
         !err &&
         repetitionDays !== 0
-      ),
+      )
     );
     setClearBtnDisabled(
       !(
@@ -185,7 +203,7 @@ const IrrigationSlotContainer = ({
         !isNaN(endTime?.getTime() as number) &&
         !err &&
         repetitionDays !== 0
-      ),
+      )
     );
   }, [endTime, startTime, err, repetitionDays]);
 

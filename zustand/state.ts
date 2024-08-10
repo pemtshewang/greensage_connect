@@ -12,7 +12,7 @@ interface totalIrrigationControllerState {
 }
 export interface IWebSocket {
   sendMessage: (topic?: string, message?: string) => void;
-  connect: () => Promise<any>;
+  connect: () => Promise<unknown>;
   disconnect: () => void;
 }
 
@@ -25,15 +25,13 @@ interface MqttConnectOptions {
   reconnect?: boolean;
   keepAliveInterval?: number;
 }
+
 export interface IMqttClient {
-  connect(options: MqttConnectOptions): void;
+  connect(options: MqttConnectOptions): Promise<unknown>;
   disconnect(): void;
-  send(topic: string, message: string): void;
-  subscribe(topic: string): void;
-  unsubscribe(topic: string): void;
-  isConnected(): boolean;
-  sendMessage: (topic?: string, message?: string) => void;
+  sendMessage: (topic: string, message?: string) => void;
 }
+
 interface TimeSets {
   repetitionDays: number; // bitmask
   startTime: string | null;
@@ -71,7 +69,7 @@ interface IrrigationControllerState {
   soilMoisture: number;
   isConnected: boolean;
   //parameters
-  ws: IWebSocket | null;
+  ws: IWebSocket | IMqttClient | null;
   connectionType: ConnectionType | null;
   valveStates: {
     firstSlot?: {

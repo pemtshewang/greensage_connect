@@ -52,6 +52,7 @@ const useMqtt = ({ id }: { id: string }) => {
       setBrokerId(JSON.parse(token as string)?.brokerId);
     });
   }, []);
+  // one here
   const connect = () => {
     return new Promise((res, rej) => {
       // to avoid error and if the client is already connected , then disconnect it
@@ -73,10 +74,9 @@ const useMqtt = ({ id }: { id: string }) => {
         onSuccess: (data) => {
           client.subscribe("user/" + brokerId + "/#");
           client.onMessageArrived = (msg) => {
-            console.log("The recieved message is", msg.payloadBytes);
             try {
               handleMessage({
-                //@ts-ignore
+                //@ts-ignore IGNORED due to error property thrown
                 topic: msg?.topic,
                 payloadString: msg.payloadString,
               });
@@ -90,12 +90,16 @@ const useMqtt = ({ id }: { id: string }) => {
       });
     });
   };
-  const sendMessage = (topic: string, message: string) => {
-    try {
-      client.send(topic, message);
-    } catch (err) {
-      client.connect();
-      client.send(topic, message);
+  const sendMessage = (topic: string, message?: string) => {
+    if (client.isConnected()) {
+      client.send(topic, message as string);
+    } else {
+      if (client.isConnected()) {
+        client.send(topic, message as string);
+      } else {
+        client.connect();
+        client.send(topic, message as string);
+      }
     }
   };
 
@@ -114,7 +118,6 @@ const useMqtt = ({ id }: { id: string }) => {
     const lastTopic = topic.split("/").pop();
     if (lastTopic === "readings") {
       const category = payloadString.split("|");
-      console.log("Category", category);
       category.forEach((item) => {
         const [dataType, dataValue] = item.split(":");
         switch (dataType) {

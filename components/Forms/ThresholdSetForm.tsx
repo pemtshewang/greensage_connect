@@ -206,7 +206,6 @@ const ThresholdSetForm = ({
                   </View>
                   <ThresholdDropDown
                     type={type}
-                    value={value}
                     setValue={setValue}
                   />
                 </View>

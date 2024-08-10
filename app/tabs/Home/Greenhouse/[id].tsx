@@ -5,7 +5,15 @@ import ReadingsContainer from "../../../../components/Greenhouse/Reading";
 import ShadowContainer from "../../../../components/PressableShadowContainer";
 import { useEnvironmentContext } from "../../../../context/envParamsContext";
 import LightControllerContainer from "../../../../components/Greenhouse/LightControllerContainer";
+import { getValueFor } from "../../../../securestore";
+import { useEffect } from "react";
+
 const Page = () => {
+  useEffect(()=>{
+    getValueFor("token").then((res)=>{
+      console.log("Token is ",res ? JSON.parse(res) : res)
+    })
+  },[])
   const { id } = useLocalSearchParams<{ id: string }>();
   const { environment: envtValues } = useEnvironmentContext();
   return (
