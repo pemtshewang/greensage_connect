@@ -18,7 +18,7 @@ import zodResolver from "@hookform/resolvers/zod";
 import { Box } from "native-base";
 import { useRouter } from "expo-router";
 import createToast from "../../hooks/toast";
-import { getValueFor, save } from "../../securestore";
+import { save } from "../../securestore";
 
 const signIn = async (data: LoginSchemaType) => {
   data.username = data.username.trim();
@@ -54,7 +54,7 @@ function Login() {
           type: "success",
           message: "Login Successful",
         });
-        save("token", JSON.stringify(res));
+        await save("token", JSON.stringify(res));
         setTimeout(() => {
           setLoading(false);
           router.push("/tabs/Home");

@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { View, Animated, Image } from "react-native";
+import {
+  View,
+  Animated,
+  Image,
+  ImageBackground,
+} from "react-native";
 import { useFonts } from "expo-font";
-import { checkLogin } from "../utils/session";
 import AnimatedSpinner from "../components/AnimatedSpinner";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
+import Onboarding from "react-native-onboarding-swiper";
+import { getValueFor } from "../securestore";
+import { save } from "../securestore";
+import { Text } from "native-base";
+import { ArrowRight } from "lucide-react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
+// Helper functions to interact with SecureStore
 
 const AnimationComponent = () => {
   const [animValue] = useState(new Animated.Value(0));
   const AnimatedImage = Animated.createAnimatedComponent(Image);
+
   useEffect(() => {
     const animation = Animated.sequence([
       Animated.timing(animValue, {
@@ -48,13 +61,60 @@ const AnimationComponent = () => {
   );
 };
 
+// Onboarding screens
+const onboardingPages = [
+  {
+    image: (
+      <Image
+        source={require("../assets/logo.png")}
+        style={{
+          width: 250,
+          height: 250,
+          marginLeft: 25,
+        }}
+      />
+    ),
+    title: "Greensage Connect",
+    subtitle: "An Innovative IoT mobile app to automate your greenhouse",
+    titleStyles: {
+      fontWeight: "bold"
+    },
+  },
+  {
+    image: <Image source={require('../assets/background/onboardsecond.png')} 
+    style={{ 
+          width: 250,
+          height: 250,
+      }} />,
+    title: "Cultivate Smartly, Grow Effortlessly",
+    titleStyles:{
+      fontSize:22,
+      fontWeight: 'bold'
+    },
+    subtitle: "Monitor soil moisture, adjust climate, and automate irrigation – all from your smartphone. Whether you're tending to tomatoes or cultivating cucumbers, our app puts expert-level control at your fingertips",
+  },
+  {
+    image: <Image source={require('../assets/background/onboardthird.png')} 
+    style={{ width: 250, height: 250 }} />,
+    title: "Your Smart Greenhouse Awaits",
+    titleStyles:{
+      fontSize:22,
+      fontWeight: 'bold'
+    },
+    subtitle: "Greenage Connect is ready to transform your greenhouse experience\nJoin thousands of smart gardeners and start cultivating success today.",
+  },
+];
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [fontsLoaded] = useFonts({
+  useFonts({
     OpenSans: require("../assets/OpenSans.ttf"),
   });
+  const [onboardingCompleted, setOnboardingCompleted] = useState<
+    boolean | null
+  >(null);
 
   // necessary for loading animation
   useEffect(() => {
@@ -68,16 +128,30 @@ export default function App() {
 
   useEffect(() => {
     if (appIsReady) {
-      // if app loaded all fonts, then start setLoading to true then to false based on the logged in information
+      // Start loading and check session and onboarding status
       setLoading(true);
       async function checkSession() {
-        const res = await checkLogin();
-        setLoggedIn(res);
-        setLoading(false);
+        try {
+          const token = await getValueFor("token");
+          setLoggedIn(!!token); // Set logged in status based on token presence
+          const onboardingStatus = await getValueFor("onboardingCompleted");
+          setOnboardingCompleted(onboardingStatus === "true");
+        } catch (error) {
+          console.error("Error fetching data from SecureStore", error);
+          setLoggedIn(false);
+        } finally {
+          setLoading(false); // Stop loading once checks are complete
+        }
       }
       checkSession();
     }
   }, [appIsReady]);
+  const router = useRouter();
+
+  const handleOnboardingFinish = async () => {
+    await save("onboardingCompleted", "true");
+    setOnboardingCompleted(true); router.replace("/Auth/register")
+  };
 
   if (!appIsReady || loading) {
     return (
@@ -97,6 +171,47 @@ export default function App() {
     );
   }
 
+  if (onboardingCompleted === false) {
+    return (
+      <ImageBackground
+        style={{
+          flex: 1,
+          zIndex:1,
+        }}
+        source={require("../assets/background/onboardfirst.png")}
+      >
+        <Onboarding
+          skipLabel={
+            <LinearGradient
+              style={{
+                borderRadius: 5,
+                padding: 10,
+              }}
+              colors={["#228929", "#6A4"]}
+            >
+              <Text color="#fff">Skip</Text>
+            </LinearGradient>
+          }
+          nextLabel={
+            <LinearGradient
+              style={{
+                borderRadius: 5,
+                padding: 10,
+              }}
+              colors={["#228929", "#6A4"]}
+            >
+              <ArrowRight color="white" />
+            </LinearGradient>
+          }
+          //@ts-ignore
+          pages={onboardingPages}
+          onDone={handleOnboardingFinish}
+          bottomBarHighlight={false}
+        />
+      </ImageBackground>
+    );
+  }
+
   if (isLoggedIn === false && appIsReady) {
     return <Redirect href="/Auth/login" />;
   }
@@ -105,5 +220,5 @@ export default function App() {
     return <Redirect href="/tabs/Home" />;
   }
 
-  return null;
+  return null; // Fallback in case none of the conditions match
 }
