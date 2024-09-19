@@ -25,7 +25,6 @@ We welcome contributions! If you'd like to contribute to Greensage Connect, plea
 If you encounter any issues or have questions, feel free to reach out to our support team at support@greensageconnect.com.
 
 ## License
-Here is a sample GitHub license for the Greensage Connect IoT app:
 
 **MIT License**
 
